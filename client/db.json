@@ -1,0 +1,87 @@
+{
+  "recipes": [
+    {
+      "id": 2,
+      "category": "Other",
+      "country": "United States",
+      "directions": [
+        "preheat oven",
+        "stir things"
+      ],
+      "ingredients": [
+        "Flour",
+        "Salt",
+        "Butter"
+      ],
+      "name": "Brownies",
+      "prepTime": "14",
+      "region": "North America",
+      "servings": "24",
+      "story": "Famous from something..",
+      "drinkPairings": "Red Wine"
+    },
+    {
+      "id": 4,
+      "name": "Dolmathes",
+      "servings": "12",
+      "ingredients": [
+        "Ground Beef",
+        "Grape Leaves",
+        "Rice",
+        "Lemon Juice",
+        "Spices"
+      ],
+      "prepTime": "60",
+      "directions": [
+        "combine all ingredients except for grape leaves",
+        "make small meatballs from mixture",
+        "place one ball in one leaf and roll into cigar shape",
+        "bake in oven for 30 mins"
+      ],
+      "category": "Dinner",
+      "region": "Europe",
+      "country": "Greece",
+      "story": "Bomb dumplings from the Mediterranean ",
+      "drinkPairings": "White wine, Lemon cocktails, citrus drinks"
+    },
+    {
+      "id": "acfdab31-278e-4ff0-942d-e74a830c5453",
+      "name": "Burgers",
+      "servings": "4",
+      "ingredients": [
+        "Ground Beef",
+        "Buns"
+      ],
+      "prepTime": "14",
+      "directions": [
+        "Preheat Grill to 450"
+      ],
+      "category": "",
+      "region": "",
+      "country": "",
+      "story": "",
+      "drinkPairings": ""
+    },
+    {
+      "id": "1b092201-6209-4f0d-a042-73ecccb9fd83",
+      "name": "Spiced Lentils",
+      "servings": "4",
+      "ingredients": [
+        "lentils",
+        "veg broth",
+        "c'tar mix"
+      ],
+      "prepTime": "30",
+      "directions": [
+        "place all items in pot",
+        "bring to a simmer on low heat",
+        "continue cooking until lentils are tender. approx 30 mins."
+      ],
+      "category": "Dinner",
+      "region": "Asia",
+      "country": "Jordan",
+      "story": "",
+      "drinkPairings": "Something sweet and sour"
+    }
+  ]
+}

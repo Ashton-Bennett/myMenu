@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/menus/649b15fb61e9418834c80782

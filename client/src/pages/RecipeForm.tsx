@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { Recipe } from "../../types";
-import InputField from "./InputField";
-import InputFieldRadio from "./InputFieldRadio";
+import { Recipe } from "../types";
+import InputField from "../components/RecipeForm/InputField";
+import InputFieldRadio from "../components/RecipeForm/InputFieldRadio";
+import CountryInput from "../components/RecipeForm/CountryInput";
+import recipeService from "../services/recipes";
+import BackButton from "../components/BackButton";
+import { useNavigate } from "react-router-dom";
+import IngredientInput from "../components/RecipeForm/IngredientInput";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -10,6 +15,7 @@ interface recipeFormProps {
 
 const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   const [newRecipe, setNewRecipe] = useState<Recipe>({
+    id: null,
     name: "",
     servings: 0,
     ingredients: [""],
@@ -19,7 +25,10 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     region: "",
     country: "",
     story: "",
+    drinkPairings: "",
   });
+
+  const navigate = useNavigate();
 
   const handleAddIngredient = () => {
     setNewRecipe({ ...newRecipe, ingredients: [...newRecipe.ingredients, ""] });
@@ -51,22 +60,33 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     return;
   };
 
-  const addRecipe = (event: React.FormEvent<HTMLFormElement>) => {
+  const addRecipe = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setRecipes([...recipes, newRecipe]);
-    setNewRecipe({
-      name: "",
-      servings: 0,
-      ingredients: [""],
-      prepTime: 0,
-      directions: [""],
-      category: "",
-      region: "",
-      country: "",
-      story: "",
-    });
-    console.log("ADDED NEW RECIPE:", newRecipe.name);
-    return;
+
+    try {
+      await recipeService.addRecipe(newRecipe);
+
+      const newRecipeList: Recipe[] | undefined = await recipeService.getAll();
+      if (newRecipeList) {
+        setRecipes(newRecipeList);
+        setNewRecipe({
+          id: null,
+          name: "",
+          servings: 0,
+          ingredients: [""],
+          prepTime: 0,
+          directions: [""],
+          category: "",
+          region: "",
+          country: "",
+          story: "",
+          drinkPairings: "",
+        });
+      }
+      navigate(-1);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -79,6 +99,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         label="Name of recipe"
         setNewRecipe={setNewRecipe}
         newRecipe={newRecipe}
+        required={true}
       />
       <InputField
         name="servings"
@@ -87,13 +108,17 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         label="Serves"
         setNewRecipe={setNewRecipe}
         newRecipe={newRecipe}
+        required={false}
       />
-      <section>
+      <>
         <label>Ingredients/amount </label>
         {newRecipe.ingredients.map((value, i) => {
           return (
             <div key={`ingredient${i}`}>
+              {/* <label htmlFor={`ingredient${i}`}>Ingredient {i + 1}</label>
               <input
+                id={`ingredient${i}`}
+                data-testid={`ingredient${i}`}
                 type="text"
                 value={newRecipe.ingredients[i]}
                 onChange={(e: any) => {
@@ -101,15 +126,21 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
                   copy[i] = e.target.value;
                   setNewRecipe({ ...newRecipe, ingredients: copy });
                 }}
+              /> */}
+              <IngredientInput
+                i={i}
+                setNewRecipe={setNewRecipe}
+                newRecipe={newRecipe}
               />
             </div>
           );
         })}
 
         <button type="button" onClick={handleAddIngredient}>
-          + ingredient{" "}
+          + ingredient
         </button>
-      </section>
+        <br></br>
+      </>
       <InputField
         name="prepTime"
         value={newRecipe.prepTime}
@@ -117,13 +148,17 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         label="Prep time(mins)"
         setNewRecipe={setNewRecipe}
         newRecipe={newRecipe}
+        required={false}
       />
-      <section>
+      <>
         <label>Directions </label>
         {newRecipe.directions.map((value, i) => {
           return (
             <div key={`direction${i}`}>
+              <label htmlFor={`direction${i}`}>{`${i + 1}`}</label>
               <input
+                id={`direction${i}`}
+                data-testid={`direction${i}`}
                 type="text"
                 value={newRecipe.directions[i]}
                 onChange={(e: any) => {
@@ -132,10 +167,19 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
                   setNewRecipe({ ...newRecipe, directions: copy });
                 }}
               />
-              <button type="button" onClick={() => locationChange("up", i)}>
+
+              <button
+                type="button"
+                data-testid={`direction${i}ButtonUp`}
+                onClick={() => locationChange("up", i)}
+              >
                 Move up
               </button>
-              <button type="button" onClick={() => locationChange("down", i)}>
+              <button
+                type="button"
+                data-testid={`direction${i}ButtonDown`}
+                onClick={() => locationChange("down", i)}
+              >
                 Move down
               </button>
             </div>
@@ -144,7 +188,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <button type="button" onClick={handleAddDirection}>
           + direction{" "}
         </button>
-      </section>
+      </>
       <br></br>
       <section>
         <label>Category </label>
@@ -154,7 +198,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="category"
-          value={newRecipe.category}
+          value={"Dinner"}
+          required={false}
         />
         <InputFieldRadio
           type="radio"
@@ -162,7 +207,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="category"
-          value={newRecipe.category}
+          value={"Cocktail"}
+          required={false}
         />
         <InputFieldRadio
           type="radio"
@@ -170,7 +216,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="category"
-          value={newRecipe.category}
+          value={"Other"}
+          required={false}
         />
       </section>
       <br></br>
@@ -182,7 +229,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="region"
-          value={newRecipe.region}
+          value={"North America"}
+          required={false}
         />
         <InputFieldRadio
           type="radio"
@@ -190,7 +238,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="region"
-          value={newRecipe.region}
+          value={"Central America"}
+          required={false}
         />
         <InputFieldRadio
           type="radio"
@@ -198,7 +247,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="region"
-          value={newRecipe.region}
+          value={"South America"}
+          required={false}
         />
         <InputFieldRadio
           type="radio"
@@ -206,7 +256,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="region"
-          value={newRecipe.region}
+          value={"Europe"}
+          required={false}
         />
         <InputFieldRadio
           type="radio"
@@ -214,7 +265,8 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="region"
-          value={newRecipe.region}
+          value={"Asia"}
+          required={false}
         />
         <InputFieldRadio
           type="radio"
@@ -222,18 +274,18 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
           name="region"
-          value={newRecipe.region}
+          value={"Africa"}
+          required={false}
         />
       </section>
       <br></br>
-      <InputField
-        name="country"
-        type="text"
-        label="Country"
+      <CountryInput
         setNewRecipe={setNewRecipe}
         newRecipe={newRecipe}
         value={newRecipe.country}
       />
+      <br></br>
+      <br></br>
       <InputField
         name="story"
         type="text"
@@ -241,10 +293,22 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         setNewRecipe={setNewRecipe}
         newRecipe={newRecipe}
         value={newRecipe.story}
+        required={false}
       />
+      <InputField
+        name="drinkPairings"
+        type="text"
+        label="Drink Pairings"
+        setNewRecipe={setNewRecipe}
+        newRecipe={newRecipe}
+        value={newRecipe.drinkPairings}
+        required={false}
+      />
+
       <section>
         <br></br> <button type="submit">Save</button>
       </section>
+      <BackButton linkTo={undefined} />
     </form>
   );
 };

@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/menus
+Content-Type: application/json
+
+{
+    "name": "Newnew Menu",
+    "items": [{"name":"cookies","servers":12}, {"name":"hamburgers","servers":4}]
+}

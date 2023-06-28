@@ -1,6 +1,5 @@
 import { InputFieldProps } from "../../types";
-
-const InputField = ({
+const InputFieldRadio = ({
   type,
   label,
   newRecipe,
@@ -8,23 +7,27 @@ const InputField = ({
   name,
   value,
 }: InputFieldProps) => {
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: any) => {
     setNewRecipe({
       ...newRecipe,
       [event.target.name]: event.target.value,
     });
   };
+
   return (
-    <section>
-      <label htmlFor={label}>{label}</label>
+    <>
+      <br></br>
       <input
-        value={value}
+        id={label}
         type={type}
         name={name}
         onChange={handleInputChange}
+        value={value}
+        checked={newRecipe.category === value || newRecipe.region === value}
       />
-    </section>
+      <label htmlFor={label}>{label}</label>
+    </>
   );
 };
 
-export default InputField;
+export default InputFieldRadio;

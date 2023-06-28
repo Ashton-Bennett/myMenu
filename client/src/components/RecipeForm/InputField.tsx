@@ -1,30 +1,34 @@
 import { InputFieldProps } from "../../types";
-const InputFieldRadio = ({
+
+const InputField = ({
   type,
   label,
   newRecipe,
   setNewRecipe,
   name,
   value,
+  required,
 }: InputFieldProps) => {
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewRecipe({
       ...newRecipe,
       [event.target.name]: event.target.value,
     });
   };
   return (
-    <section>
+    <>
+      <label htmlFor={label}>{label}</label>
       <input
         id={label}
+        value={value}
         type={type}
         name={name}
         onChange={handleInputChange}
-        value={value}
+        required={required}
       />
-      <label htmlFor={label}>{label}</label>
-    </section>
+      <br></br>
+    </>
   );
 };
 
-export default InputFieldRadio;
+export default InputField;

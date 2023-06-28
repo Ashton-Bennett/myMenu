@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/menus/649b15fb61e9418834c80782
+Content-Type: application/json
+
+{
+    "name": "Newnew Menu",
+    "items": [{"name":"cookies","servers":12}, {"name":"hamburgers","servers":4}, {"name":"Pizza","servers":12}, {"name":"Sausage","servers":4}]
+}
