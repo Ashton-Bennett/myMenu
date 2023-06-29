@@ -36,9 +36,8 @@ const MenuItem = ({ menuItem, i, menu, setMenus }: componentProps) => {
   };
   return (
     <>
-      <i id={menuItem.name + i}>{menuItem.name}</i>
+      <h4 id={menuItem.name + i}>{menuItem.name}</h4>{" "}
       <Link to={`/viewRecipes/${menuItem.id}`}>
-        &nbsp;&nbsp;
         <button>view</button>
       </Link>
       <button onClick={() => toggleStrikeThrough(menuItem.name + i)}>

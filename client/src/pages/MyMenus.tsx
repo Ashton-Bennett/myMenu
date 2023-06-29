@@ -64,6 +64,9 @@ const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
               <button onClick={() => handleDeleteMenu(menu.id, menu.name)}>
                 delete
               </button>
+              <Link to={`/shoppingList/${menu.id}`}>
+                <button>Shopping List</button>
+              </Link>
               <br></br>
               <br></br>
               {showMenuItems[i] &&

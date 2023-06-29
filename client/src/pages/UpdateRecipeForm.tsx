@@ -86,10 +86,8 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   const addRecipe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     recipeService.updateRecipe(id, recipeToUpdate);
-    console.log(recipes, id);
     // eslint-disable-next-line eqeqeq
     const newRecipeList = recipes.filter((recipe) => recipe.id != id);
-    console.log(newRecipeList, "HERE");
     setRecipes([...newRecipeList, recipeToUpdate]);
     navigate(-1);
     return;
