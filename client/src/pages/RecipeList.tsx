@@ -1,14 +1,22 @@
 import { Link } from "react-router-dom";
-import { Recipe } from "../types";
+import { Recipe, Menu } from "../types";
 import recipeService from "../services/recipes";
 import BackButton from "../components/BackButton";
+import menuService from "../services/menus";
 
 export interface componentProps {
   recipes: Recipe[];
   setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
+  menus: Menu[];
+  setMenus?: React.Dispatch<React.SetStateAction<Menu[]>>;
 }
 
-const RecipeList = ({ recipes, setRecipes }: componentProps) => {
+const RecipeList = ({
+  menus,
+  setMenus,
+  recipes,
+  setRecipes,
+}: componentProps) => {
   const handleDelete = async (recipe: string, id: string) => {
     if (
       window.confirm(`Are you sure you would like to delete ${recipe} recipe?`)
@@ -19,6 +27,23 @@ const RecipeList = ({ recipes, setRecipes }: componentProps) => {
         await recipeService.getAll();
       if (updatedRecipeList) {
         setRecipes(updatedRecipeList);
+      }
+    }
+  };
+
+  const handleAddRecipeToMenu = async (
+    menuId: string | undefined,
+    recipeId: string | undefined
+  ) => {
+    const recipeToAdd = recipes.find((recipe) => recipe.id === recipeId);
+    const updatedMenu = menus.find((menu) => menu.id === menuId);
+    if (updatedMenu && recipeToAdd) {
+      updatedMenu.items = updatedMenu.items.concat(recipeToAdd);
+      await menuService.updateMenu(menuId, updatedMenu);
+
+      const updatedMenus = await menuService.getAll();
+      if (updatedMenus && setMenus) {
+        setMenus(updatedMenus);
       }
     }
   };
@@ -40,7 +65,22 @@ const RecipeList = ({ recipes, setRecipes }: componentProps) => {
             >
               Delete
             </button>
-            <button>Add To Menu</button>
+            <select
+              onChange={(event) => {
+                if (event.target.value && recipe.id) {
+                  handleAddRecipeToMenu(event.target.value, recipe.id);
+                }
+              }}
+            >
+              <option value={undefined}>Add To Menu</option>
+              {menus.map((menu, i) => {
+                return (
+                  <option value={menu.id} key={menu + (i + "")}>
+                    {menu.name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         );
       })}

@@ -1,7 +1,7 @@
 import RecipeList from "./pages/RecipeList";
 import RecipeForm from "./pages/RecipeForm";
 import { useEffect, useState } from "react";
-import { Recipe } from "./types";
+import { Menu, Recipe } from "./types";
 import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
 import RecipeView from "./pages/RecipeView";
@@ -10,13 +10,22 @@ import NotFound from "./pages/NotFound";
 import UpdateRecipeForm from "./pages/UpdateRecipeForm";
 import MyMenus from "./pages/MyMenus";
 import AddNewmenuForm from "./pages/AddNewMenuForm";
+import menuService from "./services/menus";
 
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [menus, setMenus] = useState<Menu[]>([]);
+
   useEffect(() => {
     recipeService.getAll().then((response) => {
       if (response) {
         setRecipes(response);
+      }
+    });
+
+    menuService.getAll().then((response) => {
+      if (response) {
+        setMenus(response);
       }
     });
   }, []);
@@ -30,7 +39,14 @@ function App() {
       />
       <Route
         path="/viewRecipes"
-        element={<RecipeList recipes={recipes} setRecipes={setRecipes} />}
+        element={
+          <RecipeList
+            menus={menus}
+            setMenus={setMenus}
+            recipes={recipes}
+            setRecipes={setRecipes}
+          />
+        }
       />
       <Route path="/viewRecipes/:id" element={<RecipeView />} />
       <Route
@@ -40,7 +56,14 @@ function App() {
 
       <Route
         path="/myMenus"
-        element={<MyMenus recipes={recipes} setRecipes={setRecipes} />}
+        element={
+          <MyMenus
+            menus={menus}
+            setMenus={setMenus}
+            recipes={recipes}
+            setRecipes={setRecipes}
+          />
+        }
       />
 
       <Route path="/addMenu" element={<AddNewmenuForm />} />

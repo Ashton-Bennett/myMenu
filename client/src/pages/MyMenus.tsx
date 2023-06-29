@@ -3,13 +3,15 @@ import { Recipe, Menu } from "../types";
 import RecipeList from "./RecipeList";
 import menuService from "../services/menus";
 import { Link } from "react-router-dom";
+import MenuItem from "../components/myMenusDisplay/MenuItem";
 
 interface ComponentProps {
   recipes: Recipe[];
   setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
+  menus: Menu[];
+  setMenus: React.Dispatch<React.SetStateAction<Menu[]>>;
 }
-const MyMenus = ({ recipes, setRecipes }: ComponentProps) => {
-  const [menus, setMenus] = useState<Menu[]>([]);
+const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
   const [showMenuItems, setShowMenuItems] = useState<boolean[]>([]);
 
   useEffect(() => {
@@ -19,7 +21,8 @@ const MyMenus = ({ recipes, setRecipes }: ComponentProps) => {
         setShowMenuItems(Array(menus.length).fill(false));
       }
     });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menus.length]);
 
   const handleToggleViewMenu = (index: number) => {
     setShowMenuItems((prev) => {
@@ -34,7 +37,7 @@ const MyMenus = ({ recipes, setRecipes }: ComponentProps) => {
       if (
         window.confirm(`Are you sure you would like to delete ${name} menu?`)
       ) {
-        menuService.deleteMenu(id);
+        await menuService.deleteMenu(id);
         const updatedMenus: Menu[] | undefined = await menuService.getAll();
         if (updatedMenus) {
           setMenus(updatedMenus);
@@ -51,7 +54,6 @@ const MyMenus = ({ recipes, setRecipes }: ComponentProps) => {
         <p>No saved menus found...</p>
       ) : (
         menus.map((menu, i) => {
-          console.log("HERE", menu.id);
           return (
             <div key={menu.name + i}>
               {" "}
@@ -59,7 +61,6 @@ const MyMenus = ({ recipes, setRecipes }: ComponentProps) => {
               <button onClick={() => handleToggleViewMenu(i)}>
                 {showMenuItems[i] ? "hide" : "view"}
               </button>
-              <button>update</button>
               <button onClick={() => handleDeleteMenu(menu.id, menu.name)}>
                 delete
               </button>
@@ -69,10 +70,12 @@ const MyMenus = ({ recipes, setRecipes }: ComponentProps) => {
                 menu.items.map((menuItem, i) => {
                   return (
                     <div key={menuItem.name + i}>
-                      <i>{menuItem.name}</i> <button>view</button>
-                      <button>Strikethrough</button>
-                      <br></br>
-                      <br></br>
+                      <MenuItem
+                        menuItem={menuItem}
+                        i={i}
+                        menu={menu}
+                        setMenus={setMenus}
+                      />
                     </div>
                   );
                 })}
@@ -91,7 +94,12 @@ const MyMenus = ({ recipes, setRecipes }: ComponentProps) => {
       <br></br>
       <br></br>
       <hr></hr>
-      <RecipeList recipes={recipes} setRecipes={setRecipes} />
+      <RecipeList
+        setMenus={setMenus}
+        menus={menus}
+        recipes={recipes}
+        setRecipes={setRecipes}
+      />
     </>
   );
 };
