@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/user/
+Content-Type: application/json
+
+{
+  "name":"ashton",
+  "userRecipes": [],
+  "userGroceryList": [],
+  "userMenus": []
+}

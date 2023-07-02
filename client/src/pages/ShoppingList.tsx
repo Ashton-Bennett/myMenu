@@ -2,35 +2,27 @@ import BackButton from "../components/BackButton";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import menuService from "../services/menus";
-import { Menu } from "../types";
+import { Ingredient, Menu, Recipe } from "../types";
+import findIngredientShoppingLocation from "../utils/ingredientShoppingLocation";
+import IngredientInput from "../components/RecipeForm/IngredientInput";
 
-interface StoreListItem {
-  name: string;
-  checked: Boolean;
-  location: string;
-}
 const ShoppingList = () => {
   const [menu, setMenu] = useState<Menu>();
   const { id } = useParams();
-  const [list, setList] = useState<StoreListItem[]>([]);
-
-  const buildList = (menu: Menu) => {
-    let list: StoreListItem[] = [];
-    menu?.items.map((recipe) => {
-      const objArray = recipe.ingredients.map((item) => {
-        return { name: item, checked: false, location: "" };
-      });
-      list = list.concat(objArray);
-      return list;
-    });
-    return list;
-  };
+  const [list, setList] = useState<Ingredient[]>([]);
 
   useEffect(() => {
     menuService.getSingleMenu(id).then((response) => {
-      setMenu(response.data);
-      const list = buildList(response.data);
-      const sortedList = list.sort();
+      setMenu(response);
+      let recipesOnMenu = response.items;
+
+      recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
+        return recipe.ingredients.map((ingredient) => {
+          return findIngredientShoppingLocation(ingredient);
+        });
+      });
+
+      const sortedList = recipesOnMenu.flat().sort();
       setList(sortedList);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,7 +34,7 @@ const ShoppingList = () => {
     const newList = list.filter((item) => item.name !== name);
     setList([...newList, ingredientToCheck]);
   };
-
+  console.log(list);
   return (
     <>
       <h1>Shopping List for {menu?.name}:</h1>
@@ -57,7 +49,8 @@ const ShoppingList = () => {
                   textDecoration: ingredient.checked ? "line-through" : "none",
                 }}
               >
-                {ingredient.name}{" "}
+                {ingredient.name} - {ingredient.amount}{" "}
+                {ingredient.unitOfMeasure}
                 <span>
                   <button onClick={() => toggleStrikeThrough(ingredient.name)}>
                     check

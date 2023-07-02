@@ -1,1 +1,1 @@
-DELETE http://localhost:3001/api/menus/649b15fb61e9418834c80782
+DELETE http://localhost:3001/api/recipes/648c8fa64ee69a9f0d82e411

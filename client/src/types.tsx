@@ -13,7 +13,7 @@ export interface Recipe {
   id: string | null | undefined;
   name: string;
   servings: number;
-  ingredients: string[];
+  ingredients: Ingredient[];
   prepTime: number;
   directions: string[];
   category: Category;
@@ -46,4 +46,12 @@ export interface UpdateInputFieldProps {
   setNewRecipe: Function;
   name: string | undefined;
   value: string | number;
+}
+
+export interface Ingredient {
+  name: string;
+  checked: boolean;
+  amount: number | string;
+  unitOfMeasure: string | undefined;
+  groceryStoreLocation: string;
 }

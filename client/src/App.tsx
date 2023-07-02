@@ -12,6 +12,7 @@ import MyMenus from "./pages/MyMenus";
 import AddNewmenuForm from "./pages/AddNewMenuForm";
 import menuService from "./services/menus";
 import ShoppingList from "./pages/ShoppingList";
+import MyGroceryList from "./pages/MyGroceryList";
 
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -69,7 +70,7 @@ function App() {
 
       <Route path="/addMenu" element={<AddNewmenuForm />} />
       <Route path="/shoppingList/:id" element={<ShoppingList />} />
-
+      <Route path="/myGroceryList" element={<MyGroceryList />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

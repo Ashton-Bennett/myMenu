@@ -1,0 +1,5 @@
+### checks unknown end points
+GET http://localhost:3001/api/myGroceryList/64a18a0a346b600ca2fabdaa
+
+### checks for list
+GET http://localhost:3001/api/myGroceryList/64a18f519eea4b594cda8ceb

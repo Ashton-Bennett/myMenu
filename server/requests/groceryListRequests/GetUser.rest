@@ -1,0 +1,7 @@
+GET http://localhost:3001/api/user/
+
+### checks unknown end points
+GET http://localhost:3001/api/user/64a18a0a346b600ca2fabdaa
+
+### checks for single user
+GET http://localhost:3001/api/user/64a18a0a346b600ca2fabdbb

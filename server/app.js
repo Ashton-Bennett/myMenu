@@ -7,6 +7,8 @@ const menuRouter = require("./controllers/menus");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
+const userRouter = require("./controllers/users");
+const groceryListRouter = require("./controllers/groceryList");
 
 mongoose.set("strictQuery", false);
 
@@ -28,7 +30,8 @@ app.use(middleware.requestLogger);
 
 app.use("/api/recipes", recipeRouter);
 app.use("/api/menus", menuRouter);
-
+app.use("/api/user", userRouter);
+app.use("/api/myGroceryList/", groceryListRouter);
 //these are meant to be called last
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

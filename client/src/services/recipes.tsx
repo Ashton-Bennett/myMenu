@@ -15,20 +15,48 @@ const getAll = async (): Promise<Recipe[] | undefined> => {
   }
 };
 
-const getSingleRecipe = (id: string | undefined) => {
-  return axios.get(`${baseUrl}/${id}`);
+const getSingleRecipe = async (id: string | undefined) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${id}`);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const addRecipe = (newRecipe: Recipe) => {
-  return axios.post(baseUrl, newRecipe);
+const addRecipe = async (newRecipe: Recipe) => {
+  try {
+    const response = await axios.post(baseUrl, newRecipe);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const deleteRecipe = (id: string) => {
-  return axios.delete(`${baseUrl}/${id}`);
+const deleteRecipe = async (id: string) => {
+  try {
+    const response = axios.delete(`${baseUrl}/${id}`);
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const updateRecipe = (id: string | undefined, updatedRecipe: Recipe) => {
-  return axios.put(`${baseUrl}/${id}`, updatedRecipe);
+  try {
+    const response = axios.put(`${baseUrl}/${id}`, updatedRecipe);
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

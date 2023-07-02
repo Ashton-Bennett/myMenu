@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/myGroceryList/64a18f519eea4b594cda8ceb

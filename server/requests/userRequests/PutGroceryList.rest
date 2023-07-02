@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/myGroceryList/64a18f519eea4b594cda8ceb
+Content-Type: application/json
+
+{
+  "name":"ashton bennett",
+  "userRecipes": [],
+  "userGroceryList": [{"somthing":"somewhere"}],
+  "userMenus": []
+}

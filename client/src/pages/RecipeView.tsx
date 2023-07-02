@@ -10,7 +10,7 @@ const RecipeView = () => {
 
   useEffect(() => {
     recipeService.getSingleRecipe(id).then((response) => {
-      setRecipe(response.data);
+      setRecipe(response);
     });
   }, []);
 
@@ -28,7 +28,12 @@ const RecipeView = () => {
           <br></br>
           <h3>Ingredients:</h3>
           {recipe.ingredients.map((ingredient) => {
-            return <p key={ingredient}>{ingredient}</p>;
+            return (
+              <p key={ingredient.name}>
+                {ingredient.name} - {ingredient.amount}{" "}
+                {ingredient.unitOfMeasure}
+              </p>
+            );
           })}
           <br></br>
           <h3>Directions:</h3>

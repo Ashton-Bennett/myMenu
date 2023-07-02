@@ -12,13 +12,28 @@ interface recipeFormProps {
   recipes: Recipe[];
   setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
 }
+export interface Ingredient {
+  name: string;
+  checked: boolean;
+  amount: number;
+  unitOfMeasure: string | undefined;
+  groceryStoreLocation: string;
+}
 
 const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   const [newRecipe, setNewRecipe] = useState<Recipe>({
     id: null,
     name: "",
     servings: 0,
-    ingredients: [""],
+    ingredients: [
+      {
+        name: "",
+        checked: false,
+        amount: 0,
+        unitOfMeasure: "",
+        groceryStoreLocation: "",
+      },
+    ],
     prepTime: 0,
     directions: [""],
     category: "",
@@ -31,7 +46,19 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   const navigate = useNavigate();
 
   const handleAddIngredient = () => {
-    setNewRecipe({ ...newRecipe, ingredients: [...newRecipe.ingredients, ""] });
+    setNewRecipe({
+      ...newRecipe,
+      ingredients: [
+        ...newRecipe.ingredients,
+        {
+          name: "",
+          checked: false,
+          amount: 0,
+          unitOfMeasure: "",
+          groceryStoreLocation: "",
+        },
+      ],
+    });
   };
 
   const handleAddDirection = () => {
@@ -64,7 +91,16 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     event.preventDefault();
 
     try {
-      await recipeService.addRecipe(newRecipe);
+      const updatedIngredientsToNumberType = newRecipe.ingredients.map(
+        (ingredient) => {
+          return { ...ingredient, amount: Number(ingredient.amount) };
+        }
+      );
+      const updatedNewRecipeIngredientAmountToNumber = {
+        ...newRecipe,
+        ingredients: updatedIngredientsToNumberType,
+      };
+      await recipeService.addRecipe(updatedNewRecipeIngredientAmountToNumber);
 
       const newRecipeList: Recipe[] | undefined = await recipeService.getAll();
       if (newRecipeList) {
@@ -73,7 +109,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           id: null,
           name: "",
           servings: 0,
-          ingredients: [""],
+          ingredients: [],
           prepTime: 0,
           directions: [""],
           category: "",
@@ -115,18 +151,6 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         {newRecipe.ingredients.map((value, i) => {
           return (
             <div key={`ingredient${i}`}>
-              {/* <label htmlFor={`ingredient${i}`}>Ingredient {i + 1}</label>
-              <input
-                id={`ingredient${i}`}
-                data-testid={`ingredient${i}`}
-                type="text"
-                value={newRecipe.ingredients[i]}
-                onChange={(e: any) => {
-                  const copy = [...newRecipe.ingredients];
-                  copy[i] = e.target.value;
-                  setNewRecipe({ ...newRecipe, ingredients: copy });
-                }}
-              /> */}
               <IngredientInput
                 i={i}
                 setNewRecipe={setNewRecipe}
@@ -135,7 +159,6 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
             </div>
           );
         })}
-
         <button type="button" onClick={handleAddIngredient}>
           + ingredient
         </button>

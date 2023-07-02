@@ -1,5 +1,5 @@
-import { SetStateAction, useEffect, useState } from "react";
-import { Recipe } from "../../types";
+import { ChangeEventHandler, SetStateAction, useEffect, useState } from "react";
+import { Ingredient, Recipe } from "../../types";
 
 interface ComponentProps {
   i: number;
@@ -14,35 +14,45 @@ const IngredientInput = ({
   newRecipe,
   isUpdateInput,
 }: ComponentProps) => {
-  const [ingredientName, setIngredientName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [unitOfMeasure, setUnitOfMeasure] = useState("");
+  const [ingredient, setIngredient] = useState<Ingredient>({
+    name: "",
+    checked: false,
+    amount: 0,
+    unitOfMeasure: "",
+    groceryStoreLocation: "",
+  });
 
   const handleIngredientChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
-    setIngredientName(event.target.value);
+    setIngredient({ ...ingredient, name: event.target.value as string });
   };
 
-  const handleQuantityChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setQuantity(event.target.value);
+  const handleQuantityChange: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setIngredient({
+      ...ingredient,
+      amount: event.target.value,
+    });
   };
 
   const handleUnitChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
-    setUnitOfMeasure(event.target.value);
+    setIngredient({
+      ...ingredient,
+      unitOfMeasure: event.target.value as string,
+    });
   };
 
   useEffect(() => {
-    if (ingredientName.length > 1) {
+    if (ingredient.name.length > 1) {
       const copy = [...newRecipe.ingredients];
-      copy[i] = `${ingredientName} ${quantity} ${unitOfMeasure}`;
+      copy[i] = ingredient;
       setNewRecipe({ ...newRecipe, ingredients: copy });
     }
-  }, [ingredientName, quantity, unitOfMeasure]);
+  }, [ingredient]);
 
   return (
     <>
@@ -52,7 +62,7 @@ const IngredientInput = ({
           id={`ingredient${i} name`}
           data-testid={`ingredient${i} name`}
           type="text"
-          value={ingredientName}
+          value={ingredient.name}
           onChange={handleIngredientChange}
         />
       </label>
@@ -60,30 +70,38 @@ const IngredientInput = ({
         Quantity:
         <input
           type="number"
-          value={quantity}
+          step="0.1"
+          value={ingredient.amount}
           onChange={handleQuantityChange}
           id={`ingredient${i} quantity`}
           data-testid={`ingredient${i} quantity`}
         />
       </label>
-      <select value={unitOfMeasure} onChange={handleUnitChange}>
+      <select value={ingredient.unitOfMeasure} onChange={handleUnitChange}>
         <option value="">Unit of measure</option>
-        <option value="pinch">pinch</option>
-        <option value="teaspoon">teaspoon</option>
-        <option value="Tablespoon">Tablespoon</option>
-        <option value="cup">cup</option>
-        <option value="pint">pint</option>
-        <option value="liter">liter</option>
-        <option value="Milliliters">Milliliters</option>
-        <option value="quart">quart</option>
-        <option value="gallon">gallon</option>
-        <option value="oz">oz</option>
-        <option value="g">g</option>
+        <option value="pinch(s)">pinch</option>
+        <option value="teaspoon(s)">teaspoon</option>
+        <option value="Tablespoon(s)">Tablespoon</option>
+        <option value="Cup(s)">cup</option>
+        <option value="pint(s)">pint</option>
+        <option value="Liter(s)">Liter</option>
+        <option value="milliliters">milliliters</option>
+        <option value="quart(s)">quart</option>
+        <option value="gallon(s)">gallon</option>
+        <option value="oz(s)">oz</option>
+        <option value="Pound(s)">Pound</option>
+        <option value="g(s)">g</option>
+        <option value="Kg(s)">Kg</option>
         <option value="to taste">to taste</option>
-        <option value="Kg">Kg</option>
         <option value="each">each</option>
       </select>
-      {isUpdateInput && <>Currently: {newRecipe.ingredients[i]}</>}
+      {isUpdateInput && (
+        <>
+          Currently: {newRecipe.ingredients[i].name} -{" "}
+          {newRecipe.ingredients[i].amount}{" "}
+          {newRecipe.ingredients[i].unitOfMeasure}
+        </>
+      )}
     </>
   );
 };

@@ -20,6 +20,9 @@ const Home = () => {
         <Link to="/myMenus">
           <button>My Menus</button>
         </Link>
+        <Link to="/myGroceryList">
+          <button>My Grocery List</button>
+        </Link>
       </div>
     </>
   );

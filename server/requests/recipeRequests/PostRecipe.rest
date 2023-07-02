@@ -1,0 +1,85 @@
+POST http://localhost:3001/api/recipes/
+Content-Type: application/json
+
+{
+    "name": "Butter Cookies",
+    "ingredients": [
+      {
+        "name": "Unsalted Butter",
+        "checked": false,
+        "amount": 1,
+        "unitOfMeasure": "cup(s)",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Sugar",
+        "checked": false,
+        "amount": ".5",
+        "unitOfMeasure": "cup(s)",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Brown Sugar",
+        "checked": false,
+        "amount": ".75",
+        "unitOfMeasure": "cup(s)",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Egg",
+        "checked": false,
+        "amount": 1,
+        "unitOfMeasure": "each",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Ap Flour",
+        "checked": false,
+        "amount": 2,
+        "unitOfMeasure": "cup(s)",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Baking Soda",
+        "checked": false,
+        "amount": ".5",
+        "unitOfMeasure": "teaspoon(s)",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Salt",
+        "checked": false,
+        "amount": ".5",
+        "unitOfMeasure": "teaspoon(s)",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Vanilla Extract",
+        "checked": false,
+        "amount": 1,
+        "unitOfMeasure": "teaspoon(s)",
+        "groceryStoreLocation": ""
+      },
+      {
+        "name": "Chocolate Chips",
+        "checked": false,
+        "amount": 1,
+        "unitOfMeasure": "cup(s)",
+        "groceryStoreLocation": ""
+      }
+    ],
+    "directions": [
+      "Preheat oven to 375",
+      "Cream Butter and sugars in stand mixer or with whisk.",
+      "Sift dry ingredients and add all at once to the butter mixture.",
+      "Add chocolate chips and mix until incorporated.",
+      "Scope and bake for 7-11 mins."
+    ],
+    "category": "Other",
+    "country": "United Kingdom",
+    "prepTime": "20",
+    "region": "North America",
+    "servings": "21",
+    "story": "Chef Ramsey's Secret Recipe",
+    "drinkPairings": "Red wine, Whiskey"
+  }

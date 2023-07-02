@@ -14,21 +14,49 @@ const getAll = async (): Promise<Menu[] | undefined> => {
   }
 };
 
-const getSingleMenu = (id: string | undefined) => {
-  return axios.get(`${baseUrl}/${id}`);
+const getSingleMenu = async (id: string | undefined) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${id}`);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const addMenu = (newMenuName: string) => {
-  const newMenuObj = { name: newMenuName, items: [] };
-  return axios.post(baseUrl, newMenuObj);
+const addMenu = async (newMenuName: string) => {
+  try {
+    const newMenuObj = { name: newMenuName, items: [] };
+    const response = await axios.post(baseUrl, newMenuObj);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const deleteMenu = (id: string) => {
-  return axios.delete(`${baseUrl}/${id}`);
+const deleteMenu = async (id: string) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/${id}`);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const updateMenu = (id: string | undefined, updatedMenu: Menu) => {
-  return axios.put(`${baseUrl}/${id}`, updatedMenu);
+const updateMenu = async (id: string | undefined, updatedMenu: Menu) => {
+  try {
+    const response = await axios.put(`${baseUrl}/${id}`, updatedMenu);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

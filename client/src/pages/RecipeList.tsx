@@ -21,11 +21,12 @@ const RecipeList = ({
     if (
       window.confirm(`Are you sure you would like to delete ${recipe} recipe?`)
     ) {
-      recipeService.deleteRecipe(id);
+      await recipeService.deleteRecipe(id);
       // eslint-disable-next-line eqeqeq
       const updatedRecipeList: Recipe[] | undefined =
         await recipeService.getAll();
       if (updatedRecipeList) {
+        console.log(updatedRecipeList);
         setRecipes(updatedRecipeList);
       }
     }

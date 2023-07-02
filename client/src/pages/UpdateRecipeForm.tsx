@@ -21,7 +21,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     const fetchRecipe = async () => {
       try {
         const response = await recipeService.getSingleRecipe(id);
-        const recipe: Recipe = response.data;
+        const recipe: Recipe = response;
         setRecipeToUpdate(recipe);
       } catch (error) {
         console.log("Error fetching recipe", error);
@@ -35,7 +35,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     id: null,
     name: "",
     servings: 0,
-    ingredients: [""],
+    ingredients: [],
     prepTime: 0,
     directions: [""],
     category: "",
@@ -50,7 +50,16 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   const handleAddIngredient = () => {
     setRecipeToUpdate({
       ...recipeToUpdate,
-      ingredients: [...recipeToUpdate.ingredients, ""],
+      ingredients: [
+        ...recipeToUpdate.ingredients,
+        {
+          name: "",
+          checked: false,
+          amount: 0,
+          unitOfMeasure: "",
+          groceryStoreLocation: "",
+        },
+      ],
     });
   };
 
@@ -95,7 +104,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
 
   return (
     <form onSubmit={addRecipe}>
-      <h2>Add Recipe </h2>
+      <h2>Edit Recipe</h2>
       <InputField
         name="name"
         value={recipeToUpdate.name}
@@ -119,18 +128,6 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         {recipeToUpdate.ingredients.map((value, i) => {
           return (
             <div key={`ingredient${i}`}>
-              {/* <label htmlFor={`ingredient${i}`}>Ingredient {i + 1}</label>
-              <input
-                id={`ingredient${i}`}
-                data-testid={`ingredient${i}`}
-                type="text"
-                value={recipeToUpdate.ingredients[i]}
-                onChange={(e: any) => {
-                  const copy = [...recipeToUpdate.ingredients];
-                  copy[i] = e.target.value;
-                  setRecipeToUpdate({ ...recipeToUpdate, ingredients: copy });
-                }}
-              /> */}
               <IngredientInput
                 i={i}
                 newRecipe={recipeToUpdate}
@@ -140,7 +137,6 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
             </div>
           );
         })}
-
         <button type="button" onClick={handleAddIngredient}>
           + ingredient
         </button>
