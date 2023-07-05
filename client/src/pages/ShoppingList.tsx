@@ -1,15 +1,20 @@
 import BackButton from "../components/BackButton";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import menuService from "../services/menus";
-import { Ingredient, Menu, Recipe } from "../types";
+import { Ingredient, Menu, Recipe, User } from "../types";
 import findIngredientShoppingLocation from "../utils/ingredientShoppingLocation";
-import IngredientInput from "../components/RecipeForm/IngredientInput";
+import userServices from "../services/user";
 
-const ShoppingList = () => {
+interface componentProps {
+  setUser: Function;
+  user?: User;
+}
+const ShoppingList = ({ setUser, user }: componentProps) => {
   const [menu, setMenu] = useState<Menu>();
   const { id } = useParams();
   const [list, setList] = useState<Ingredient[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     menuService.getSingleMenu(id).then((response) => {
@@ -34,7 +39,28 @@ const ShoppingList = () => {
     const newList = list.filter((item) => item.name !== name);
     setList([...newList, ingredientToCheck]);
   };
-  console.log(list);
+
+  const handleAddToGroceryList = () => {
+    const ingredientsToAdd = list.filter((ingredient) => {
+      return !ingredient.checked;
+    });
+
+    if (user && ingredientsToAdd) {
+      setUser((prev: any) => {
+        return {
+          ...prev,
+          userGroceryList: prev.userGroceryList.concat(ingredientsToAdd),
+        };
+      });
+      const updatedUser = {
+        ...user,
+        userGroceryList: user.userGroceryList.concat(ingredientsToAdd),
+      };
+      userServices.updateUser(user.id, updatedUser);
+    }
+    navigate("/myGroceryList");
+  };
+
   return (
     <>
       <h1>Shopping List for {menu?.name}:</h1>
@@ -60,6 +86,11 @@ const ShoppingList = () => {
             );
           })}
       </ul>
+      <br></br>
+      <button onClick={handleAddToGroceryList}>
+        Add unchecked items to grocery list
+      </button>
+      <br></br>
       <br></br>
       <BackButton linkTo={undefined} />
     </>

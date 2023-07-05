@@ -1,16 +1,14 @@
 import axios, { AxiosResponse } from "axios";
 import { Ingredient } from "../types";
 
-const baseUrl = "/api/myGroceryList/";
-
-// all endpoints will need to include user id, then myGroceryList. Like: `/api/user/${id}/myGroceryList`
+const baseUrl = "/api/myGroceryList";
 
 const getGroceryList = async (
   id: string | undefined
 ): Promise<Ingredient[] | undefined> => {
   try {
     const response: AxiosResponse<Ingredient[]> = await axios.get<Ingredient[]>(
-      `${baseUrl}/myGroceryList/${id}`
+      `${baseUrl}/${id}`
     );
     if (response) {
       return response.data;
@@ -25,10 +23,7 @@ const updateGroceryList = async (
   updatedList: Ingredient[]
 ) => {
   try {
-    const response = await axios.put(
-      `${baseUrl}/myGroceryList/${id}`,
-      updatedList
-    );
+    const response = await axios.put(`${baseUrl}/${id}`, updatedList);
     if (response) {
       return response.data;
     }
@@ -39,7 +34,7 @@ const updateGroceryList = async (
 
 const clearList = async (id: string) => {
   try {
-    const response = await axios.delete(`${baseUrl}/myGroceryList/${id}`);
+    const response = await axios.delete(`${baseUrl}/${id}`);
     if (response) {
       return response.data;
     }
@@ -54,9 +49,3 @@ export default {
   updateGroceryList,
   clearList,
 };
-
-//Add item(s)
-//update items(s)
-//Delete item(s)
-//Clear all item(s)
-//Create List

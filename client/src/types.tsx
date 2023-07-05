@@ -1,3 +1,5 @@
+import { StringLiteral } from "typescript";
+
 type Category = "dinner" | "cocktail" | "other" | "";
 
 type Region =
@@ -50,8 +52,22 @@ export interface UpdateInputFieldProps {
 
 export interface Ingredient {
   name: string;
-  checked: boolean;
+  checked?: boolean;
   amount: number | string;
-  unitOfMeasure: string | undefined;
+  unitOfMeasure?: string | undefined;
   groceryStoreLocation: string;
+}
+
+export interface itemUserAddedToGroceryList {
+  name: string;
+  amount: string;
+  groceryStoreLocation: string;
+}
+
+export interface User {
+  name: string;
+  userRecipes: Recipe[];
+  userGroceryList: Ingredient[];
+  userMenus: Menu[];
+  id: string;
 }
