@@ -50,13 +50,13 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         }
       });
 
-      setDairyList((prev) => [...prev, ...dairy]);
-      setOtherList((prev) => [...prev, ...other]);
-      setProduceList((prev) => [...prev, ...produce]);
-      setMeatDepartmentList((prev) => [...prev, ...meat]);
-      setMiddleAislesList((prev) => [...prev, ...middleAisles]);
-      setFrozenList((prev) => [...prev, ...frozen]);
-      setDeliList((prev) => [...prev, ...deli]);
+      setDairyList(dairy);
+      setOtherList(other);
+      setProduceList(produce);
+      setMeatDepartmentList(meat);
+      setMiddleAislesList(middleAisles);
+      setFrozenList(frozen);
+      setDeliList(deli);
     }
   }, [user]);
 
@@ -79,7 +79,25 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       setUser((prev: any) => ({ ...prev, userGroceryList: [] }));
     }
   };
-  console.log(user);
+
+  const handleCheckOffIngredient = (event: any, ingredient: Ingredient) => {
+    event.preventDefault();
+    const updatedIngredient = { ...ingredient, checked: !ingredient.checked };
+    const updatedList = user?.userGroceryList.map((listIngredient) => {
+      if (
+        listIngredient.name === ingredient.name &&
+        listIngredient.amount === ingredient.amount
+      ) {
+        return updatedIngredient;
+      }
+      return listIngredient;
+    });
+    setUser((prevUser: User) => ({
+      ...prevUser,
+      userGroceryList: updatedList,
+    }));
+  };
+
   return (
     <>
       <h1>My Grocery List</h1>
@@ -90,7 +108,11 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       {deliList.sort(sortByName).map((ingredient, i) => {
         return (
           <div key={ingredient.name + i}>
-            <p>
+            <p
+              style={{
+                textDecoration: ingredient.checked ? "line-through" : "none",
+              }}
+            >
               {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
@@ -98,7 +120,9 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
               >
                 Delete
               </button>
-              <button>Check off</button>
+              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
+                Check off
+              </button>
             </p>{" "}
           </div>
         );
@@ -109,7 +133,11 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       {produceList.sort(sortByName).map((ingredient, i) => {
         return (
           <div key={ingredient.name + i}>
-            <p>
+            <p
+              style={{
+                textDecoration: ingredient.checked ? "line-through" : "none",
+              }}
+            >
               {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
@@ -117,7 +145,9 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
               >
                 Delete
               </button>
-              <button>Check off</button>
+              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
+                Check off
+              </button>
             </p>{" "}
           </div>
         );
@@ -130,7 +160,11 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       {middleAislesList.sort(sortByName).map((ingredient, i) => {
         return (
           <div key={ingredient.name + i}>
-            <p>
+            <p
+              style={{
+                textDecoration: ingredient.checked ? "line-through" : "none",
+              }}
+            >
               {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
@@ -138,7 +172,9 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
               >
                 Delete
               </button>
-              <button>Check off</button>
+              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
+                Check off
+              </button>
             </p>{" "}
           </div>
         );
@@ -151,7 +187,11 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       {meatDepartmentList.sort(sortByName).map((ingredient, i) => {
         return (
           <div key={ingredient.name + i}>
-            <p>
+            <p
+              style={{
+                textDecoration: ingredient.checked ? "line-through" : "none",
+              }}
+            >
               {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
@@ -159,7 +199,9 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
               >
                 Delete
               </button>
-              <button>Check off</button>
+              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
+                Check off
+              </button>
             </p>{" "}
           </div>
         );
@@ -171,7 +213,11 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       {frozenList.sort(sortByName).map((ingredient, i) => {
         return (
           <div key={ingredient.name + i}>
-            <p>
+            <p
+              style={{
+                textDecoration: ingredient.checked ? "line-through" : "none",
+              }}
+            >
               {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
@@ -179,7 +225,9 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
               >
                 Delete
               </button>
-              <button>Check off</button>
+              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
+                Check off
+              </button>
             </p>{" "}
           </div>
         );
@@ -191,7 +239,11 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       {dairyList.sort(sortByName).map((ingredient, i) => {
         return (
           <div key={ingredient.name + i}>
-            <p>
+            <p
+              style={{
+                textDecoration: ingredient.checked ? "line-through" : "none",
+              }}
+            >
               {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
@@ -199,7 +251,9 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
               >
                 Delete
               </button>
-              <button>Check off</button>
+              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
+                Check off
+              </button>
             </p>{" "}
           </div>
         );
@@ -211,7 +265,11 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       {otherList.sort(sortByName).map((ingredient, i) => {
         return (
           <div key={ingredient.name + i}>
-            <p>
+            <p
+              style={{
+                textDecoration: ingredient.checked ? "line-through" : "none",
+              }}
+            >
               {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
@@ -219,7 +277,9 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
               >
                 Delete
               </button>
-              <button>Check off</button>
+              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
+                Check off
+              </button>
             </p>{" "}
           </div>
         );

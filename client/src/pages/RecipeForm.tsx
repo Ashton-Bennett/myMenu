@@ -41,6 +41,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     country: "",
     story: "",
     drinkPairings: "",
+    checked: false,
   });
 
   const navigate = useNavigate();
@@ -117,6 +118,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           country: "",
           story: "",
           drinkPairings: "",
+          checked: false,
         });
       }
       navigate(-1);

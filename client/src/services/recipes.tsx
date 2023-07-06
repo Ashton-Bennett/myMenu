@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Recipe } from "../types";
+
 const baseUrl = "/api/recipes";
 
 const getAll = async (): Promise<Recipe[] | undefined> => {

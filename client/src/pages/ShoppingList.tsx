@@ -19,7 +19,9 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
   useEffect(() => {
     menuService.getSingleMenu(id).then((response) => {
       setMenu(response);
-      let recipesOnMenu = response.items;
+      let recipesOnMenu = response.items.filter((item: Recipe) => {
+        return item.checked !== true;
+      });
 
       recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
         return recipe.ingredients.map((ingredient) => {

@@ -1,5 +1,3 @@
-import { StringLiteral } from "typescript";
-
 type Category = "dinner" | "cocktail" | "other" | "";
 
 type Region =
@@ -23,6 +21,7 @@ export interface Recipe {
   country: string;
   story: string;
   drinkPairings: string;
+  checked: boolean;
 }
 
 export interface Menu {

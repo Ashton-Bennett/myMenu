@@ -34,6 +34,7 @@ export const meatDepartmentItems = {
   "veal cutlets": "meat",
   "veal chops": "meat",
   "veal roast": "meat",
+  "andouille sausage": "meat",
   shrimp: "seafood",
   salmon: "seafood",
   tuna: "seafood",

@@ -40,6 +40,12 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      userService.updateUser(user.id, user);
+    }
+  }, [user]);
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />

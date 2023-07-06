@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { User, Ingredient } from "../../types";
-import userService from "../../services/user";
 
 interface componentProps {
   user?: User;
@@ -19,10 +18,9 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
     if (user) {
       const updatedUser = {
         ...user,
-        userGroceryList: user.userGroceryList.concat(inputValues),
+        userGroceryList: [...user.userGroceryList, inputValues],
       };
-      userService.updateUser(user.id, updatedUser);
-      window.location.reload();
+      setUser(updatedUser);
     }
 
     setInputValues({ name: "", amount: "", groceryStoreLocation: "" });

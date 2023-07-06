@@ -77,6 +77,7 @@ const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
                         menuItem={menuItem}
                         i={i}
                         menu={menu}
+                        menus={menus}
                         setMenus={setMenus}
                       />
                     </div>
