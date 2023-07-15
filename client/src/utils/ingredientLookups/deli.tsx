@@ -5,7 +5,7 @@ export const deliItems = {
   salami: "deli",
   bologna: "deli",
   pastrami: "deli",
-  "chicken breast": "deli",
+  "roasted chicken breast": "deli",
   prosciutto: "deli",
   pepperoni: "deli",
   "corned beef": "deli",

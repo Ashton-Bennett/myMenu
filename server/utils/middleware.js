@@ -21,7 +21,7 @@ const errorHandler = (error, request, response, next) => {
 };
 // To handle if the client tries to hit an unknown endpoint.
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: "unknown endpoint" });
+  response.status(404).redirect("/");
 };
 
 module.exports = {
