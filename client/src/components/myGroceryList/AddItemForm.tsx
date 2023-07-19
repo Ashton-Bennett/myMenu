@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { User, Ingredient } from "../../types";
+import { v4 as uuidv4 } from "uuid";
 
 interface componentProps {
   user?: User;
@@ -10,6 +11,7 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
     name: "",
     amount: "",
     groceryStoreLocation: "",
+    id: uuidv4(),
   });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {

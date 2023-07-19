@@ -89,7 +89,9 @@ function App() {
       />
       <Route
         path="/myGroceryList"
-        element={<MyGroceryList setUser={setUser} user={user} />}
+        element={
+          user ? <MyGroceryList setUser={setUser} user={user} /> : <NotFound />
+        }
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

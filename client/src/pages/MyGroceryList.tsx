@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { Ingredient } from "../types";
 import { User } from "../types";
 import groceryListService from "../services/groceryList";
-import { sortByName } from "../utils/sortByName";
 import AddItemForm from "../components/myGroceryList/AddItemForm";
+import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
 
 interface ComponentProps {
   setUser: Function;
-  user?: User;
+  user: User;
 }
 
 const MyGroceryList = ({ setUser, user }: ComponentProps) => {
@@ -60,11 +60,6 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
     }
   }, [user]);
 
-  const deleteIngredient = (event: any) => {
-    event.preventDefault();
-    console.log(event.target.value);
-  };
-
   const handleClearList = (event: any) => {
     event.preventDefault();
     if (user) {
@@ -80,214 +75,61 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
     }
   };
 
-  const handleCheckOffIngredient = (event: any, ingredient: Ingredient) => {
-    event.preventDefault();
-    const updatedIngredient = { ...ingredient, checked: !ingredient.checked };
-    const updatedList = user?.userGroceryList.map((listIngredient) => {
-      if (
-        listIngredient.name === ingredient.name &&
-        listIngredient.amount === ingredient.amount
-      ) {
-        return updatedIngredient;
-      }
-      return listIngredient;
-    });
-    setUser((prevUser: User) => ({
-      ...prevUser,
-      userGroceryList: updatedList,
-    }));
-  };
-
   return (
     <>
       <h1>My Grocery List</h1>
 
-      <br></br>
-      <br></br>
-      <h2>Deli:</h2>
-      {deliList.sort(sortByName).map((ingredient, i) => {
-        return (
-          <div key={ingredient.name + i}>
-            <p
-              style={{
-                textDecoration: ingredient.checked ? "line-through" : "none",
-              }}
-            >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
-              <button
-                value={`${ingredient.name}${i}`}
-                onClick={deleteIngredient}
-              >
-                Delete
-              </button>
-              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
-                Check off
-              </button>
-            </p>{" "}
-          </div>
-        );
-      })}
-      <br></br>
-      <br></br>
-      <h2>Produce:</h2>
-      {produceList.sort(sortByName).map((ingredient, i) => {
-        return (
-          <div key={ingredient.name + i}>
-            <p
-              style={{
-                textDecoration: ingredient.checked ? "line-through" : "none",
-              }}
-            >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
-              <button
-                value={`${ingredient.name}${i}`}
-                onClick={deleteIngredient}
-              >
-                Delete
-              </button>
-              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
-                Check off
-              </button>
-            </p>{" "}
-          </div>
-        );
-      })}
-      <br></br>
-      <br></br>
+      <DisplayGroceryList
+        name={"Deli"}
+        list={deliList}
+        user={user}
+        setUser={setUser}
+      />
 
-      <h2>Middle Aisles:</h2>
+      <DisplayGroceryList
+        name={"Produce"}
+        list={produceList}
+        user={user}
+        setUser={setUser}
+      />
 
-      {middleAislesList.sort(sortByName).map((ingredient, i) => {
-        return (
-          <div key={ingredient.name + i}>
-            <p
-              style={{
-                textDecoration: ingredient.checked ? "line-through" : "none",
-              }}
-            >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
-              <button
-                value={`${ingredient.name}${i}`}
-                onClick={deleteIngredient}
-              >
-                Delete
-              </button>
-              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
-                Check off
-              </button>
-            </p>{" "}
-          </div>
-        );
-      })}
-      <br></br>
-      <br></br>
+      <DisplayGroceryList
+        name={"Middle Aisles"}
+        list={middleAislesList}
+        user={user}
+        setUser={setUser}
+      />
 
-      <h2>Meat Department:</h2>
+      <DisplayGroceryList
+        name={"Meat Department"}
+        list={meatDepartmentList}
+        user={user}
+        setUser={setUser}
+      />
 
-      {meatDepartmentList.sort(sortByName).map((ingredient, i) => {
-        return (
-          <div key={ingredient.name + i}>
-            <p
-              style={{
-                textDecoration: ingredient.checked ? "line-through" : "none",
-              }}
-            >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
-              <button
-                value={`${ingredient.name}${i}`}
-                onClick={deleteIngredient}
-              >
-                Delete
-              </button>
-              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
-                Check off
-              </button>
-            </p>{" "}
-          </div>
-        );
-      })}
-      <br></br>
-      <br></br>
+      <DisplayGroceryList
+        name={"Frozen"}
+        list={frozenList}
+        user={user}
+        setUser={setUser}
+      />
 
-      <h2>Frozen:</h2>
-      {frozenList.sort(sortByName).map((ingredient, i) => {
-        return (
-          <div key={ingredient.name + i}>
-            <p
-              style={{
-                textDecoration: ingredient.checked ? "line-through" : "none",
-              }}
-            >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
-              <button
-                value={`${ingredient.name}${i}`}
-                onClick={deleteIngredient}
-              >
-                Delete
-              </button>
-              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
-                Check off
-              </button>
-            </p>{" "}
-          </div>
-        );
-      })}
-      <br></br>
-      <br></br>
-      <h2>Dairy:</h2>
+      <DisplayGroceryList
+        name={"Dairy"}
+        list={dairyList}
+        user={user}
+        setUser={setUser}
+      />
 
-      {dairyList.sort(sortByName).map((ingredient, i) => {
-        return (
-          <div key={ingredient.name + i}>
-            <p
-              style={{
-                textDecoration: ingredient.checked ? "line-through" : "none",
-              }}
-            >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
-              <button
-                value={`${ingredient.name}${i}`}
-                onClick={deleteIngredient}
-              >
-                Delete
-              </button>
-              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
-                Check off
-              </button>
-            </p>{" "}
-          </div>
-        );
-      })}
-      <br></br>
-      <br></br>
-
-      <h2>Other:</h2>
-      {otherList.sort(sortByName).map((ingredient, i) => {
-        return (
-          <div key={ingredient.name + i}>
-            <p
-              style={{
-                textDecoration: ingredient.checked ? "line-through" : "none",
-              }}
-            >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
-              <button
-                value={`${ingredient.name}${i}`}
-                onClick={deleteIngredient}
-              >
-                Delete
-              </button>
-              <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
-                Check off
-              </button>
-            </p>{" "}
-          </div>
-        );
-      })}
+      <DisplayGroceryList
+        name={"Other"}
+        list={otherList}
+        user={user}
+        setUser={setUser}
+      />
 
       <br></br>
       <br></br>
-
       <br></br>
       <AddItemForm user={user} setUser={setUser} />
       <br></br>

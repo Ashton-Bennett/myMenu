@@ -5,6 +5,7 @@ import menuService from "../services/menus";
 import { Ingredient, Menu, Recipe, User } from "../types";
 import findIngredientShoppingLocation from "../utils/ingredientShoppingLocation";
 import userServices from "../services/user";
+import { v4 as uuidv4 } from "uuid";
 
 interface componentProps {
   setUser: Function;
@@ -43,9 +44,16 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
   };
 
   const handleAddToGroceryList = () => {
-    const ingredientsToAdd = list.filter((ingredient) => {
+    const ingredientsThatAreNotCheckedOff = list.filter((ingredient) => {
       return !ingredient.checked;
     });
+
+    const ingredientsToAdd = ingredientsThatAreNotCheckedOff.map(
+      (ingredient) => {
+        return { ...ingredient, id: uuidv4() };
+      }
+    );
+    //add the ingredient id num to the ingredient objects.
 
     if (user && ingredientsToAdd) {
       setUser((prev: any) => {

@@ -55,6 +55,7 @@ export interface Ingredient {
   amount: number | string;
   unitOfMeasure?: string | undefined;
   groceryStoreLocation: string;
+  id?: string;
 }
 
 export interface itemUserAddedToGroceryList {
