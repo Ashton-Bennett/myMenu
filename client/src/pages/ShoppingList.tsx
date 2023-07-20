@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import menuService from "../services/menus";
 import { Ingredient, Menu, Recipe, User } from "../types";
-import findIngredientShoppingLocation from "../utils/ingredientShoppingLocation";
+import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
 import userServices from "../services/user";
-import { v4 as uuidv4 } from "uuid";
 
 interface componentProps {
   setUser: Function;
@@ -26,7 +25,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
 
       recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
         return recipe.ingredients.map((ingredient) => {
-          return findIngredientShoppingLocation(ingredient);
+          return findIngredientShoppingLocationAndAddID(ingredient);
         });
       });
 
@@ -36,10 +35,10 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const toggleStrikeThrough = (name: string) => {
-    const ingredientToCheck = list.filter((item) => item.name === name)[0];
+  const toggleStrikeThrough = (id: string) => {
+    const ingredientToCheck = list.filter((item) => item.id === id)[0];
     ingredientToCheck.checked = !ingredientToCheck.checked;
-    const newList = list.filter((item) => item.name !== name);
+    const newList = list.filter((item) => item.id !== id);
     setList([...newList, ingredientToCheck]);
   };
 
@@ -48,23 +47,20 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
       return !ingredient.checked;
     });
 
-    const ingredientsToAdd = ingredientsThatAreNotCheckedOff.map(
-      (ingredient) => {
-        return { ...ingredient, id: uuidv4() };
-      }
-    );
-    //add the ingredient id num to the ingredient objects.
-
-    if (user && ingredientsToAdd) {
+    if (user && ingredientsThatAreNotCheckedOff) {
       setUser((prev: any) => {
         return {
           ...prev,
-          userGroceryList: prev.userGroceryList.concat(ingredientsToAdd),
+          userGroceryList: prev.userGroceryList.concat(
+            ingredientsThatAreNotCheckedOff
+          ),
         };
       });
       const updatedUser = {
         ...user,
-        userGroceryList: user.userGroceryList.concat(ingredientsToAdd),
+        userGroceryList: user.userGroceryList.concat(
+          ingredientsThatAreNotCheckedOff
+        ),
       };
       userServices.updateUser(user.id, updatedUser);
     }
@@ -88,7 +84,11 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
                 {ingredient.name} - {ingredient.amount}{" "}
                 {ingredient.unitOfMeasure}
                 <span>
-                  <button onClick={() => toggleStrikeThrough(ingredient.name)}>
+                  <button
+                    onClick={() =>
+                      ingredient.id && toggleStrikeThrough(ingredient.id)
+                    }
+                  >
                     check
                   </button>
                 </span>
