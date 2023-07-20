@@ -21,6 +21,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
   const [otherList, setOtherList] = useState<Ingredient[]>([]);
   const [frozenList, setFrozenList] = useState<Ingredient[]>([]);
   const [deliList, setDeliList] = useState<Ingredient[]>([]);
+  const [scrollToTop, setScrollToTop] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -57,8 +58,13 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       setMiddleAislesList(middleAisles);
       setFrozenList(frozen);
       setDeliList(deli);
+      setScrollToTop(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [scrollToTop]);
 
   const handleClearList = (event: any) => {
     event.preventDefault();
@@ -77,8 +83,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
 
   return (
     <>
-      <h1>My Grocery List</h1>
-
+      <h1 id="top">My Grocery List</h1>
       <DisplayGroceryList
         name={"Deli"}
         list={deliList}

@@ -15,7 +15,6 @@ export const dairyItems = {
   "whipped cream": "dairy",
   "half and half": "dairy",
   "heavy cream": "dairy",
-  "coconut milk": "dairy",
   "almond milk": "dairy",
   "cashew milk": "dairy",
   "oat milk": "dairy",

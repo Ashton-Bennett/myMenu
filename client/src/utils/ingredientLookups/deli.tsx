@@ -22,6 +22,7 @@ export const deliItems = {
   "buffalo chicken": "deli",
   "provolone cheese": "deli",
   parmesan: "deli",
+  "parmesan cheese": "deli",
   "cheddar cheese": "deli",
   "swiss cheese": "deli",
   "american cheese": "deli",
