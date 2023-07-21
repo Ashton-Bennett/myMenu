@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/ingredients/64a02a6db52276c5b81b80fe

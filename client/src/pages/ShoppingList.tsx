@@ -5,6 +5,7 @@ import menuService from "../services/menus";
 import { Ingredient, Menu, Recipe, User } from "../types";
 import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
 import userServices from "../services/user";
+import removePreparationsFromIngredientName from "../utils/removePreparationsFromIngredientName";
 
 interface componentProps {
   setUser: Function;
@@ -25,11 +26,20 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
 
       recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
         return recipe.ingredients.map((ingredient) => {
-          return findIngredientShoppingLocationAndAddID(ingredient);
+          const manipulatedIngredient =
+            findIngredientShoppingLocationAndAddID(ingredient);
+
+          return {
+            ...manipulatedIngredient,
+            name: removePreparationsFromIngredientName(
+              manipulatedIngredient.name
+            ),
+          };
         });
       });
 
       const sortedList = recipesOnMenu.flat().sort();
+      console.log(sortedList);
       setList(sortedList);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

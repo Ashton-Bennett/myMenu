@@ -1,0 +1,7 @@
+GET http://localhost:3001/api/recipes/
+
+### checks unknown end points
+GET http://localhost:3001/api/recipes/12312321
+
+### checks for single menu
+GET http://localhost:3001/api/recipes/64a02ab2b52276c5b81b810d

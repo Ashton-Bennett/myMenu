@@ -4,11 +4,12 @@ const app = express();
 const cors = require("cors");
 const recipeRouter = require("./controllers/recipes");
 const menuRouter = require("./controllers/menus");
+const userRouter = require("./controllers/users");
+const groceryListRouter = require("./controllers/groceryList");
+const ingredientsRouter = require("./controllers/ingredients");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
-const userRouter = require("./controllers/users");
-const groceryListRouter = require("./controllers/groceryList");
 
 mongoose.set("strictQuery", false);
 
@@ -32,6 +33,7 @@ app.use("/api/recipes", recipeRouter);
 app.use("/api/menus", menuRouter);
 app.use("/api/user", userRouter);
 app.use("/api/myGroceryList/", groceryListRouter);
+app.use("/api/ingredients", ingredientsRouter);
 //these are meant to be called last
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

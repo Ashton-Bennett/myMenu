@@ -14,6 +14,7 @@ import menuService from "./services/menus";
 import ShoppingList from "./pages/ShoppingList";
 import MyGroceryList from "./pages/MyGroceryList";
 import userService from "./services/user";
+import Ingredients from "./pages/Ingredients";
 
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -93,6 +94,8 @@ function App() {
           user ? <MyGroceryList setUser={setUser} user={user} /> : <NotFound />
         }
       />
+
+      <Route path="/ingredients" element={<Ingredients />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

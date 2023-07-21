@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/ingredients
+Content-Type: application/json
+
+{
+  "name":"Onion",
+  "alias": ["Onions", "Diced Onions","Onion Sliced"],
+  "groceryStoreLocation": "produce",
+  "pairings":["Meat", "Cheese","Bread"],
+  "season": "Winter/year round"
+}

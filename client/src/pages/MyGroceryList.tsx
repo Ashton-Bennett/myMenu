@@ -35,7 +35,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
 
       (user.userGroceryList as Ingredient[]).forEach((ingredient) => {
         if (ingredient.groceryStoreLocation === "produce") {
-          produce = produce.concat(ingredient);
+          produce = produce.concat({ ...ingredient, name: ingredient.name });
         } else if (ingredient.groceryStoreLocation === "dairy") {
           dairy = dairy.concat(ingredient);
         } else if (ingredient.groceryStoreLocation === "meat department") {

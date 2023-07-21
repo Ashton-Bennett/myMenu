@@ -21,6 +21,9 @@ const Home = () => {
         <Link to="/myGroceryList">
           <button>My Grocery List</button>
         </Link>
+        <Link to="/ingredients">
+          <button>Ingredients</button>
+        </Link>
       </div>
     </>
   );

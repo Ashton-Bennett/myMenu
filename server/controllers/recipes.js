@@ -59,8 +59,8 @@ recipeRouter.put("/:id", (request, response, next) => {
 });
 
 // For when the client refreshes the page
-recipeRouter.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// recipeRouter.get("/*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 module.exports = recipeRouter;
