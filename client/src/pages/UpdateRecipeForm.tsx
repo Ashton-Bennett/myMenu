@@ -55,10 +55,14 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         ...recipeToUpdate.ingredients,
         {
           name: "",
+          alias: [""],
+          season: [],
+          pairings: [""],
+          groceryListId: undefined,
           checked: false,
-          amount: 0,
-          unitOfMeasure: "",
-          groceryStoreLocation: "",
+          amount: undefined,
+          unitOfMeasure: undefined,
+          groceryStoreLocation: "other",
         },
       ],
     });

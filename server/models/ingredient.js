@@ -7,9 +7,13 @@ const ingredientSchema = new mongoose.Schema({
   },
   alias: Array,
   groceryStoreLocation: String,
+  groceryListId: String,
+  checked: Boolean,
+  amount: Number,
+  unitOfMeasure: String,
   dataBaseId: String,
   pairings: Array,
-  season: String,
+  season: Array,
 });
 
 ingredientSchema.set("toJSON", {

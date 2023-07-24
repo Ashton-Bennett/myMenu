@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Ingredient } from "../../types";
+import { User, Ingredient, groceryStoreLocation } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 
 interface componentProps {
@@ -9,8 +9,11 @@ interface componentProps {
 const AddItemForm = ({ user, setUser }: componentProps) => {
   const [inputValues, setInputValues] = useState<Ingredient>({
     name: "",
+    alias: [],
+    pairings: [],
+    season: [],
     amount: "",
-    groceryStoreLocation: "",
+    groceryStoreLocation: "unknown",
     id: uuidv4(),
   });
 
@@ -25,7 +28,14 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
       setUser(updatedUser);
     }
 
-    setInputValues({ name: "", amount: "", groceryStoreLocation: "" });
+    setInputValues({
+      name: "",
+      alias: [],
+      pairings: [],
+      season: [],
+      amount: "",
+      groceryStoreLocation: "unknown",
+    });
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -57,7 +67,7 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
         onChange={(e) =>
           setInputValues({
             ...inputValues,
-            groceryStoreLocation: e.target.value,
+            groceryStoreLocation: e.target.value as groceryStoreLocation,
           })
         }
         value={inputValues.groceryStoreLocation}

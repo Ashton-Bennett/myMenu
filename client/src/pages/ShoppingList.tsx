@@ -39,7 +39,6 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
       });
 
       const sortedList = recipesOnMenu.flat().sort();
-      console.log(sortedList);
       setList(sortedList);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

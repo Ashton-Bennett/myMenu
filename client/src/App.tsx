@@ -15,6 +15,7 @@ import ShoppingList from "./pages/ShoppingList";
 import MyGroceryList from "./pages/MyGroceryList";
 import userService from "./services/user";
 import Ingredients from "./pages/Ingredients";
+import IngredientUpdateForm from "./components/ingredientDatabaseView/IngredientUpdateForm";
 
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -96,6 +97,10 @@ function App() {
       />
 
       <Route path="/ingredients" element={<Ingredients />} />
+      <Route
+        path="/ingredients/update/:id"
+        element={<IngredientUpdateForm />}
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

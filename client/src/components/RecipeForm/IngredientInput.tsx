@@ -16,10 +16,13 @@ const IngredientInput = ({
 }: ComponentProps) => {
   const [ingredient, setIngredient] = useState<Ingredient>({
     name: "",
+    alias: [],
+    pairings: [],
+    season: [],
     checked: false,
     amount: 0,
     unitOfMeasure: "",
-    groceryStoreLocation: "",
+    groceryStoreLocation: "unknown",
   });
 
   const handleIngredientChange = (event: {

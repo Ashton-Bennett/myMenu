@@ -49,12 +49,35 @@ export interface UpdateInputFieldProps {
   value: string | number;
 }
 
+export type Season =
+  | "Summer"
+  | "Spring"
+  | "Fall"
+  | "Winter"
+  | "Year Round"
+  | "";
+
+export type groceryStoreLocation =
+  | "deli"
+  | "produce"
+  | "middle aisles"
+  | "meat department"
+  | "frozen"
+  | "dairy"
+  | "other"
+  | "unknown"
+  | undefined;
+
 export interface Ingredient {
   name: string;
+  alias: string[];
+  pairings: string[];
+  season: Season[];
+  groceryListId?: string;
   checked?: boolean;
-  amount: number | string;
+  amount?: number | string;
   unitOfMeasure?: string | undefined;
-  groceryStoreLocation: string;
+  groceryStoreLocation: groceryStoreLocation;
   id?: string;
 }
 
