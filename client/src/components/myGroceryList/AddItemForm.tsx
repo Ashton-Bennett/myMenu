@@ -35,6 +35,7 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
       season: [],
       amount: "",
       groceryStoreLocation: "unknown",
+      id: uuidv4(),
     });
   };
   return (

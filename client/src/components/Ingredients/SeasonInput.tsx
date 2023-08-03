@@ -26,7 +26,6 @@ const SeasonInput = ({ newIngredient, setNewIngredient }: componentProps) => {
     }));
   }, [season]);
 
-  console.log(season);
   return (
     <>
       <h3>Season:</h3>

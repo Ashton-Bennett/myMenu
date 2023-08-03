@@ -26,15 +26,15 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
 
       recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
         return recipe.ingredients.map((ingredient) => {
-          const manipulatedIngredient =
-            findIngredientShoppingLocationAndAddID(ingredient);
+          // const manipulatedIngredient =
+          return findIngredientShoppingLocationAndAddID(ingredient);
 
-          return {
-            ...manipulatedIngredient,
-            name: removePreparationsFromIngredientName(
-              manipulatedIngredient.name
-            ),
-          };
+          // return {
+          //   ...manipulatedIngredient,
+          //   name: removePreparationsFromIngredientName(
+          //     manipulatedIngredient.name
+          //   ),
+          // };
         });
       });
 
@@ -53,7 +53,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
 
   const handleAddToGroceryList = () => {
     const ingredientsThatAreNotCheckedOff = list.filter((ingredient) => {
-      return !ingredient.checked;
+      return !ingredient.checked && ingredient.name.toLowerCase() !== "water";
     });
 
     if (user && ingredientsThatAreNotCheckedOff) {
@@ -75,7 +75,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
     }
     navigate("/myGroceryList");
   };
-
+  console.log();
   return (
     <>
       <h1>Shopping List for {menu?.name}:</h1>

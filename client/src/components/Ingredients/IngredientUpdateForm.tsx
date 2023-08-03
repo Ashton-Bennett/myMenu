@@ -3,7 +3,7 @@ import { Ingredient } from "../../types";
 import { useParams } from "react-router-dom";
 import ingredientService from "../../services/ingredients";
 import AddIngredientForm from "./AddAndUpdateIngredientForm";
-import BackButton from "../BackButton";
+
 const IngredientUpdateForm = () => {
   const [ingredient, setIngredient] = useState<Ingredient>();
   const { id } = useParams();
@@ -24,9 +24,6 @@ const IngredientUpdateForm = () => {
           ingredientToUpdate={ingredient}
         />
       )}
-      <br></br>
-      <br></br>
-      <BackButton linkTo={undefined} />
     </>
   );
 };

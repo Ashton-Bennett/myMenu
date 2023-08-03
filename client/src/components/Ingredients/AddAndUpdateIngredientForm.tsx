@@ -6,6 +6,7 @@ import ingredientService from "../../services/ingredients";
 import { useNavigate } from "react-router-dom";
 import IngredientStoreLocationInput from "./IngredientStoreLocationInput";
 import NewIngredientNameInput from "./NewIngredientNameInput";
+import BackButton from "../BackButton";
 
 const initialIngredient = {
   name: "",
@@ -55,7 +56,6 @@ const AddIngredientForm = ({
       [event.target.name]: event.target.value,
     });
   };
-
   return (
     <form
       onSubmit={componentType === "add" ? handleSubmit : handleUpdateSubmit}
@@ -90,6 +90,9 @@ const AddIngredientForm = ({
       <br></br>
       <br></br>
       <button type="submit">submit</button>
+      <br></br>
+      <br></br>
+      <BackButton linkTo={undefined} />
     </form>
   );
 };

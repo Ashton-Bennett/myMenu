@@ -15,12 +15,25 @@ import ShoppingList from "./pages/ShoppingList";
 import MyGroceryList from "./pages/MyGroceryList";
 import userService from "./services/user";
 import Ingredients from "./pages/Ingredients";
-import IngredientUpdateForm from "./components/ingredientDatabaseView/IngredientUpdateForm";
-
+import IngredientUpdateForm from "./components/Ingredients/IngredientUpdateForm";
+import AddIngredientForm from "./components/Ingredients/AddAndUpdateIngredientForm";
+import IngredientsListView from "./components/Ingredients/IngredientsListView";
+// import {
+//   addItemsToDB,
+//   removeAllItemsInArrayFromDb,
+//   removeUppercaseExceptSeason,
+// } from "./utils/dataBaseBuilders/databaseBuilder";
+// import { middleAisleItems } from "./utils/dataBaseBuilders/dataBaseBuilderMiddleAisles";
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [menus, setMenus] = useState<Menu[]>([]);
   const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    // removeAllItemsInArrayFromDb(meatDepartmentSeafoodItems);
+    // removeAllItemsFromDb();
+    // addItemsToDB(removeUppercaseExceptSeason(middleAisleItems));
+  }, []);
 
   useEffect(() => {
     recipeService.getAll().then((response) => {
@@ -100,6 +113,11 @@ function App() {
       <Route
         path="/ingredients/update/:id"
         element={<IngredientUpdateForm />}
+      />
+      <Route path="/ingredients/view" element={<IngredientsListView />} />
+      <Route
+        path="/ingredients/addNew"
+        element={<AddIngredientForm componentType="add" />}
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

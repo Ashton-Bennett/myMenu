@@ -50,7 +50,7 @@ const DisplayGroceryList = ({ name, list, user, setUser }: ComponentProps) => {
                 textDecoration: ingredient.checked ? "line-through" : "none",
               }}
             >
-              {ingredient.name} {ingredient.amount} {ingredient.unitOfMeasure}
+              {ingredient.alias} {ingredient.amount} {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
                 onClick={() => ingredient && deleteIngredient(ingredient)}

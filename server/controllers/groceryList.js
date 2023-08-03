@@ -1,6 +1,5 @@
 const groceryListRouter = require("express").Router();
 const User = require("../models/user");
-const logger = require("../utils/logger");
 
 groceryListRouter.get("/:id", (request, response, next) => {
   const id = request.params.id;

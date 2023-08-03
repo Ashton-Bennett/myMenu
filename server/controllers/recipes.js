@@ -1,6 +1,5 @@
 const recipeRouter = require("express").Router();
 const Recipe = require("../models/recipe");
-const path = require("path");
 const logger = require("../utils/logger");
 
 recipeRouter.get("/", (request, response, next) => {
@@ -57,10 +56,5 @@ recipeRouter.put("/:id", (request, response, next) => {
     })
     .catch((error) => next(error));
 });
-
-// For when the client refreshes the page
-// recipeRouter.get("/*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
 
 module.exports = recipeRouter;
