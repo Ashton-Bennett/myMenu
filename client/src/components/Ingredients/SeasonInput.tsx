@@ -16,6 +16,8 @@ const SeasonInput = ({ newIngredient, setNewIngredient }: componentProps) => {
 
     if (checked) {
       setSeason((prev: Season[]) => [...prev, value as Season]);
+    } else {
+      setSeason((prev: Season[]) => prev.filter((s) => s !== value));
     }
   };
 

@@ -138,6 +138,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
                 newRecipe={recipeToUpdate}
                 setNewRecipe={setRecipeToUpdate}
                 isUpdateInput={true}
+                value={value}
               />
             </div>
           );

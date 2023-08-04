@@ -1,0 +1,18 @@
+PUT http://localhost:3001/api/ingredients/64c1aea67065a88836b66778
+Content-Type: application/json
+
+# {
+#   "name":"Onion",
+#   "alias": ["Onions", "Diced Onions","Onion Sliced","Onion Diced","Onion Sliced"],
+#   "groceryStoreLocation": "produce",
+#   "pairings":["Meat", "Cheese","Bread"],
+#   "season": ["year round"]
+# }
+{
+  "name": "turkey",
+  "alias": ["turkey","whole turkey","chopped turkey","sliced turkey","diced turkey"],
+  "groceryStoreLocation": "deli",
+  "pairings": ["cranberry sauce","avocado","bacon","lettuce"],
+  "season": ["Year Round"],
+  "id": "64c1aea67065a88836b66778"
+}

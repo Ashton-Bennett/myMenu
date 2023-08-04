@@ -1,4 +1,4 @@
-GET http://localhost:3001/api/ingredients/64b9c9dddf29f83137ecff85
+GET http://localhost:3001/api/ingredients/64c1aea67065a88836b66778
 
 ### checks unknown end points
 GET http://localhost:3001/api/ingredients/12312321

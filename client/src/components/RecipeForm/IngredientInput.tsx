@@ -70,7 +70,6 @@ const IngredientInput = ({
 
   return (
     <>
-      {console.log(ingredient)}
       <div>
         <label htmlFor={`ingredient${i} name`}>
           Ingredient:
@@ -112,13 +111,13 @@ const IngredientInput = ({
           <option value="to taste">to taste</option>
           <option value="each">each</option>
         </select>
-        {isUpdateInput && (
+        {/* {isUpdateInput && (
           <>
             Currently: {newRecipe.ingredients[i].name} -{" "}
             {newRecipe.ingredients[i].amount}{" "}
             {newRecipe.ingredients[i].unitOfMeasure}
           </>
-        )}
+        )} */}
       </div>
       <IngredientSearchInput
         ingredient={ingredient}
