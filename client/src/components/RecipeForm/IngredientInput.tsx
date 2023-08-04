@@ -26,7 +26,7 @@ const IngredientInput = ({
           pairings: [],
           season: [],
           checked: false,
-          amount: 0,
+          amount: undefined,
           unitOfMeasure: "",
           groceryStoreLocation: "unknown",
         }
@@ -68,6 +68,17 @@ const IngredientInput = ({
     }
   }, [ingredient]);
 
+  const handleDeleteIngredient = (i: number) => {
+    const updatedIngredientsArray = newRecipe.ingredients.filter(
+      (_, index) => index !== i
+    );
+    console.log("IN DELETE", updatedIngredientsArray);
+    setNewRecipe((prev: Recipe) => ({
+      ...prev,
+      ingredients: updatedIngredientsArray,
+    }));
+  };
+  console.log("NEWRECIPE ING", newRecipe.ingredients);
   return (
     <>
       <div>
@@ -111,13 +122,9 @@ const IngredientInput = ({
           <option value="to taste">to taste</option>
           <option value="each">each</option>
         </select>
-        {/* {isUpdateInput && (
-          <>
-            Currently: {newRecipe.ingredients[i].name} -{" "}
-            {newRecipe.ingredients[i].amount}{" "}
-            {newRecipe.ingredients[i].unitOfMeasure}
-          </>
-        )} */}
+        {/* <button onClick={() => handleDeleteIngredient(i)} type="button">
+          delete ingredient
+        </button> */}
       </div>
       <IngredientSearchInput
         ingredient={ingredient}

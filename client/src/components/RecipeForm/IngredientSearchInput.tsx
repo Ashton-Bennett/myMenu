@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import ingredientService from "../../services/ingredients";
 import { Ingredient } from "../../types";
 
@@ -15,6 +15,7 @@ const IngredientSearchInput = ({
   const [ingredientsToDisplay, setIngredientsToDisplay] =
     useState<Ingredient[]>();
   const [clickedIngredient, setClickedIngredient] = useState(false);
+  const [showVariation, setShowVariation] = useState<string>();
 
   useEffect(() => {
     ingredientService.getAll().then((response) => {
@@ -53,20 +54,42 @@ const IngredientSearchInput = ({
     }));
   };
 
+  const handleShowVariations = (event: any) => {
+    event?.preventDefault();
+    setShowVariation(event.target.value);
+  };
+
   return (
     <>
       {ingredient.name && ingredientsToDisplay && (
         <ul>
-          {ingredientsToDisplay?.map((item) =>
-            item.alias.map((alias, i) => (
+          {ingredientsToDisplay?.map((item, i) => (
+            <Fragment key={`${item} + ${i}`}>
               <li
-                key={`${alias} + ${i}`}
-                onClick={() => handleItemClick(item, alias)}
+                className="cursor"
+                onClick={() => handleItemClick(item, item.name)}
               >
-                {alias}
+                {item.name} <span> </span>
               </li>
-            ))
-          )}
+              <button
+                value={item.name}
+                onClick={handleShowVariations}
+                type="button"
+              >
+                variations
+              </button>
+              {showVariation === item.name &&
+                item.alias.map((alias, i) => (
+                  <p
+                    className="cursor"
+                    key={`${alias} + ${i}`}
+                    onClick={() => handleItemClick(item, alias)}
+                  >
+                    {alias}
+                  </p>
+                ))}
+            </Fragment>
+          ))}
         </ul>
       )}
     </>

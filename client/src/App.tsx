@@ -1,4 +1,5 @@
 import RecipeList from "./pages/RecipeList";
+import "./global.css";
 import RecipeForm from "./pages/RecipeForm";
 import { useEffect, useState } from "react";
 import { Menu, Recipe, User } from "./types";

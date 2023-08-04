@@ -47,7 +47,11 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
           required
           value={inputValues.name}
           onChange={(e) =>
-            setInputValues({ ...inputValues, name: e.target.value })
+            setInputValues({
+              ...inputValues,
+              name: e.target.value,
+              alias: [e.target.value],
+            })
           }
           id="name"
           type="text"

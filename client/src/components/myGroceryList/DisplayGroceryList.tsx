@@ -15,7 +15,7 @@ const DisplayGroceryList = ({ name, list, user, setUser }: ComponentProps) => {
       ...user,
       userGroceryList: user?.userGroceryList.filter(
         (ingredientInUserGroceryList) =>
-          ingredientInUserGroceryList.id !== Ingredient.id
+          ingredientInUserGroceryList.groceryListId !== Ingredient.groceryListId
       ),
     };
     userService.updateUser(updatedUser.id, updatedUser);
@@ -26,7 +26,7 @@ const DisplayGroceryList = ({ name, list, user, setUser }: ComponentProps) => {
     event.preventDefault();
     const updatedIngredient = { ...ingredient, checked: !ingredient.checked };
     const updatedList = user?.userGroceryList.map((listIngredient) => {
-      if (listIngredient.id === ingredient.id) {
+      if (listIngredient.groceryListId === ingredient.groceryListId) {
         return updatedIngredient;
       }
       return listIngredient;
