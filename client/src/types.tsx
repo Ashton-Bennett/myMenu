@@ -22,6 +22,7 @@ export interface Recipe {
   story: string;
   drinkPairings: string;
   checked: boolean;
+  notes: string;
 }
 
 export interface Menu {

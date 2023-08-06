@@ -8,6 +8,7 @@ import BackButton from "../components/BackButton";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import IngredientInput from "../components/RecipeForm/IngredientInput";
+import NotesTextArea from "../components/RecipeForm/NotesTextArea";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -44,6 +45,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     story: "",
     drinkPairings: "",
     checked: false,
+    notes: "",
   });
 
   const navigate = useNavigate();
@@ -312,6 +314,10 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         newRecipe={recipeToUpdate}
         value={recipeToUpdate.drinkPairings}
         required={false}
+      />
+      <NotesTextArea
+        newRecipe={recipeToUpdate}
+        setNewRecipe={setRecipeToUpdate}
       />
       <section>
         <br></br> <button type="submit">Save</button>

@@ -16,6 +16,7 @@ const recipeSchema = new mongoose.Schema({
   story: String,
   drinkPairings: String,
   checked: Boolean,
+  notes: String,
 });
 
 recipeSchema.set("toJSON", {

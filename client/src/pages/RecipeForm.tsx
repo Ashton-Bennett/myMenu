@@ -7,6 +7,8 @@ import recipeService from "../services/recipes";
 import BackButton from "../components/BackButton";
 import { useNavigate } from "react-router-dom";
 import IngredientInput from "../components/RecipeForm/IngredientInput";
+import NotesTextArea from "../components/RecipeForm/NotesTextArea";
+import { v4 as uuidv4 } from "uuid";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -22,7 +24,7 @@ export interface Ingredient {
 
 const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   const [newRecipe, setNewRecipe] = useState<Recipe>({
-    id: null,
+    id: undefined,
     name: "",
     servings: 0,
     ingredients: [
@@ -46,6 +48,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     story: "",
     drinkPairings: "",
     checked: false,
+    notes: "",
   });
 
   const navigate = useNavigate();
@@ -127,6 +130,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           story: "",
           drinkPairings: "",
           checked: false,
+          notes: "",
         });
       }
       navigate(-1);
@@ -160,11 +164,12 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <label>Ingredients/amount </label>
         {newRecipe.ingredients.map((value, i) => {
           return (
-            <div key={`ingredient${i}`}>
+            <div key={i}>
               <IngredientInput
                 i={i}
                 setNewRecipe={setNewRecipe}
                 newRecipe={newRecipe}
+                value={value}
               />
             </div>
           );
@@ -337,7 +342,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         value={newRecipe.drinkPairings}
         required={false}
       />
-
+      <NotesTextArea newRecipe={newRecipe} setNewRecipe={setNewRecipe} />
       <section>
         <br></br> <button type="submit">Save</button>
       </section>

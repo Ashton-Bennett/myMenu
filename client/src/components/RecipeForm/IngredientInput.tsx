@@ -26,7 +26,7 @@ const IngredientInput = ({
           pairings: [],
           season: [],
           checked: false,
-          amount: undefined,
+          amount: 0,
           unitOfMeasure: "",
           groceryStoreLocation: "unknown",
         }
@@ -78,7 +78,21 @@ const IngredientInput = ({
       ingredients: updatedIngredientsArray,
     }));
   };
-  console.log("NEWRECIPE ING", newRecipe.ingredients);
+  // const handleDeleteIngredient = (id: string) => {
+  //   if (id) {
+  //     const updatedIngredientsArray = newRecipe.ingredients.filter(
+  //       (ingredient) => ingredient.id !== id
+  //     );
+  //     console.log("IN DELETE", updatedIngredientsArray);
+  //     setNewRecipe((prev: Recipe) => ({
+  //       ...prev,
+  //       ingredients: updatedIngredientsArray,
+  //     }));
+  //   } else {
+  //     console.log("Ingredient doest have ID, Cant delete it.");
+  //   }
+  // };
+
   return (
     <>
       <div>

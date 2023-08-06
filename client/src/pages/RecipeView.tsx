@@ -40,10 +40,20 @@ const RecipeView = () => {
           {recipe.directions.map((direction) => {
             return <p key={direction}>{direction}</p>;
           })}
+          {recipe.notes && (
+            <>
+              <h3>Notes:</h3>
+              {recipe?.notes}
+              <br></br>
+              <br></br>
+              <br></br>
+            </>
+          )}
         </>
       ) : (
         <p>Oops... Looks like this recipe is missing.</p>
       )}
+
       <BackButton linkTo={undefined} />
     </section>
   );
