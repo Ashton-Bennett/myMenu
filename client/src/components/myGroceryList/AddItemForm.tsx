@@ -14,7 +14,7 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
     season: [],
     amount: "",
     groceryStoreLocation: "unknown",
-    id: uuidv4(),
+    groceryListId: uuidv4(),
   });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
@@ -35,7 +35,7 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
       season: [],
       amount: "",
       groceryStoreLocation: "unknown",
-      id: uuidv4(),
+      groceryListId: uuidv4(),
     });
   };
   return (
