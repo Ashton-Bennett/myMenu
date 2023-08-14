@@ -17,9 +17,10 @@ const IngredientInput = ({
   isUpdateInput,
   value,
 }: ComponentProps) => {
+  // console.log("VALUE AT TOP OF INPUT:", value);
   const [ingredient, setIngredient] = useState<Ingredient>(
-    isUpdateInput && value
-      ? value
+    value || isUpdateInput
+      ? (value as Ingredient)
       : {
           name: "",
           alias: [],
@@ -31,12 +32,6 @@ const IngredientInput = ({
           groceryStoreLocation: "unknown",
         }
   );
-
-  const handleIngredientChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setIngredient({ ...ingredient, name: event.target.value as string });
-  };
 
   const handleQuantityChange: ChangeEventHandler<HTMLInputElement> = (
     event
@@ -60,6 +55,15 @@ const IngredientInput = ({
     });
   };
 
+  // console.log("INPUT", ingredient);
+
+  //BROKEN ---->
+  const handleIngredientChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setIngredient({ ...ingredient, name: event.target.value as string });
+  };
+
   useEffect(() => {
     if (ingredient.name.length > 1) {
       const copy = [...newRecipe.ingredients];
@@ -72,27 +76,13 @@ const IngredientInput = ({
     const updatedIngredientsArray = newRecipe.ingredients.filter(
       (_, index) => index !== i
     );
-    console.log("IN DELETE", updatedIngredientsArray);
+    console.log(updatedIngredientsArray);
     setNewRecipe((prev: Recipe) => ({
       ...prev,
       ingredients: updatedIngredientsArray,
     }));
   };
-  // const handleDeleteIngredient = (id: string) => {
-  //   if (id) {
-  //     const updatedIngredientsArray = newRecipe.ingredients.filter(
-  //       (ingredient) => ingredient.id !== id
-  //     );
-  //     console.log("IN DELETE", updatedIngredientsArray);
-  //     setNewRecipe((prev: Recipe) => ({
-  //       ...prev,
-  //       ingredients: updatedIngredientsArray,
-  //     }));
-  //   } else {
-  //     console.log("Ingredient doest have ID, Cant delete it.");
-  //   }
-  // };
-
+  //BROKEN ---->*
   return (
     <>
       <div>
@@ -136,9 +126,9 @@ const IngredientInput = ({
           <option value="to taste">to taste</option>
           <option value="each">each</option>
         </select>
-        {/* <button onClick={() => handleDeleteIngredient(i)} type="button">
+        <button onClick={() => handleDeleteIngredient(i)} type="button">
           delete ingredient
-        </button> */}
+        </button>
       </div>
       <IngredientSearchInput
         ingredient={ingredient}

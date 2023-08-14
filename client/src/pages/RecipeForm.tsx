@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Recipe } from "../types";
 import InputField from "../components/RecipeForm/InputField";
 import InputFieldRadio from "../components/RecipeForm/InputFieldRadio";
@@ -163,6 +163,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       <>
         <label>Ingredients/amount </label>
         {newRecipe.ingredients.map((value, i) => {
+          // console.log("FORM", value);
           return (
             <div key={i}>
               <IngredientInput
