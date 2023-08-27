@@ -26,14 +26,17 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
       recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
         return recipe.ingredients.map((ingredient) => {
           if (isHeading(ingredient)) {
-            return ingredient;
+            return undefined;
           } else {
             return findIngredientShoppingLocationAndAddID(ingredient);
           }
         });
       });
 
-      const sortedList = recipesOnMenu.flat().sort();
+      const sortedList = recipesOnMenu
+        .flat()
+        .filter((ingredient: Ingredient) => ingredient !== undefined)
+        .sort();
       setList(sortedList);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,7 +51,11 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
 
   const handleAddToGroceryList = () => {
     const ingredientsThatAreNotCheckedOff = list.filter((ingredient) => {
-      return !ingredient.checked && ingredient.name.toLowerCase() !== "water";
+      return (
+        !ingredient.checked &&
+        ingredient.name.toLowerCase() !== "water" &&
+        ingredient !== undefined
+      );
     });
 
     if (user && ingredientsThatAreNotCheckedOff) {
@@ -75,9 +82,9 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
     <>
       <h1>Shopping List for {menu?.name}:</h1>
       <ul>
-        {list.length > 1 &&
+        {list.length > 0 &&
           list.map((ingredient, i) => {
-            return (
+            return ingredient.name ? (
               <li
                 key={ingredient.name + i}
                 id={ingredient.name + i}
@@ -97,7 +104,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
                   </button>
                 </span>
               </li>
-            );
+            ) : null;
           })}
       </ul>
       <br></br>
