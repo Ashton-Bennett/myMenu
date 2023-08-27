@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import IngredientInput from "../components/RecipeForm/IngredientInput";
 import NotesTextArea from "../components/RecipeForm/NotesTextArea";
 import HeadingInput from "../components/RecipeForm/HeadingInput";
+import { v4 as uuidv4 } from "uuid";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -51,22 +52,28 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
 
   const navigate = useNavigate();
 
-  const handleAddIngredient = () => {
+  const handleAddIngredient = (type: string) => {
     setRecipeToUpdate({
       ...recipeToUpdate,
       ingredients: [
         ...recipeToUpdate.ingredients,
-        {
-          name: "",
-          alias: [""],
-          season: [],
-          pairings: [""],
-          groceryListId: undefined,
-          checked: false,
-          amount: undefined,
-          unitOfMeasure: undefined,
-          groceryStoreLocation: "other",
-        },
+        type === "ingredient"
+          ? {
+              name: "",
+              alias: [""],
+              season: [],
+              pairings: [""],
+              groceryListId: undefined,
+              checked: false,
+              amount: undefined,
+              unitOfMeasure: undefined,
+              groceryStoreLocation: "other",
+            }
+          : {
+              id: uuidv4(),
+              heading: true,
+              text: "",
+            },
       ],
     });
   };
@@ -195,8 +202,11 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
             </div>
           );
         })}
-        <button type="button" onClick={handleAddIngredient}>
+        <button type="button" onClick={() => handleAddIngredient("ingredient")}>
           + ingredient
+        </button>
+        <button type="button" onClick={() => handleAddIngredient("heading")}>
+          + heading
         </button>
         <br></br>
       </>

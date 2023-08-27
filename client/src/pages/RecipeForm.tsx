@@ -16,14 +16,6 @@ interface recipeFormProps {
   recipes: Recipe[];
   setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
 }
-// export interface Ingredient {
-//   name: string;
-//   checked: boolean;
-//   amount: number;
-//   unitOfMeasure: string | undefined;
-//   groceryStoreLocation: string;
-//   heading?:string
-// }
 
 const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   const [newRecipe, setNewRecipe] = useState<Recipe>({
