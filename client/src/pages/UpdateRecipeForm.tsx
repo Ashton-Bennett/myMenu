@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Recipe } from "../types";
+import { Recipe, isHeading } from "../types";
 import InputField from "../components/RecipeForm/InputField";
 import InputFieldRadio from "../components/RecipeForm/InputFieldRadio";
 import CountryInput from "../components/RecipeForm/CountryInput";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import IngredientInput from "../components/RecipeForm/IngredientInput";
 import NotesTextArea from "../components/RecipeForm/NotesTextArea";
+import HeadingInput from "../components/RecipeForm/HeadingInput";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -77,26 +78,50 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     });
   };
 
-  const locationChange = (direction: string, key: number): undefined => {
-    const directions = recipeToUpdate.directions;
-    const currentLocation = directions.indexOf(directions[key]);
-    if (direction === "up" && currentLocation !== 0) {
-      let inputs = [...directions];
-      const newLocation = currentLocation - 1;
-      const movingInput = inputs.splice(currentLocation, 1);
-      inputs.splice(newLocation, 0, movingInput[0]);
-      setRecipeToUpdate({ ...recipeToUpdate, directions: inputs });
-      return;
-    }
-    if (direction === "down") {
-      let inputs = [...directions];
-      const newLocation = currentLocation + 1;
-      const movingInput = inputs.splice(currentLocation, 1);
-      inputs.splice(newLocation, 0, movingInput[0]);
-      setRecipeToUpdate({ ...recipeToUpdate, directions: inputs });
-      return;
-    }
-    return;
+  const locationChange = (
+    direction: "up" | "down",
+    key: number,
+    arrayToChange: "directions" | "ingredients"
+  ): void => {
+    setRecipeToUpdate((prev) => {
+      const updatedRecipe = { ...prev };
+
+      if (arrayToChange === "directions") {
+        const directions = [...updatedRecipe.directions];
+        const currentLocation = directions.indexOf(directions[key]);
+
+        if (direction === "up" && currentLocation > 0) {
+          const movingInput = directions.splice(currentLocation, 1);
+          directions.splice(currentLocation - 1, 0, movingInput[0]);
+        } else if (
+          direction === "down" &&
+          currentLocation < directions.length - 1
+        ) {
+          const movingInput = directions.splice(currentLocation, 1);
+          directions.splice(currentLocation + 1, 0, movingInput[0]);
+        }
+
+        updatedRecipe.directions = directions;
+      } else if (arrayToChange === "ingredients") {
+        const ingredients = [...updatedRecipe.ingredients];
+        const currentLocation = ingredients.indexOf(ingredients[key]);
+
+        if (direction === "up" && currentLocation > 0) {
+          const movingInput = ingredients.splice(currentLocation, 1);
+          ingredients.splice(currentLocation - 1, 0, movingInput[0]);
+        } else if (
+          direction === "down" &&
+          currentLocation < ingredients.length - 1
+        ) {
+          const movingInput = ingredients.splice(currentLocation, 1);
+          ingredients.splice(currentLocation + 1, 0, movingInput[0]);
+        }
+
+        updatedRecipe.ingredients = ingredients;
+      }
+
+      return updatedRecipe;
+    });
   };
 
   const addRecipe = (event: React.FormEvent<HTMLFormElement>) => {
@@ -134,14 +159,39 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <label>Ingredients/amount </label>
         {recipeToUpdate.ingredients.map((value, i) => {
           return (
-            <div key={`ingredient${i}`}>
-              <IngredientInput
-                i={i}
-                newRecipe={recipeToUpdate}
-                setNewRecipe={setRecipeToUpdate}
-                isUpdateInput={true}
-                value={value}
-              />
+            <div key={value.id}>
+              {isHeading(value) ? (
+                <HeadingInput
+                  i={i}
+                  newRecipe={recipeToUpdate}
+                  setNewRecipe={setRecipeToUpdate}
+                  isUpdateInput={true}
+                  value={value}
+                />
+              ) : (
+                <IngredientInput
+                  i={i}
+                  newRecipe={recipeToUpdate}
+                  setNewRecipe={setRecipeToUpdate}
+                  isUpdateInput={true}
+                  value={value}
+                />
+              )}
+
+              <button
+                type="button"
+                data-testid={`direction${i}ButtonUp`}
+                onClick={() => locationChange("up", i, "ingredients")}
+              >
+                Move up
+              </button>
+              <button
+                type="button"
+                data-testid={`direction${i}ButtonDown`}
+                onClick={() => locationChange("down", i, "ingredients")}
+              >
+                Move down
+              </button>
             </div>
           );
         })}
@@ -180,14 +230,14 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
               <button
                 type="button"
                 data-testid={`direction${i}ButtonUp`}
-                onClick={() => locationChange("up", i)}
+                onClick={() => locationChange("up", i, "directions")}
               >
                 Move up
               </button>
               <button
                 type="button"
                 data-testid={`direction${i}ButtonDown`}
-                onClick={() => locationChange("down", i)}
+                onClick={() => locationChange("down", i, "directions")}
               >
                 Move down
               </button>

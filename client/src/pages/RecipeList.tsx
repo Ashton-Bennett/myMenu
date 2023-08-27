@@ -26,7 +26,6 @@ const RecipeList = ({
       const updatedRecipeList: Recipe[] | undefined =
         await recipeService.getAll();
       if (updatedRecipeList) {
-        console.log(updatedRecipeList);
         setRecipes(updatedRecipeList);
       }
     }

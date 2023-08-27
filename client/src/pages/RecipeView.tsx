@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import recipeService from "../services/recipes";
-import { Recipe } from "../types";
+import { Ingredient, Recipe } from "../types";
 import BackButton from "../components/BackButton";
 
 const RecipeView = () => {
@@ -27,14 +27,20 @@ const RecipeView = () => {
           {recipe.story !== "Unknown" ? <p>Story:{recipe.story}</p> : null}
           <br></br>
           <h3>Ingredients:</h3>
-          {recipe.ingredients.map((ingredient) => {
-            return (
-              <p key={ingredient.name}>
-                {ingredient.name} - {ingredient.amount}{" "}
-                {ingredient.unitOfMeasure}
-              </p>
-            );
+          {recipe.ingredients.map((ingredientOrHeading) => {
+            if ("name" in ingredientOrHeading) {
+              const ingredient = ingredientOrHeading as Ingredient;
+              return (
+                <p key={ingredient.name}>
+                  {ingredient.name} - {ingredient.amount}{" "}
+                  {ingredient.unitOfMeasure}
+                </p>
+              );
+            } else {
+              return <strong>{ingredientOrHeading.text}</strong>;
+            }
           })}
+
           <br></br>
           <h3>Directions:</h3>
           {recipe.directions.map((direction) => {

@@ -9,11 +9,32 @@ type Region =
   | "african"
   | "";
 
+export interface Ingredient {
+  name: string;
+  alias: string[];
+  pairings: string[];
+  season: Season[];
+  groceryListId?: string;
+  checked?: boolean;
+  amount?: number | string;
+  unitOfMeasure?: string | undefined;
+  groceryStoreLocation: groceryStoreLocation;
+  id?: string;
+}
+
+export interface Heading {
+  id: string;
+  heading: boolean;
+  text: string;
+}
+
+export type IngredientOrHeading = Ingredient | Heading;
+
 export interface Recipe {
   id: string | null | undefined;
   name: string;
   servings: number;
-  ingredients: Ingredient[];
+  ingredients: IngredientOrHeading[];
   prepTime: number;
   directions: string[];
   category: Category;
@@ -69,19 +90,6 @@ export type groceryStoreLocation =
   | "unknown"
   | undefined;
 
-export interface Ingredient {
-  name: string;
-  alias: string[];
-  pairings: string[];
-  season: Season[];
-  groceryListId?: string;
-  checked?: boolean;
-  amount?: number | string;
-  unitOfMeasure?: string | undefined;
-  groceryStoreLocation: groceryStoreLocation;
-  id?: string;
-}
-
 export interface itemUserAddedToGroceryList {
   name: string;
   amount: string;
@@ -94,4 +102,8 @@ export interface User {
   userGroceryList: Ingredient[];
   userMenus: Menu[];
   id: string;
+}
+
+export function isHeading(object: IngredientOrHeading): object is Heading {
+  return "text" in object;
 }

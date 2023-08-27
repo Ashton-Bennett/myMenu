@@ -2,10 +2,9 @@ import BackButton from "../components/BackButton";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import menuService from "../services/menus";
-import { Ingredient, Menu, Recipe, User } from "../types";
+import { Ingredient, Menu, Recipe, User, isHeading } from "../types";
 import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
 import userServices from "../services/user";
-import removePreparationsFromIngredientName from "../utils/removePreparationsFromIngredientName";
 
 interface componentProps {
   setUser: Function;
@@ -26,15 +25,11 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
 
       recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
         return recipe.ingredients.map((ingredient) => {
-          // const manipulatedIngredient =
-          return findIngredientShoppingLocationAndAddID(ingredient);
-
-          // return {
-          //   ...manipulatedIngredient,
-          //   name: removePreparationsFromIngredientName(
-          //     manipulatedIngredient.name
-          //   ),
-          // };
+          if (isHeading(ingredient)) {
+            return ingredient;
+          } else {
+            return findIngredientShoppingLocationAndAddID(ingredient);
+          }
         });
       });
 

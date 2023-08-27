@@ -1,5 +1,6 @@
 import ingredientService from "../../services/ingredients";
 import { Ingredient } from "../../types";
+import { v4 as uuidv4 } from "uuid";
 
 export const addItemsToDB = async (itemArray: Ingredient[]) => {
   for (const item of itemArray) {
