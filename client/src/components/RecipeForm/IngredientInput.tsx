@@ -119,6 +119,7 @@ const IngredientInput = ({
         <option value="Kg(s)">Kg</option>
         <option value="to taste">to taste</option>
         <option value="each">each</option>
+        <option value="to garnish">to garnish</option>
       </select>
       <button onClick={() => handleDeleteIngredient(i)} type="button">
         delete ingredient
