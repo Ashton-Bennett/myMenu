@@ -22,20 +22,9 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     id: undefined,
     name: "",
     servings: 0,
-    ingredients: [
-      {
-        name: "",
-        alias: [""],
-        season: [],
-        pairings: [""],
-        groceryListId: undefined,
-        checked: false,
-        amount: undefined,
-        unitOfMeasure: undefined,
-        groceryStoreLocation: "other",
-      },
-    ],
+    ingredients: [],
     prepTime: 0,
+    cookTime: 0,
     directions: [""],
     category: "",
     region: "",
@@ -142,6 +131,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         ...newRecipe,
         ingredients: updatedIngredientsToNumberType,
       };
+      console.log(updatedNewRecipeIngredientAmountToNumber);
       await recipeService.addRecipe(updatedNewRecipeIngredientAmountToNumber);
 
       const newRecipeList: Recipe[] | undefined = await recipeService.getAll();
@@ -153,6 +143,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           servings: 0,
           ingredients: [],
           prepTime: 0,
+          cookTime: 0,
           directions: [""],
           category: "",
           region: "",
@@ -192,9 +183,10 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       />
       <>
         <label>Ingredients/amount </label>
+        <br></br>
         {newRecipe.ingredients.map((value, i) => {
           return (
-            <div key={value.id}>
+            <div key={`${value.id} + ${i}`}>
               {isHeading(value) ? (
                 <HeadingInput
                   i={i}
@@ -236,6 +228,15 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         </button>
         <br></br>
       </>
+      <InputField
+        name="cookTime"
+        value={newRecipe.cookTime}
+        type="number"
+        label="Cook time(mins)"
+        setNewRecipe={setNewRecipe}
+        newRecipe={newRecipe}
+        required={false}
+      />
       <InputField
         name="prepTime"
         value={newRecipe.prepTime}

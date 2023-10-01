@@ -11,6 +11,7 @@ const recipeSchema = new mongoose.Schema({
   category: String,
   country: String,
   prepTime: String,
+  cookTime: String,
   region: String,
   servings: String,
   story: String,

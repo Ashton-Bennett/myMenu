@@ -19,7 +19,16 @@ const RecipeView = () => {
       {recipe ? (
         <>
           <h1>{recipe.name}</h1>
-          <p>Approximate time to prepare {recipe.prepTime} mins.</p>
+          <p>
+            Time to prepare: {recipe.prepTime} mins.{" "}
+            {recipe.cookTime && <>To cook:{recipe.cookTime} mins.</>}
+          </p>
+          {recipe.prepTime && recipe.cookTime && (
+            <p>
+              Total time:{Number(recipe.prepTime) + Number(recipe.cookTime)}{" "}
+              mins.
+            </p>
+          )}
           <p>Serves: {recipe.servings} people</p>
           <p>
             Region {recipe.region}, country {recipe.country}
@@ -40,7 +49,6 @@ const RecipeView = () => {
               return <strong>{ingredientOrHeading.text}</strong>;
             }
           })}
-
           <br></br>
           <h3>Directions:</h3>
           {recipe.directions.map((direction) => {

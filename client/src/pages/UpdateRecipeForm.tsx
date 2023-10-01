@@ -40,6 +40,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     servings: 0,
     ingredients: [],
     prepTime: 0,
+    cookTime: 0,
     directions: [""],
     category: "",
     region: "",
@@ -166,7 +167,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <label>Ingredients/amount </label>
         {recipeToUpdate.ingredients.map((value, i) => {
           return (
-            <div key={value.id}>
+            <div key={`${value.id} + ${i}`}>
               {isHeading(value) ? (
                 <HeadingInput
                   i={i}
@@ -210,6 +211,15 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         </button>
         <br></br>
       </>
+      <InputField
+        name="cookTime"
+        value={recipeToUpdate.cookTime}
+        type="number"
+        label="Cook time(mins)"
+        setNewRecipe={setRecipeToUpdate}
+        newRecipe={recipeToUpdate}
+        required={false}
+      />
       <InputField
         name="prepTime"
         value={recipeToUpdate.prepTime}

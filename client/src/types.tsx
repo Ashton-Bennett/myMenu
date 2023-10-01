@@ -35,6 +35,7 @@ export interface Recipe {
   name: string;
   servings: number;
   ingredients: IngredientOrHeading[];
+  cookTime: number;
   prepTime: number;
   directions: string[];
   category: Category;
