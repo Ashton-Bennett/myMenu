@@ -28,7 +28,6 @@ const getSingleRecipe = async (id: string | undefined) => {
 };
 
 const addRecipe = async (newRecipe: Recipe) => {
-  console.log("service", newRecipe);
   try {
     const response = await axios.post(baseUrl, newRecipe);
     if (response) {

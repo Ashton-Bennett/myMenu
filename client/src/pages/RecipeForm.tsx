@@ -131,7 +131,6 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         ...newRecipe,
         ingredients: updatedIngredientsToNumberType,
       };
-      console.log(updatedNewRecipeIngredientAmountToNumber);
       await recipeService.addRecipe(updatedNewRecipeIngredientAmountToNumber);
 
       const newRecipeList: Recipe[] | undefined = await recipeService.getAll();

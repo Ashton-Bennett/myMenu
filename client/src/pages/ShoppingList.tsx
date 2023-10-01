@@ -43,9 +43,11 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
   }, []);
 
   const toggleStrikeThrough = (id: string) => {
-    const ingredientToCheck = list.filter((item) => item.id === id)[0];
+    const ingredientToCheck = list.filter(
+      (item) => item.groceryListId === id
+    )[0];
     ingredientToCheck.checked = !ingredientToCheck.checked;
-    const newList = list.filter((item) => item.id !== id);
+    const newList = list.filter((item) => item.groceryListId !== id);
     setList([...newList, ingredientToCheck]);
   };
 
@@ -86,8 +88,8 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
           list.map((ingredient, i) => {
             return ingredient.name ? (
               <li
-                key={ingredient.name + i}
-                id={ingredient.name + i}
+                key={ingredient.groceryListId}
+                id={ingredient.groceryListId}
                 style={{
                   textDecoration: ingredient.checked ? "line-through" : "none",
                 }}
@@ -97,7 +99,8 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
                 <span>
                   <button
                     onClick={() =>
-                      ingredient.id && toggleStrikeThrough(ingredient.id)
+                      ingredient.groceryListId &&
+                      toggleStrikeThrough(ingredient.groceryListId)
                     }
                   >
                     check

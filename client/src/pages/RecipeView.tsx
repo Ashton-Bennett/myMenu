@@ -21,11 +21,11 @@ const RecipeView = () => {
           <h1>{recipe.name}</h1>
           <p>
             Time to prepare: {recipe.prepTime} mins.{" "}
-            {recipe.cookTime && <>To cook:{recipe.cookTime} mins.</>}
+            {recipe.cookTime && <>To cook: {recipe.cookTime} mins.</>}
           </p>
           {recipe.prepTime && recipe.cookTime && (
             <p>
-              Total time:{Number(recipe.prepTime) + Number(recipe.cookTime)}{" "}
+              Total time: {Number(recipe.prepTime) + Number(recipe.cookTime)}{" "}
               mins.
             </p>
           )}
@@ -36,17 +36,19 @@ const RecipeView = () => {
           {recipe.story !== "Unknown" ? <p>Story:{recipe.story}</p> : null}
           <br></br>
           <h3>Ingredients:</h3>
-          {recipe.ingredients.map((ingredientOrHeading) => {
+          {recipe.ingredients.map((ingredientOrHeading, i) => {
             if ("name" in ingredientOrHeading) {
               const ingredient = ingredientOrHeading as Ingredient;
               return (
-                <p key={ingredient.name}>
+                <p key={ingredient.name + i}>
                   {ingredient.name} - {ingredient.amount}{" "}
                   {ingredient.unitOfMeasure}
                 </p>
               );
             } else {
-              return <strong>{ingredientOrHeading.text}</strong>;
+              return (
+                <strong key={i + "heading"}>{ingredientOrHeading.text}</strong>
+              );
             }
           })}
           <br></br>
