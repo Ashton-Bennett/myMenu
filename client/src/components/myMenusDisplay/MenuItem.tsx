@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Menu, Recipe, User } from "../../types";
+import { Menu, Recipe } from "../../types";
 import menuService from "../../services/menus";
 
 interface componentProps {
@@ -13,7 +13,7 @@ interface componentProps {
 const MenuItem = ({ menuItem, i, menu, setMenus, menus }: componentProps) => {
   const removeMenuItem = async () => {
     const updatedMenuRecipes = menu.items.filter(
-      (recipeToRemove) => recipeToRemove.id !== menuItem.id
+      (recipeToRemove) => recipeToRemove.menuItemId !== menuItem.menuItemId
     );
     menu.items = updatedMenuRecipes;
     await menuService.updateMenu(menu.id, menu);

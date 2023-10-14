@@ -3,6 +3,7 @@ import { Recipe, Menu } from "../types";
 import recipeService from "../services/recipes";
 import BackButton from "../components/BackButton";
 import menuService from "../services/menus";
+import { v4 as uuidv4 } from "uuid";
 
 export interface componentProps {
   recipes: Recipe[];
@@ -35,7 +36,8 @@ const RecipeList = ({
     menuId: string | undefined,
     recipeId: string | undefined
   ) => {
-    const recipeToAdd = recipes.find((recipe) => recipe.id === recipeId);
+    let recipeToAdd = recipes.find((recipe) => recipe.id === recipeId);
+    if (recipeToAdd) recipeToAdd = { ...recipeToAdd, menuItemId: uuidv4() };
     const updatedMenu = menus.find((menu) => menu.id === menuId);
     if (updatedMenu && recipeToAdd) {
       updatedMenu.items = updatedMenu.items.concat(recipeToAdd);

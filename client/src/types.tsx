@@ -45,6 +45,7 @@ export interface Recipe {
   drinkPairings: string;
   checked: boolean;
   notes: string;
+  menuItemId?: string;
 }
 
 export interface Menu {
