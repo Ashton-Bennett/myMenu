@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ingredient, Recipe } from "../types";
 import InputField from "../components/RecipeForm/InputField";
 import InputFieldRadio from "../components/RecipeForm/InputFieldRadio";
@@ -11,6 +11,7 @@ import NotesTextArea from "../components/RecipeForm/NotesTextArea";
 import { v4 as uuidv4 } from "uuid";
 import { isHeading } from "../types";
 import HeadingInput from "../components/RecipeForm/HeadingInput";
+const pdfjs = require("pdfjs-dist");
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -159,9 +160,99 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     }
   };
 
+  const [uploadedFile, setUploadedFile] = useState("");
+  const [response, setResponse] = useState(null);
+  // const fetchData = async () => {
+  //   try {
+  //     const apiKey = "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";
+  //     const endpoint = "https://api.openai.com/v1/chat/completions";
+
+  //     const requestBody = {
+  //       prompt:
+  //         "Translate the following English text to French: 'Hello, how are you?'",
+  //       max_tokens: 5,
+
+  //       model: "gpt-3.5-turbo",
+  //       messages: [
+  //         {
+  //           role: "system",
+  //           content: "You are a helpful assistant.",
+  //         },
+  //         {
+  //           role: "user",
+  //           content: "Hello!",
+  //         },
+  //       ],
+  //     };
+
+  //     const headers = {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${apiKey}`,
+  //     };
+
+  //     const result = await axios.post(endpoint, requestBody, { headers });
+  //     setResponse(result.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
+  console.log("response:", response);
+  const userUploadFile = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        const fileContents = e.target.result;
+        // Check if the uploaded file is a PDF
+        if (file.type === "application/pdf") {
+          try {
+            // Initialize PDF.js with the text layer
+            pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+            const loadingTask = pdfjs.getDocument({ data: fileContents });
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
+            const numPages = pdf.numPages;
+            let pdfText = "";
+
+            for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+              const page = await pdf.getPage(pageNumber);
+              const textContent = await page.getTextContent();
+              pdfText += textContent.items.map((item) => item.str).join("");
+            }
+            console.log("text:", pdfText);
+            // fetchData();
+            setUploadedFile(pdfText);
+          } catch (error) {
+            console.error("Error loading PDF:", error);
+            setUploadedFile("Error loading PDF.");
+          }
+        } else {
+          console.log("File is not a PDF.");
+          setUploadedFile("File is not a PDF.");
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    } else {
+      console.log("No file selected.");
+    }
+  };
+
   return (
     <form onSubmit={addRecipe}>
       <h2>Add Recipe </h2>
+      <label htmlFor="fileInput">Upload recipe:</label>
+      <input
+        id="fileInput"
+        onChange={userUploadFile}
+        type="file"
+        accept=".txt, .pdf, .docx, .doc, .html, .xml, .xlsx, .xls, .epub, .mobi"
+      ></input>
+      <br></br>
       <InputField
         name="name"
         value={newRecipe.name}

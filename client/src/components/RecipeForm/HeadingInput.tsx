@@ -41,21 +41,6 @@ const HeadingInput = ({
       return { ...prevRecipe, ingredients: copy };
     });
   };
-
-  //   const handleHeadingChange = (event: {
-  //     target: { value: SetStateAction<string> };
-  //   }) => {
-  //     setHeading({ ...heading, text: event.target.value as string });
-  //   };
-
-  //   useEffect(() => {
-  //     if (heading.text.length > 1) {
-  //       const copy = [...newRecipe.ingredients];
-  //       copy[i] = heading;
-  //       setNewRecipe({ ...newRecipe, ingredients: copy });
-  //     }
-  //   }, [heading]);
-
   const handleDeleteIngredient = (i: number) => {
     const updatedIngredientsArray = newRecipe.ingredients.filter(
       (_, index) => index !== i

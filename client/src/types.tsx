@@ -48,6 +48,30 @@ export interface Recipe {
   menuItemId?: string;
 }
 
+export interface Recipe {
+  name: string;
+  servings: number;
+  ingredients: IngredientOrHeading[];
+  cookTime: number;
+  prepTime: number;
+  directions: string[];
+  category: "dinner" | "cocktail" | "other" | "";
+  region:
+    | "north american"
+    | "central american"
+    | "south american"
+    | "european"
+    | "asian"
+    | "african"
+    | "";
+  country: string;
+  story: string;
+  drinkPairings: string;
+  checked: boolean;
+  notes: string;
+  menuItemId?: string;
+}
+
 export interface Menu {
   id?: string | undefined;
   name: string;

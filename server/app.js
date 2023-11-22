@@ -1,4 +1,5 @@
 const config = require("./utils/config");
+console.log(config);
 const express = require("express");
 const app = express();
 const cors = require("cors");
