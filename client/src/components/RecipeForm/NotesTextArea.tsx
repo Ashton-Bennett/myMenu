@@ -16,6 +16,7 @@ const NotesTextArea = ({ setNewRecipe, newRecipe }: ComponentProps) => {
         onChange={(e) =>
           setNewRecipe((prev: Recipe) => ({ ...prev, notes: e.target.value }))
         }
+        style={{ width: "80%" }}
       />
     </>
   );

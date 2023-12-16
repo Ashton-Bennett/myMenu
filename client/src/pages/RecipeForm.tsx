@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Ingredient, Recipe } from "../types";
 import InputField from "../components/RecipeForm/InputField";
 import InputFieldRadio from "../components/RecipeForm/InputFieldRadio";
@@ -11,7 +11,7 @@ import NotesTextArea from "../components/RecipeForm/NotesTextArea";
 import { v4 as uuidv4 } from "uuid";
 import { isHeading } from "../types";
 import HeadingInput from "../components/RecipeForm/HeadingInput";
-const pdfjs = require("pdfjs-dist");
+import UserUploadFileInput from "./UserUploadFileInput";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -116,142 +116,69 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
 
   const addRecipe = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      const updatedIngredientsToNumberType = newRecipe.ingredients.map(
-        (ingredientOrHeading) => {
-          if ("amount" in ingredientOrHeading) {
-            const ingredient = ingredientOrHeading as Ingredient;
-            return { ...ingredient, amount: Number(ingredient.amount) };
-          } else {
-            return ingredientOrHeading;
-          }
-        }
-      );
-      const updatedNewRecipeIngredientAmountToNumber = {
-        ...newRecipe,
-        ingredients: updatedIngredientsToNumberType,
-      };
-      await recipeService.addRecipe(updatedNewRecipeIngredientAmountToNumber);
-
-      const newRecipeList: Recipe[] | undefined = await recipeService.getAll();
-      if (newRecipeList) {
-        setRecipes(newRecipeList);
-        setNewRecipe({
-          id: null,
-          name: "",
-          servings: 0,
-          ingredients: [],
-          prepTime: 0,
-          cookTime: 0,
-          directions: [""],
-          category: "",
-          region: "",
-          country: "",
-          story: "",
-          drinkPairings: "",
-          checked: false,
-          notes: "",
-        });
-      }
-      navigate(-1);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const [uploadedFile, setUploadedFile] = useState("");
-  const [response, setResponse] = useState(null);
-  // const fetchData = async () => {
-  //   try {
-  //     const apiKey = "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";
-  //     const endpoint = "https://api.openai.com/v1/chat/completions";
-
-  //     const requestBody = {
-  //       prompt:
-  //         "Translate the following English text to French: 'Hello, how are you?'",
-  //       max_tokens: 5,
-
-  //       model: "gpt-3.5-turbo",
-  //       messages: [
-  //         {
-  //           role: "system",
-  //           content: "You are a helpful assistant.",
-  //         },
-  //         {
-  //           role: "user",
-  //           content: "Hello!",
-  //         },
-  //       ],
-  //     };
-
-  //     const headers = {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${apiKey}`,
-  //     };
-
-  //     const result = await axios.post(endpoint, requestBody, { headers });
-  //     setResponse(result.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  console.log("response:", response);
-  const userUploadFile = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = async (e) => {
-        const fileContents = e.target.result;
-        // Check if the uploaded file is a PDF
-        if (file.type === "application/pdf") {
-          try {
-            // Initialize PDF.js with the text layer
-            pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
-            const loadingTask = pdfjs.getDocument({ data: fileContents });
-            const pdf = await loadingTask.promise;
-            const page = await pdf.getPage(1);
-            const numPages = pdf.numPages;
-            let pdfText = "";
-
-            for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-              const page = await pdf.getPage(pageNumber);
-              const textContent = await page.getTextContent();
-              pdfText += textContent.items.map((item) => item.str).join("");
+    let doesntHaveBadIngredient = newRecipe.ingredients.every(
+      (ingredient) => "id" in ingredient && ingredient.id !== null
+    );
+    const addRecipeInnerFunc = async () => {
+      try {
+        const updatedIngredientsToNumberType = newRecipe.ingredients.map(
+          (ingredientOrHeading) => {
+            if ("amount" in ingredientOrHeading) {
+              const ingredient = ingredientOrHeading as Ingredient;
+              return { ...ingredient, amount: Number(ingredient.amount) };
+            } else {
+              return ingredientOrHeading;
             }
-            console.log("text:", pdfText);
-            // fetchData();
-            setUploadedFile(pdfText);
-          } catch (error) {
-            console.error("Error loading PDF:", error);
-            setUploadedFile("Error loading PDF.");
           }
-        } else {
-          console.log("File is not a PDF.");
-          setUploadedFile("File is not a PDF.");
-        }
-      };
+        );
+        const updatedNewRecipeIngredientAmountToNumber = {
+          ...newRecipe,
+          ingredients: updatedIngredientsToNumberType,
+        };
+        await recipeService.addRecipe(updatedNewRecipeIngredientAmountToNumber);
 
-      reader.readAsArrayBuffer(file);
-    } else {
-      console.log("No file selected.");
-    }
+        const newRecipeList: Recipe[] | undefined =
+          await recipeService.getAll();
+        if (newRecipeList) {
+          setRecipes(newRecipeList);
+          setNewRecipe({
+            id: null,
+            name: "",
+            servings: 0,
+            ingredients: [],
+            prepTime: 0,
+            cookTime: 0,
+            directions: [""],
+            category: "",
+            region: "",
+            country: "",
+            story: "",
+            drinkPairings: "",
+            checked: false,
+            notes: "",
+          });
+        }
+        navigate(-1);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (!doesntHaveBadIngredient) {
+      if (
+        window.confirm(
+          `Are you sure you would like to Add this recipe? Ingredients marked red are not in the Database!`
+        )
+      ) {
+        addRecipeInnerFunc();
+      }
+    } else addRecipeInnerFunc();
   };
 
   return (
     <form onSubmit={addRecipe}>
       <h2>Add Recipe </h2>
-      <label htmlFor="fileInput">Upload recipe:</label>
-      <input
-        id="fileInput"
-        onChange={userUploadFile}
-        type="file"
-        accept=".txt, .pdf, .docx, .doc, .html, .xml, .xlsx, .xls, .epub, .mobi"
-      ></input>
+
+      <UserUploadFileInput setNewRecipe={setNewRecipe} />
       <br></br>
       <InputField
         name="name"
@@ -276,7 +203,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <br></br>
         {newRecipe.ingredients.map((value, i) => {
           return (
-            <div key={`${value.id} + ${i}`}>
+            <div style={{ display: "flex" }} key={`${value.id} + ${i}`}>
               {isHeading(value) ? (
                 <HeadingInput
                   i={i}
@@ -343,6 +270,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
             <div key={`direction${i}`}>
               <label htmlFor={`direction${i}`}>{`${i + 1}`}</label>
               <input
+                style={{ width: "80%" }}
                 id={`direction${i}`}
                 data-testid={`direction${i}`}
                 type="text"

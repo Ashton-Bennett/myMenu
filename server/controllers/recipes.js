@@ -1,11 +1,22 @@
 const recipeRouter = require("express").Router();
 const Recipe = require("../models/recipe");
 const logger = require("../utils/logger");
+const recipeFormat = require("../utils/openAi");
 
 recipeRouter.get("/", (request, response, next) => {
   Recipe.find({})
     .then((recipes) => {
       response.json(recipes);
+    })
+    .catch((error) => next(error));
+});
+
+recipeRouter.get("/recipe-upload", (request, response, next) => {
+  // WORKS WHEN TESTING THE BACKEND REQUEST ONLY -> const recipe = request.body.recipe;
+  const recipe = request.query.recipe;
+  recipeFormat(recipe)
+    .then((completion) => {
+      completion ? response.json(completion) : response.status(404).end();
     })
     .catch((error) => next(error));
 });

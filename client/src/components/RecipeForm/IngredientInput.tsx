@@ -1,6 +1,7 @@
 import { ChangeEventHandler, SetStateAction, useEffect, useState } from "react";
 import { Ingredient, Recipe } from "../../types";
 import IngredientSearchInput from "./IngredientSearchInput";
+import IngredientNameInput from "./IngredientNameInput";
 
 interface ComponentProps {
   i: number;
@@ -54,14 +55,8 @@ const IngredientInput = ({
     });
   };
 
-  const handleIngredientChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setIngredient({ ...ingredient, name: event.target.value as string });
-  };
-
   useEffect(() => {
-    if (ingredient.name.length > 1) {
+    if (ingredient?.name?.length > 1) {
       const copy = [...newRecipe.ingredients];
       copy[i] = ingredient;
       setNewRecipe({ ...newRecipe, ingredients: copy });
@@ -79,18 +74,12 @@ const IngredientInput = ({
   };
 
   return (
-    <>
-      <label htmlFor={`ingredient${i} ${ingredient.name}`}>
-        Ingredient:
-        <input
-          id={`ingredient${i} ${ingredient.name}`}
-          data-testid={`ingredient${i} ${ingredient.name}`}
-          type="text"
-          value={ingredient.name}
-          onChange={handleIngredientChange}
-        />
-      </label>
-
+    <div style={value?.id ? undefined : { border: "2px solid red" }}>
+      <IngredientNameInput
+        i={i}
+        ingredient={ingredient}
+        setIngredient={setIngredient}
+      />
       <label htmlFor={`ingredient${i} quantity`}>
         Quantity:
         <input
@@ -128,7 +117,7 @@ const IngredientInput = ({
         ingredient={ingredient}
         setIngredient={setIngredient}
       />
-    </>
+    </div>
   );
 };
 

@@ -19,23 +19,11 @@ import Ingredients from "./pages/Ingredients";
 import IngredientUpdateForm from "./components/Ingredients/IngredientUpdateForm";
 import AddIngredientForm from "./components/Ingredients/AddAndUpdateIngredientForm";
 import IngredientsListView from "./components/Ingredients/IngredientsListView";
-// import {
-//   addItemsToDB,
-//   removeAllItemsInArrayFromDb,
-//   removeUppercaseExceptSeason,
-// } from "./utils/dataBaseBuilders/databaseBuilder";
-// import { middleAisleItems } from "./utils/dataBaseBuilders/dataBaseBuilderMiddleAisles";
+
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [menus, setMenus] = useState<Menu[]>([]);
   const [user, setUser] = useState<User>();
-
-  useEffect(() => {
-    // removeAllItemsInArrayFromDb(meatDepartmentSeafoodItems);
-    // removeAllItemsFromDb();
-    // addItemsToDB(removeUppercaseExceptSeason(middleAisleItems));
-  }, []);
-
   useEffect(() => {
     recipeService.getAll().then((response) => {
       if (response) {

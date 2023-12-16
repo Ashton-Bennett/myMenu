@@ -30,7 +30,6 @@ const IngredientSearchInput = ({
           return alias.toLowerCase().includes(ingredient.name.toLowerCase());
         });
       });
-
       setIngredientsToDisplay(filteredIngredients);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

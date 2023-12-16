@@ -60,8 +60,29 @@ const updateRecipe = (id: string | undefined, updatedRecipe: Recipe) => {
   }
 };
 
+const getFormattedRecipe = async (recipeString: string): Promise<any> => {
+  const formattedRecipeString = { recipe: recipeString };
+
+  try {
+    const response = await axios.get(`${baseUrl}/recipe-upload`, {
+      params: formattedRecipeString,
+    });
+
+    if (response) {
+      return response.data[0].message.content;
+    }
+
+    console.error("Unexpected response format:", response);
+    return null;
+  } catch (error) {
+    console.error("Error during recipe upload:", error);
+    throw error;
+  }
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  getFormattedRecipe,
   getAll,
   deleteRecipe,
   getSingleRecipe,

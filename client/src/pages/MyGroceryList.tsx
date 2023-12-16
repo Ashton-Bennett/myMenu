@@ -81,8 +81,6 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
     }
   };
 
-  console.log("userLIst", user.userGroceryList);
-
   return (
     <>
       <h1 id="top">My Grocery List</h1>
