@@ -1,5 +1,8 @@
 const OpenAI = require("openai");
-const apiKey = "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";
+const config = require("./config");
+
+const apiKey = config.OPENAI_API_KEY;
+
 const openai = new OpenAI({ apiKey: apiKey });
 const recipeFormatter = async (recipeString) => {
   const prompt = `You are a recipe formatter. Take the recipe string and convert it into a recipe JSON object with the following format:

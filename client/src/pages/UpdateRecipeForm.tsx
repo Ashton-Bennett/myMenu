@@ -167,7 +167,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <label>Ingredients/amount </label>
         {recipeToUpdate.ingredients.map((value, i) => {
           return (
-            <div key={`${value.id} + ${i}`}>
+            <div key={`${value.id} + ${i}`} style={{ display: "flex" }}>
               {isHeading(value) ? (
                 <HeadingInput
                   i={i}
@@ -236,6 +236,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
             <div key={`direction${i}`}>
               <label htmlFor={`direction${i}`}>{`${i + 1}`}</label>
               <input
+                style={{ width: "80%" }}
                 id={`direction${i}`}
                 data-testid={`direction${i}`}
                 type="text"

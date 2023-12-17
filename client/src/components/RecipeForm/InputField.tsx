@@ -19,7 +19,11 @@ const InputField = ({
     <>
       <label htmlFor={label}>{label}</label>
       <input
-        style={label === "Story" ? { width: "80%" } : undefined}
+        style={
+          label === "Story" || label === "Name of recipe"
+            ? { width: "80%" }
+            : undefined
+        }
         id={label}
         value={value}
         type={type}
