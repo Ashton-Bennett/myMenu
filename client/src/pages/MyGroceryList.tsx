@@ -6,8 +6,8 @@ import groceryListService from "../services/groceryList";
 import AddItemForm from "../components/myGroceryList/AddItemForm";
 import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
 import { io } from "socket.io-client";
-
-export const socket = io("http://localhost:3000");
+// sometimes http://localhost:3000
+export const socket = io(undefined);
 export const updatedUserWithSocket = (userObj: User) => {
   socket.emit("update_user", userObj);
 };
