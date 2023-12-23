@@ -177,7 +177,6 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
   return (
     <form onSubmit={addRecipe}>
       <h2>Add Recipe </h2>
-
       <UserUploadFileInput setNewRecipe={setNewRecipe} />
       <br></br>
       <InputField

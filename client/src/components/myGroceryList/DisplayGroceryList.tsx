@@ -7,19 +7,33 @@ interface ComponentProps {
   list: Ingredient[];
   user: User;
   setUser: Function;
+  socket: Function;
 }
 
-const DisplayGroceryList = ({ name, list, user, setUser }: ComponentProps) => {
+const DisplayGroceryList = ({
+  name,
+  list,
+  user,
+  setUser,
+  socket,
+}: ComponentProps) => {
   const deleteIngredient = (Ingredient: Ingredient) => {
-    const updatedUser = {
-      ...user,
-      userGroceryList: user?.userGroceryList.filter(
-        (ingredientInUserGroceryList) =>
-          ingredientInUserGroceryList.groceryListId !== Ingredient.groceryListId
-      ),
-    };
-    userService.updateUser(updatedUser.id, updatedUser);
-    setUser(updatedUser);
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete ${Ingredient.alias[0]}?`
+    );
+    if (isConfirmed) {
+      const updatedUser = {
+        ...user,
+        userGroceryList: user?.userGroceryList.filter(
+          (ingredientInUserGroceryList) =>
+            ingredientInUserGroceryList.groceryListId !==
+            Ingredient.groceryListId
+        ),
+      };
+      userService.updateUser(updatedUser.id, updatedUser);
+      setUser(updatedUser);
+      socket(updatedUser);
+    }
   };
 
   const handleCheckOffIngredient = (event: any, ingredient: Ingredient) => {
@@ -35,6 +49,7 @@ const DisplayGroceryList = ({ name, list, user, setUser }: ComponentProps) => {
       ...prevUser,
       userGroceryList: updatedList,
     }));
+    socket({ ...user, userGroceryList: updatedList });
   };
 
   return (
@@ -57,6 +72,7 @@ const DisplayGroceryList = ({ name, list, user, setUser }: ComponentProps) => {
               >
                 Delete
               </button>
+              &nbsp;&nbsp;&nbsp;
               <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
                 Check off
               </button>

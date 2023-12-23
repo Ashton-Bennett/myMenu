@@ -5,8 +5,9 @@ import { v4 as uuidv4 } from "uuid";
 interface componentProps {
   user?: User;
   setUser: Function;
+  socket: Function;
 }
-const AddItemForm = ({ user, setUser }: componentProps) => {
+const AddItemForm = ({ user, setUser, socket }: componentProps) => {
   const [inputValues, setInputValues] = useState<Ingredient>({
     name: "",
     alias: [],
@@ -26,6 +27,7 @@ const AddItemForm = ({ user, setUser }: componentProps) => {
         userGroceryList: [...user.userGroceryList, inputValues],
       };
       setUser(updatedUser);
+      socket(updatedUser);
     }
 
     setInputValues({

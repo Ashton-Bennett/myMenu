@@ -39,6 +39,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
         .sort();
       setList(sortedList);
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -69,6 +70,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
           ),
         };
       });
+
       const updatedUser = {
         ...user,
         userGroceryList: user.userGroceryList.concat(
@@ -79,7 +81,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
     }
     navigate("/myGroceryList");
   };
-  console.log();
+
   return (
     <>
       <h1>Shopping List for {menu?.name}:</h1>

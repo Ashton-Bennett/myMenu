@@ -5,6 +5,12 @@ import { User } from "../types";
 import groceryListService from "../services/groceryList";
 import AddItemForm from "../components/myGroceryList/AddItemForm";
 import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
+import { io } from "socket.io-client";
+
+export const socket = io("http://localhost:3000");
+export const updatedUserWithSocket = (userObj: User) => {
+  socket.emit("update_user", userObj);
+};
 
 interface ComponentProps {
   setUser: Function;
@@ -22,6 +28,26 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
   const [frozenList, setFrozenList] = useState<Ingredient[]>([]);
   const [deliList, setDeliList] = useState<Ingredient[]>([]);
   const [scrollToTop, setScrollToTop] = useState(true);
+
+  useEffect(() => {
+    socket.connect();
+    updatedUserWithSocket({ ...user });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("share_updated_user", (data) => {
+      setUser(data);
+    });
+
+    return () => {
+      socket.off("share_updated_user", (data) => {
+        setUser(data);
+      });
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (user) {
@@ -78,6 +104,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       setFrozenList([]);
       setDeliList([]);
       setUser((prev: any) => ({ ...prev, userGroceryList: [] }));
+      updatedUserWithSocket({ ...user, userGroceryList: [] });
     }
   };
 
@@ -89,6 +116,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         list={deliList}
         user={user}
         setUser={setUser}
+        socket={updatedUserWithSocket}
       />
 
       <DisplayGroceryList
@@ -96,6 +124,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         list={produceList}
         user={user}
         setUser={setUser}
+        socket={updatedUserWithSocket}
       />
 
       <DisplayGroceryList
@@ -103,6 +132,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         list={middleAislesList}
         user={user}
         setUser={setUser}
+        socket={updatedUserWithSocket}
       />
 
       <DisplayGroceryList
@@ -110,6 +140,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         list={meatDepartmentList}
         user={user}
         setUser={setUser}
+        socket={updatedUserWithSocket}
       />
 
       <DisplayGroceryList
@@ -117,6 +148,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         list={frozenList}
         user={user}
         setUser={setUser}
+        socket={updatedUserWithSocket}
       />
 
       <DisplayGroceryList
@@ -124,6 +156,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         list={dairyList}
         user={user}
         setUser={setUser}
+        socket={updatedUserWithSocket}
       />
 
       <DisplayGroceryList
@@ -131,12 +164,17 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
         list={otherList}
         user={user}
         setUser={setUser}
+        socket={updatedUserWithSocket}
       />
 
       <br></br>
       <br></br>
       <br></br>
-      <AddItemForm user={user} setUser={setUser} />
+      <AddItemForm
+        socket={updatedUserWithSocket}
+        user={user}
+        setUser={setUser}
+      />
       <br></br>
       <br></br>
       <button onClick={handleClearList}>Clear list</button>
