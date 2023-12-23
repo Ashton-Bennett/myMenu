@@ -3,9 +3,9 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
-  // cors: {
-  //   origin: "http://localhost:3001/",
-  // },
+  cors: {
+    origin: "/myGroceryList",
+  },
 });
 
 io.on("connection", (socket) => {
