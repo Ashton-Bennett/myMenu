@@ -24,6 +24,7 @@ function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [menus, setMenus] = useState<Menu[]>([]);
   const [user, setUser] = useState<User>();
+
   useEffect(() => {
     recipeService.getAll().then((response) => {
       if (response) {
