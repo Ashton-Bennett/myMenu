@@ -58,6 +58,8 @@ const DisplayGroceryList = ({
       <br></br>
       <h2>{name}:</h2>
       {list.sort(sortByName).map((ingredient, i) => {
+        const ingredientDisplayName =
+          ingredient?.alias?.length > 1 ? ingredient.alias : ingredient.name;
         return (
           <div key={ingredient.name + i}>
             <p
@@ -65,7 +67,8 @@ const DisplayGroceryList = ({
                 textDecoration: ingredient.checked ? "line-through" : "none",
               }}
             >
-              {ingredient.alias} {ingredient.amount} {ingredient.unitOfMeasure}
+              {ingredientDisplayName} {ingredient.amount}{" "}
+              {ingredient.unitOfMeasure}
               <button
                 value={`${ingredient.name}${i}`}
                 onClick={() => ingredient && deleteIngredient(ingredient)}

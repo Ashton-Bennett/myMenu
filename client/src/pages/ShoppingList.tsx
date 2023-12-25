@@ -56,7 +56,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
     const ingredientsThatAreNotCheckedOff = list.filter((ingredient) => {
       return (
         !ingredient.checked &&
-        ingredient.name.toLowerCase() !== "water" &&
+        ingredient.id !== "64cc05a3a72c0a3d1db099b7" &&
         ingredient !== undefined
       );
     });
