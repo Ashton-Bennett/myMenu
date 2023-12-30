@@ -27,7 +27,8 @@
     "mongodb": "4.1",
     "mongoose": "^7.3.0",
     "openai": "^4.19.1",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.2.15",

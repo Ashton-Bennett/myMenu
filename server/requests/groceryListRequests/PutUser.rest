@@ -1,9 +1,0 @@
-PUT http://localhost:3001/api/user/64a18a0a346b600ca2fabdbb
-Content-Type: application/json
-
-{
-  "name":"ashton bennett",
-  "userRecipes": [],
-  "userGroceryList": [{"somthing":"somewhere"}],
-  "userMenus": []
-}
