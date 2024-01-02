@@ -9,8 +9,13 @@ import userServices from "../services/user";
 interface componentProps {
   setUser: Function;
   user?: User;
+  updatedUserWithSocket: Function;
 }
-const ShoppingList = ({ setUser, user }: componentProps) => {
+const ShoppingList = ({
+  setUser,
+  user,
+  updatedUserWithSocket,
+}: componentProps) => {
   const [menu, setMenu] = useState<Menu>();
   const { id } = useParams();
   const [list, setList] = useState<Ingredient[]>([]);
@@ -78,6 +83,7 @@ const ShoppingList = ({ setUser, user }: componentProps) => {
         ),
       };
       userServices.updateUser(user.id, updatedUser);
+      updatedUserWithSocket(updatedUser);
     }
     navigate("/myGroceryList");
   };

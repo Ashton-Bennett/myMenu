@@ -5,19 +5,20 @@ import { User } from "../types";
 import groceryListService from "../services/groceryList";
 import AddItemForm from "../components/myGroceryList/AddItemForm";
 import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
-import { io } from "socket.io-client";
-
-const socket = io();
-const updatedUserWithSocket = (userObj: User) => {
-  socket.emit("update_user", userObj);
-};
 
 interface ComponentProps {
   setUser: Function;
   user: User;
+  updatedUserWithSocket: Function;
+  socket: any;
 }
 
-const MyGroceryList = ({ setUser, user }: ComponentProps) => {
+const MyGroceryList = ({
+  setUser,
+  user,
+  updatedUserWithSocket,
+  socket,
+}: ComponentProps) => {
   const [produceList, setProduceList] = useState<Ingredient[]>([]);
   const [meatDepartmentList, setMeatDepartmentList] = useState<Ingredient[]>(
     []
@@ -30,20 +31,12 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
   const [scrollToTop, setScrollToTop] = useState(true);
 
   useEffect(() => {
-    socket.connect();
-    updatedUserWithSocket({ ...user });
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    socket.on("share_updated_user", (data) => {
+    socket.on("share_updated_user", (data: User) => {
       setUser(data);
     });
 
     return () => {
-      socket.off("share_updated_user", (data) => {
+      socket.off("share_updated_user", (data: User) => {
         setUser(data);
       });
     };
@@ -59,7 +52,7 @@ const MyGroceryList = ({ setUser, user }: ComponentProps) => {
       let deli: Ingredient[] = [];
       let other: Ingredient[] = [];
 
-      (user.userGroceryList as Ingredient[]).forEach((ingredient) => {
+      (user?.userGroceryList as Ingredient[]).forEach((ingredient) => {
         if (ingredient.groceryStoreLocation === "produce") {
           produce = produce.concat({ ...ingredient, name: ingredient.name });
         } else if (ingredient.groceryStoreLocation === "dairy") {

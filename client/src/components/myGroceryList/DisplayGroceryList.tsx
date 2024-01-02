@@ -19,7 +19,7 @@ const DisplayGroceryList = ({
 }: ComponentProps) => {
   const deleteIngredient = (Ingredient: Ingredient) => {
     const isConfirmed = window.confirm(
-      `Are you sure you want to delete ${Ingredient.alias[0]}?`
+      `Are you sure you want to delete ${Ingredient.name}?`
     );
     if (isConfirmed) {
       const updatedUser = {

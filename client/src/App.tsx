@@ -20,6 +20,12 @@ import IngredientUpdateForm from "./components/Ingredients/IngredientUpdateForm"
 import AddIngredientForm from "./components/Ingredients/AddAndUpdateIngredientForm";
 import IngredientsListView from "./components/Ingredients/IngredientsListView";
 
+import { io } from "socket.io-client";
+
+const socket = io();
+const updatedUserWithSocket = (userObj: User) => {
+  socket.emit("update_user", userObj);
+};
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [menus, setMenus] = useState<Menu[]>([]);
@@ -43,6 +49,11 @@ function App() {
         setUser(response[0]);
       }
     });
+
+    socket.connect();
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -90,15 +101,29 @@ function App() {
       <Route path="/addMenu" element={<AddNewmenuForm />} />
       <Route
         path="/shoppingList/:id"
-        element={<ShoppingList setUser={setUser} user={user} />}
+        element={
+          <ShoppingList
+            setUser={setUser}
+            user={user}
+            updatedUserWithSocket={updatedUserWithSocket}
+          />
+        }
       />
       <Route
         path="/myGroceryList"
         element={
-          user ? <MyGroceryList setUser={setUser} user={user} /> : <NotFound />
+          user ? (
+            <MyGroceryList
+              setUser={setUser}
+              user={user}
+              socket={socket}
+              updatedUserWithSocket={updatedUserWithSocket}
+            />
+          ) : (
+            <NotFound />
+          )
         }
       />
-
       <Route path="/ingredients" element={<Ingredients />} />
       <Route
         path="/ingredients/update/:id"

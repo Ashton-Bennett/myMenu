@@ -12,11 +12,10 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("A user connected to WebSocket their id:", socket.id);
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
+  socket.on("disconnect", (socket) => {
+    console.log(`User with id ${socket.id} disconnected`);
   });
   socket.on("update_user", (userObj) => {
-    console.log("SOCKET UPDATED GROCERYLIST:", userObj.userGroceryList);
     socket.broadcast.emit("share_updated_user", userObj);
   });
 });
