@@ -1,6 +1,7 @@
 const groceryListRouter = require("express").Router();
 const User = require("../models/user");
 const { v4: uuidv4 } = require("uuid");
+
 groceryListRouter.get("/:id", (request, response, next) => {
   const id = request.params.id;
   User.findById(id)

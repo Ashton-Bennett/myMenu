@@ -25,6 +25,12 @@ const Home = () => {
           <button>Ingredients</button>
         </Link>
       </div>
+      <div style={{ bottom: "15px", position: "absolute", width: "300px" }}>
+        <Link to="/termsOfUse">Terms of use</Link>
+        <Link style={{ padding: "1rem" }} to="/privacyPolicy">
+          Privacy Policy
+        </Link>
+      </div>
     </>
   );
 };

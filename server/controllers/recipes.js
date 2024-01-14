@@ -12,7 +12,6 @@ recipeRouter.get("/", (request, response, next) => {
 });
 
 recipeRouter.get("/recipe-upload", (request, response, next) => {
-  // WORKS WHEN TESTING THE BACKEND REQUEST ONLY -> const recipe = request.body.recipe;
   const recipe = request.query.recipe;
   recipeFormat(recipe)
     .then((completion) => {
