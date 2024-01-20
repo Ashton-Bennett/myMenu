@@ -20,8 +20,6 @@ import IngredientUpdateForm from "./components/Ingredients/IngredientUpdateForm"
 import AddIngredientForm from "./components/Ingredients/AddAndUpdateIngredientForm";
 import IngredientsListView from "./components/Ingredients/IngredientsListView";
 import { io } from "socket.io-client";
-import TermsOfUse from "./pages/TermsOfUse";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const socket = io();
 const updatedUserWithSocket = (userObj: User) => {
@@ -135,8 +133,6 @@ function App() {
         path="/ingredients/addNew"
         element={<AddIngredientForm componentType="add" />}
       />
-      <Route path="/termsOfUse" element={<TermsOfUse />} />
-      <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

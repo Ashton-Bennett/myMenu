@@ -25,11 +25,17 @@ const Home = () => {
           <button>Ingredients</button>
         </Link>
       </div>
-      <div style={{ bottom: "15px", position: "absolute", width: "300px" }}>
-        <Link to="/termsOfUse">Terms of use</Link>
-        <Link style={{ padding: "1rem" }} to="/privacyPolicy">
+      <div style={{ bottom: "15px", position: "absolute", width: "375px" }}>
+        <a href="/legal/terms-of-use.html" title="terms of use">
+          Terms of use
+        </a>
+        <a
+          style={{ padding: "1rem" }}
+          href="/legal/privacy-policy.html"
+          title="privacy policy"
+        >
           Privacy Policy
-        </Link>
+        </a>
       </div>
     </>
   );
