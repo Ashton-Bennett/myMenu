@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import Staples from "../components/Ingredients/Staples";
+import { User } from "../types";
 
-const Ingredients = () => {
+interface componentProps {
+  user?: User;
+  setUser?: Function;
+}
+const Ingredients = ({ user, setUser }: componentProps) => {
   return (
     <>
       <h1>Ingredients:</h1>
+      <p>Ingredients in the database:</p>
       <Link to="/ingredients/addNew">
         <button>Add</button>
       </Link>
@@ -12,6 +19,11 @@ const Ingredients = () => {
       <Link to="/ingredients/view">
         <button>View</button>
       </Link>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <Staples user={user} setUser={setUser} />
       <br></br>
       <br></br>
       <br></br>

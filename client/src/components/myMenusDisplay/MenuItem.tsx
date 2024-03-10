@@ -28,7 +28,7 @@ const MenuItem = ({ menuItem, i, menu, setMenus, menus }: componentProps) => {
 
     const updatedRecipe = { ...recipe, checked: !recipe.checked };
     const updatedMenu = menu.items.map((menuRecipe: Recipe) => {
-      if (menuRecipe.id === recipe.id) {
+      if (menuRecipe.menuItemId === recipe.menuItemId) {
         return updatedRecipe;
       }
       return menuRecipe;

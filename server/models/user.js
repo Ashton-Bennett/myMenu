@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
   userRecipes: Array,
   userGroceryList: Array,
   userMenus: Array,
+  userStapleIngredients: {
+    itemsToNeverAdd: Array,
+    quickAddItems: Array,
+  },
 });
 
 userSchema.set("toJSON", {

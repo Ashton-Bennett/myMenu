@@ -49,7 +49,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
               alias: [""],
               season: [],
               pairings: [""],
-              groceryListId: undefined,
+              groceryListId: uuidv4(),
               checked: false,
               amount: undefined,
               unitOfMeasure: undefined,
@@ -95,7 +95,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       } else if (arrayToChange === "ingredients") {
         const ingredients = [...updatedRecipe.ingredients];
         const currentLocation = ingredients.indexOf(ingredients[key]);
-
+        console.log(ingredients, currentLocation);
         if (direction === "up" && currentLocation > 0) {
           const movingInput = ingredients.splice(currentLocation, 1);
           ingredients.splice(currentLocation - 1, 0, movingInput[0]);
@@ -173,7 +173,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       }
     } else addRecipeInnerFunc();
   };
-
+  console.log(newRecipe.ingredients);
   return (
     <form onSubmit={addRecipe}>
       <h2>Add Recipe </h2>
@@ -202,7 +202,10 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <br></br>
         {newRecipe.ingredients.map((value, i) => {
           return (
-            <div style={{ display: "flex" }} key={`${value.id} + ${i}`}>
+            <div
+              style={{ display: "flex" }}
+              key={`${value.id} + ${value.groceryListId}`}
+            >
               {isHeading(value) ? (
                 <HeadingInput
                   i={i}

@@ -167,7 +167,10 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         <label>Ingredients/amount </label>
         {recipeToUpdate.ingredients.map((value, i) => {
           return (
-            <div key={`${value.id} + ${i}`} style={{ display: "flex" }}>
+            <div
+              key={`${value.id} + ${value.groceryListId}`}
+              style={{ display: "flex" }}
+            >
               {isHeading(value) ? (
                 <HeadingInput
                   i={i}

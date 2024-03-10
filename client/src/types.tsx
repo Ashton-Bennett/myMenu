@@ -26,6 +26,7 @@ export interface Heading {
   id: string;
   heading: boolean;
   text: string;
+  groceryListId?: string;
 }
 
 export type IngredientOrHeading = Ingredient | Heading;
@@ -128,6 +129,10 @@ export interface User {
   userGroceryList: Ingredient[];
   userMenus: Menu[];
   id: string;
+  userStapleIngredients: {
+    itemsToNeverAdd: Ingredient[];
+    quickAddItems: Ingredient[];
+  };
 }
 
 export function isHeading(object: IngredientOrHeading): object is Heading {

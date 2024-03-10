@@ -4,7 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import menuService from "../services/menus";
 import { Ingredient, Menu, Recipe, User, isHeading } from "../types";
 import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
+import combineIngredientAmounts, {
+  ingredientLookupMetric,
+  ingredientLookupUnmeasurable,
+} from "../utils/combineIngredientAmounts";
 import userServices from "../services/user";
+import { sortByName } from "../utils/sortByName";
 
 interface componentProps {
   setUser: Function;
@@ -22,29 +27,42 @@ const ShoppingList = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    menuService.getSingleMenu(id).then((response) => {
-      setMenu(response);
-      let recipesOnMenu = response.items.filter((item: Recipe) => {
-        return item.checked !== true;
-      });
-
-      recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
-        return recipe.ingredients.map((ingredient) => {
-          if (isHeading(ingredient)) {
-            return undefined;
-          } else {
-            return findIngredientShoppingLocationAndAddID(ingredient);
-          }
+    if (user) {
+      menuService.getSingleMenu(id).then((response) => {
+        setMenu(response);
+        let recipesOnMenu = response.items.filter((item: Recipe) => {
+          return item.checked !== true;
         });
+
+        recipesOnMenu = recipesOnMenu.map((recipe: Recipe) => {
+          let ingredientsNotToIncludeIds =
+            user?.userStapleIngredients.itemsToNeverAdd.map((ingredient) => {
+              return ingredient.id;
+            });
+          ingredientsNotToIncludeIds = [
+            ...ingredientsNotToIncludeIds,
+            "64cc05a3a72c0a3d1db099b7",
+          ];
+
+          return recipe.ingredients.map((ingredient) => {
+            if (
+              isHeading(ingredient) ||
+              ingredientsNotToIncludeIds.includes(ingredient.id)
+            ) {
+              return undefined;
+            } else {
+              return findIngredientShoppingLocationAndAddID(ingredient);
+            }
+          });
+        });
+
+        const sortedList = recipesOnMenu
+          .flat()
+          .filter((ingredient: Ingredient) => ingredient !== undefined)
+          .sort(sortByName);
+        setList(sortedList);
       });
-
-      const sortedList = recipesOnMenu
-        .flat()
-        .filter((ingredient: Ingredient) => ingredient !== undefined)
-        .sort();
-      setList(sortedList);
-    });
-
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -58,13 +76,58 @@ const ShoppingList = ({
   };
 
   const handleAddToGroceryList = () => {
-    const ingredientsThatAreNotCheckedOff = list.filter((ingredient) => {
-      return (
-        !ingredient.checked &&
-        ingredient.id !== "64cc05a3a72c0a3d1db099b7" &&
-        ingredient !== undefined
-      );
+    var ingredientsThatAreNotCheckedOff = list.filter((ingredient) => {
+      return !ingredient.checked && ingredient !== undefined;
     });
+
+    var arrayOfUnmeasurableIngredients = [];
+    var arrayOfAllMeasurableIngredients = [];
+
+    for (let i = 0; i < ingredientsThatAreNotCheckedOff.length; i++) {
+      if (
+        ingredientsThatAreNotCheckedOff[i] !== undefined &&
+        ingredientsThatAreNotCheckedOff[i].unitOfMeasure !== undefined &&
+        // @ts-ignore
+        ingredientsThatAreNotCheckedOff[i].unitOfMeasure in
+          ingredientLookupUnmeasurable
+      ) {
+        arrayOfUnmeasurableIngredients.push(ingredientsThatAreNotCheckedOff[i]);
+      } else {
+        arrayOfAllMeasurableIngredients.push(
+          ingredientsThatAreNotCheckedOff[i]
+        );
+      }
+    }
+
+    const combineArray1 = combineIngredientAmounts(
+      arrayOfUnmeasurableIngredients
+    );
+    let combineArray2 = combineIngredientAmounts(
+      arrayOfAllMeasurableIngredients
+    );
+
+    // round the ingredient amount
+    combineArray2 = combineArray2.map((ingredient) => {
+      if (ingredient.amount && ingredient.unitOfMeasure) {
+        if (ingredient.unitOfMeasure in ingredientLookupMetric) {
+          return {
+            ...ingredient,
+            amount: Number(Number(ingredient.amount).toFixed(2)),
+          };
+        }
+
+        const roundedNumber =
+          Number(ingredient.amount) > 2
+            ? Math.ceil(Number(ingredient.amount))
+            : Number(Number(ingredient.amount).toFixed(2));
+
+        return { ...ingredient, amount: roundedNumber };
+      } else {
+        return ingredient;
+      }
+    });
+
+    ingredientsThatAreNotCheckedOff = [...combineArray1, ...combineArray2];
 
     if (user && ingredientsThatAreNotCheckedOff) {
       setUser((prev: any) => {
@@ -100,6 +163,7 @@ const ShoppingList = ({
                 id={ingredient.groceryListId}
                 style={{
                   textDecoration: ingredient.checked ? "line-through" : "none",
+                  marginBottom: "8px",
                 }}
               >
                 {ingredient.name} - {ingredient.amount}{" "}

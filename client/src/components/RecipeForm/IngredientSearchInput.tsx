@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import ingredientService from "../../services/ingredients";
 import { Ingredient } from "../../types";
+import { v4 as uuidv4 } from "uuid";
 
 interface componentProps {
   ingredient: Ingredient;
@@ -22,7 +23,6 @@ const IngredientSearchInput = ({
       setIngredients(response);
     });
   }, []);
-
   useEffect(() => {
     if (ingredient.name) {
       const filteredIngredients = ingredients?.filter((ingredientsInDB) => {
@@ -50,6 +50,7 @@ const IngredientSearchInput = ({
       unitOfMeasure: prev.unitOfMeasure,
       alias: [item.name],
       name: alias,
+      groceryListId: uuidv4(),
     }));
   };
 

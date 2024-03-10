@@ -5,6 +5,7 @@ import { User } from "../types";
 import groceryListService from "../services/groceryList";
 import AddItemForm from "../components/myGroceryList/AddItemForm";
 import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
+import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
 
 interface ComponentProps {
   setUser: Function;
@@ -101,9 +102,45 @@ const MyGroceryList = ({
     }
   };
 
+  const addStaples = () => {
+    const arrayOfNewIngredients = user.userStapleIngredients.quickAddItems.map(
+      (ingredient) => {
+        return findIngredientShoppingLocationAndAddID(ingredient);
+      }
+    );
+
+    // const updatedUser = {
+    //   ...user,
+    //   userGroceryList: [...user.userGroceryList, arrayOfNewIngredients.flat()],
+    // };
+    // setUser(updatedUser);
+    // socket(updatedUser);
+
+    setUser((prev: User) => ({
+      ...prev,
+      userGroceryList: [
+        ...prev.userGroceryList,
+        ...arrayOfNewIngredients.flat(),
+      ],
+    }));
+
+    updatedUserWithSocket({
+      ...user,
+      userGroceryList: [
+        ...user.userGroceryList,
+        ...arrayOfNewIngredients.flat(),
+      ],
+    });
+
+    console.log(user.userGroceryList);
+  };
+
   return (
     <>
       <h1 id="top">My Grocery List</h1>
+      <button type="button" onClick={addStaples}>
+        Quickly Add Staples
+      </button>
       <DisplayGroceryList
         name={"Deli"}
         list={deliList}
@@ -170,7 +207,9 @@ const MyGroceryList = ({
       />
       <br></br>
       <br></br>
-      <button onClick={handleClearList}>Clear list</button>
+      <button style={{ marginRight: "4px" }} onClick={handleClearList}>
+        Clear list
+      </button>
       <BackButton linkTo={"/"} />
     </>
   );

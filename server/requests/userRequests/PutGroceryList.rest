@@ -5,5 +5,10 @@ Content-Type: application/json
   "name":"ashton bennett",
   "userRecipes": [],
   "userGroceryList": [{"somthing":"somewhere"}],
-  "userMenus": []
-}
+  "userMenus": [],
+     "userStapleIngredients": {
+    "itemsToNeverAdd": ["Should be an ingredient obj here"],
+    "quickAddItems": ["Should be an ingredient obj here"]
+  }
+  }
+

@@ -19,13 +19,11 @@ const IngredientsListView = () => {
       console.warn(`Ingredient ${ingredient.name} has no ID, cannot delete.`);
       return;
     }
-
     try {
       await ingredientServices.deleteIngredient(ingredient.id);
       setIngredients((prevIngredients) =>
         prevIngredients.filter((item) => item.id !== ingredient.id)
       );
-      console.log(`${ingredient.name} deleted successfully.`);
     } catch (error) {
       console.error(`Failed to delete ${ingredient.name}:`, error);
     }

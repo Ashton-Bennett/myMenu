@@ -123,7 +123,10 @@ function App() {
           )
         }
       />
-      <Route path="/ingredients" element={<Ingredients />} />
+      <Route
+        path="/ingredients"
+        element={<Ingredients user={user} setUser={setUser} />}
+      />
       <Route
         path="/ingredients/update/:id"
         element={<IngredientUpdateForm />}
