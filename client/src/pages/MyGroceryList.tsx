@@ -6,6 +6,7 @@ import groceryListService from "../services/groceryList";
 import AddItemForm from "../components/myGroceryList/AddItemForm";
 import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
 import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
+import ingredients from "../services/ingredients";
 
 interface ComponentProps {
   setUser: Function;
@@ -102,19 +103,32 @@ const MyGroceryList = ({
     }
   };
 
-  const addStaples = () => {
-    const arrayOfNewIngredients = user.userStapleIngredients.quickAddItems.map(
-      (ingredient) => {
-        return findIngredientShoppingLocationAndAddID(ingredient);
-      }
-    );
+  const handleClearCheckedIngredients = async (event: any) => {
+    event.preventDefault();
+    if (user) {
+      groceryListService.clearList(user.id);
+      const userGroceryList = await groceryListService.getGroceryList(user.id);
 
-    // const updatedUser = {
-    //   ...user,
-    //   userGroceryList: [...user.userGroceryList, arrayOfNewIngredients.flat()],
-    // };
-    // setUser(updatedUser);
-    // socket(updatedUser);
+      const filteredGroceryList = userGroceryList?.filter(
+        (ingredient) => !ingredient.checked
+      );
+
+      setUser((prev: any) => ({
+        ...prev,
+        userGroceryList: filteredGroceryList,
+      }));
+      updatedUserWithSocket({ ...user, userGroceryList: filteredGroceryList });
+    }
+  };
+
+  const addStaples = () => {
+    const arrayOfNewIngredients = user.userStapleIngredients.quickAddItems
+      .filter((ingredient) => {
+        return !ingredient.checked;
+      })
+      .map((ingredient) => {
+        return findIngredientShoppingLocationAndAddID(ingredient);
+      });
 
     setUser((prev: User) => ({
       ...prev,
@@ -209,6 +223,12 @@ const MyGroceryList = ({
       <br></br>
       <button style={{ marginRight: "4px" }} onClick={handleClearList}>
         Clear list
+      </button>
+      <button
+        style={{ marginRight: "4px" }}
+        onClick={handleClearCheckedIngredients}
+      >
+        Remove Checked Items
       </button>
       <BackButton linkTo={"/"} />
     </>
