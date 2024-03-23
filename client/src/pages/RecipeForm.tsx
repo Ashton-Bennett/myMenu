@@ -350,15 +350,6 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         />
         <InputFieldRadio
           type="radio"
-          label="Central America"
-          setNewRecipe={setNewRecipe}
-          newRecipe={newRecipe}
-          name="region"
-          value={"Central America"}
-          required={false}
-        />
-        <InputFieldRadio
-          type="radio"
           label="South America"
           setNewRecipe={setNewRecipe}
           newRecipe={newRecipe}
@@ -395,11 +386,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         />
       </section>
       <br></br>
-      <CountryInput
-        setNewRecipe={setNewRecipe}
-        newRecipe={newRecipe}
-        value={newRecipe.country}
-      />
+      <CountryInput setNewRecipe={setNewRecipe} newRecipe={newRecipe} />
       <br></br>
       <br></br>
       <InputField

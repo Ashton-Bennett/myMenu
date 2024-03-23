@@ -1,23 +1,25 @@
-import { Fragment, useEffect, useState } from "react";
+import { ChangeEventHandler, Fragment, useEffect, useState } from "react";
 import { Recipe } from "../../types";
 import axios from "axios";
 
 interface propTypes {
-  newRecipe: Recipe;
-  setNewRecipe: Function;
+  inputValue: string;
+  setInputValue: Function;
+  placeholder: string;
+  changeHandler: ChangeEventHandler<HTMLInputElement>;
+  name: string;
 }
 
-const CountryInput = ({ setNewRecipe, newRecipe }: propTypes) => {
+const CountryInputBasic = ({
+  setInputValue,
+  inputValue,
+  placeholder,
+  changeHandler,
+  name,
+}: propTypes) => {
   const [countryList, setCountryList] = useState([]);
   const [countriesToDisplay, setCountriesToDisplay] = useState<string[]>();
   const [clickedCountry, setClickedCountry] = useState(false);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewRecipe({
-      ...newRecipe,
-      country: event.target.value,
-    });
-  };
 
   useEffect(() => {
     const getCountryList = async () => {
@@ -37,19 +39,19 @@ const CountryInput = ({ setNewRecipe, newRecipe }: propTypes) => {
   }, []);
 
   useEffect(() => {
-    if (newRecipe.country) {
+    if (inputValue.length >= 1) {
       const filteredCountries = countryList?.filter(
         (countryFromList: string) => {
           return countryFromList
             .toLowerCase()
-            .includes(newRecipe.country.toLowerCase());
+            .includes(inputValue.toLowerCase());
         }
       );
 
       setCountriesToDisplay(filteredCountries);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newRecipe.country]);
+  }, [inputValue]);
 
   useEffect(() => {
     if (clickedCountry) {
@@ -60,9 +62,9 @@ const CountryInput = ({ setNewRecipe, newRecipe }: propTypes) => {
 
   const handleItemClick = (item: string) => {
     setClickedCountry(true);
-    setNewRecipe((prev: Recipe) => ({
+    setInputValue((prev: Recipe) => ({
       ...prev,
-      country: item,
+      countryInput: item,
     }));
   };
 
@@ -70,13 +72,15 @@ const CountryInput = ({ setNewRecipe, newRecipe }: propTypes) => {
     <>
       <label htmlFor="country input"> Country of Origin </label>
       <input
+        placeholder={placeholder}
         id="country input"
-        onChange={handleInputChange}
+        onChange={changeHandler}
         type="text"
-        value={newRecipe.country}
+        value={inputValue}
+        name={name}
       />
 
-      {newRecipe.country && countriesToDisplay && (
+      {inputValue && countriesToDisplay && (
         <ul>
           {countriesToDisplay?.map((item, i) => (
             <Fragment key={`${item} + ${i}`}>
@@ -91,4 +95,4 @@ const CountryInput = ({ setNewRecipe, newRecipe }: propTypes) => {
   );
 };
 
-export default CountryInput;
+export default CountryInputBasic;

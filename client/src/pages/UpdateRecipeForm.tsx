@@ -317,15 +317,6 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         />
         <InputFieldRadio
           type="radio"
-          label="Central America"
-          setNewRecipe={setRecipeToUpdate}
-          newRecipe={recipeToUpdate}
-          name="region"
-          value={"Central America"}
-          required={false}
-        />
-        <InputFieldRadio
-          type="radio"
           label="South America"
           setNewRecipe={setRecipeToUpdate}
           newRecipe={recipeToUpdate}
@@ -365,7 +356,6 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       <CountryInput
         setNewRecipe={setRecipeToUpdate}
         newRecipe={recipeToUpdate}
-        value={recipeToUpdate.country}
       />
       Currently is:{" "}
       {recipeToUpdate.country.length > 1 ? recipeToUpdate.country : "Not set"}

@@ -4,6 +4,8 @@ import recipeService from "../services/recipes";
 import BackButton from "../components/BackButton";
 import menuService from "../services/menus";
 import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
+import RecipeSearchBar from "../components/RecipeList/RecipeSearchBar";
 
 export interface componentProps {
   recipes: Recipe[];
@@ -18,6 +20,14 @@ const RecipeList = ({
   recipes,
   setRecipes,
 }: componentProps) => {
+  const [filteredListOfRecipes, setFilteredListOfRecipes] = useState<Recipe[]>(
+    []
+  );
+
+  useEffect(() => {
+    setFilteredListOfRecipes(recipes);
+  }, [recipes]);
+
   const handleDelete = async (recipe: string, id: string) => {
     if (
       window.confirm(`Are you sure you would like to delete ${recipe} recipe?`)
@@ -49,10 +59,19 @@ const RecipeList = ({
       }
     }
   };
+
   return (
     <>
-      <h2> Recipes:</h2>
-      {recipes.map((recipe, i) => {
+      <h2>Recipes:</h2>
+      <br></br>
+      <RecipeSearchBar
+        recipes={recipes}
+        filteredListOfRecipes={filteredListOfRecipes}
+        setFilteredListOfRecipes={setFilteredListOfRecipes}
+      />
+      <br></br>
+
+      {filteredListOfRecipes.map((recipe, i) => {
         return (
           <div key={recipe.name + i}>
             <h3>{recipe.name}</h3>

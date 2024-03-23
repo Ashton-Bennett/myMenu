@@ -38,7 +38,7 @@ const recipeFormatter = async (recipeString) => {
       // ... (directions)
     ],
     category: 'Dinner',
-    region: 'central american',
+    region: 'north american',
     country: 'Mexico',
     story: '',
     drinkPairings: 'undefined',

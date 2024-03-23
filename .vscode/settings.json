@@ -8,5 +8,6 @@
     "testid",
     "updatedmenu",
     "uuidv"
-  ]
+  ],
+  "prettier.htmlWhitespaceSensitivity": "css"
 }

@@ -2,7 +2,6 @@ type Category = "dinner" | "cocktail" | "other" | "";
 
 type Region =
   | "north american"
-  | "central american"
   | "south american"
   | "european"
   | "asian"
@@ -59,7 +58,6 @@ export interface Recipe {
   category: "dinner" | "cocktail" | "other" | "";
   region:
     | "north american"
-    | "central american"
     | "south american"
     | "european"
     | "asian"
