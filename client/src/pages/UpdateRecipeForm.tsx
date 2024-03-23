@@ -64,7 +64,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
               alias: [""],
               season: [],
               pairings: [""],
-              groceryListId: undefined,
+              groceryListId: uuidv4(),
               checked: false,
               amount: undefined,
               unitOfMeasure: undefined,
@@ -141,7 +141,23 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     navigate(-1);
     return;
   };
+  useEffect(() => {
+    const insureTheIngredientsHaveAnIdForPlacement =
+      recipeToUpdate.ingredients.map((ingredient) => {
+        if (isHeading(ingredient)) return ingredient;
+        if (ingredient.groceryListId) return ingredient;
+        return { ...ingredient, groceryListId: uuidv4() };
+      });
 
+    setRecipeToUpdate((prev) => {
+      return {
+        ...prev,
+        ingredients: [...insureTheIngredientsHaveAnIdForPlacement],
+      };
+    });
+  }, []);
+
+  console.log(recipeToUpdate.ingredients);
   return (
     <form onSubmit={addRecipe}>
       <h2>Edit Recipe</h2>
