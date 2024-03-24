@@ -27,8 +27,10 @@ mongoose
 // app.use(cors());
 
 if (config.IS_DEVELOPMENT) {
+  logger.info("In DEV");
   app.use(cors());
 } else {
+  logger.info("In PROD");
   app.use(cors({ origin: "https://the-menu-by-ashton-bennett.fly.dev/" }));
 }
 
