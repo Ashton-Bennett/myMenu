@@ -145,8 +145,6 @@ const MyGroceryList = ({
         ...arrayOfNewIngredients.flat(),
       ],
     });
-
-    console.log(user.userGroceryList);
   };
 
   return (

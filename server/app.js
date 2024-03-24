@@ -24,7 +24,14 @@ mongoose
     logger.error("error connecting to MongoDB:", error.message);
   });
 
-app.use(cors());
+// app.use(cors());
+
+if (config.IS_DEVELOPMENT) {
+  app.use(cors());
+} else {
+  app.use(cors({ origin: "https://the-menu-by-ashton-bennett.fly.dev/" }));
+}
+
 app.use(express.static("build"));
 app.use("/legal", express.static("public"));
 app.use(express.json());

@@ -173,7 +173,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       }
     } else addRecipeInnerFunc();
   };
-  console.log(newRecipe.ingredients);
+
   return (
     <form onSubmit={addRecipe}>
       <h2>Add Recipe </h2>

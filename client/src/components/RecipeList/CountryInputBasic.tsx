@@ -70,7 +70,6 @@ const CountryInputBasic = ({
 
   return (
     <>
-      <label htmlFor="country input"> Country of Origin </label>
       <input
         placeholder={placeholder}
         id="country input"
