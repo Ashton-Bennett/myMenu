@@ -6,7 +6,6 @@ import groceryListService from "../services/groceryList";
 import AddItemForm from "../components/myGroceryList/AddItemForm";
 import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
 import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
-import ingredients from "../services/ingredients";
 
 interface ComponentProps {
   setUser: Function;

@@ -116,6 +116,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
 
   const addRecipe = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     let doesntHaveBadIngredient = newRecipe.ingredients.every(
       (ingredient) => "id" in ingredient && ingredient.id !== null
     );

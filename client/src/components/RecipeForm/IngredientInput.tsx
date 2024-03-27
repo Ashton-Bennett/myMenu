@@ -154,6 +154,7 @@ const IngredientInput = ({
         />
       </label>
       <select
+        required={true}
         value={
           ingredientQuickAdd
             ? ingredientQuickAdd.unitOfMeasure

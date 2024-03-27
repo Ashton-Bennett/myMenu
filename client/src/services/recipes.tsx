@@ -28,6 +28,12 @@ const getSingleRecipe = async (id: string | undefined) => {
 };
 
 const addRecipe = async (newRecipe: Recipe) => {
+  const DirectionsArrayWithoutEmptyStrings = newRecipe.directions.filter(
+    (direction) => {
+      return direction.length < 1 ? false : true;
+    }
+  );
+  newRecipe = { ...newRecipe, directions: DirectionsArrayWithoutEmptyStrings };
   try {
     const response = await axios.post(baseUrl, newRecipe);
     if (response) {
@@ -50,6 +56,15 @@ const deleteRecipe = async (id: string) => {
 };
 
 const updateRecipe = (id: string | undefined, updatedRecipe: Recipe) => {
+  const DirectionsArrayWithoutEmptyStrings = updatedRecipe.directions.filter(
+    (direction) => {
+      return direction.length < 1 ? false : true;
+    }
+  );
+  updatedRecipe = {
+    ...updatedRecipe,
+    directions: DirectionsArrayWithoutEmptyStrings,
+  };
   try {
     const response = axios.put(`${baseUrl}/${id}`, updatedRecipe);
     if (response) {

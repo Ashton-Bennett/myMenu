@@ -25,7 +25,24 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       try {
         const response = await recipeService.getSingleRecipe(id);
         const recipe: Recipe = response;
-        setRecipeToUpdate(recipe);
+
+        const insureTheIngredientsHaveAnIdForPlacement = recipe.ingredients.map(
+          (ingredient) => {
+            if (isHeading(ingredient)) return ingredient;
+            if (ingredient.groceryListId) return ingredient;
+            return { ...ingredient, groceryListId: uuidv4() };
+          }
+        );
+        setRecipeToUpdate({
+          ...recipe,
+          ingredients: insureTheIngredientsHaveAnIdForPlacement,
+        });
+        // setRecipeToUpdate((prev) => {
+        //   return {
+        //     ...prev,
+        //     ingredients: [...insureTheIngredientsHaveAnIdForPlacement],
+        //   };
+        // });
       } catch (error) {
         console.log("Error fetching recipe", error);
       }
@@ -134,28 +151,23 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
 
   const addRecipe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    recipeService.updateRecipe(id, recipeToUpdate);
-    // eslint-disable-next-line eqeqeq
-    const newRecipeList = recipes.filter((recipe) => recipe.id != id);
-    setRecipes([...newRecipeList, recipeToUpdate]);
-    navigate(-1);
+
+    const isConfirmed = window.confirm(
+      `This updates the recipe in the recipe list but doesn't affect any versions of the recipe currently in a menu.`
+    );
+
+    if (isConfirmed) {
+      recipeService.updateRecipe(id, recipeToUpdate);
+      // eslint-disable-next-line eqeqeq
+      const newRecipeList = recipes.filter((recipe) => recipe.id != id);
+      setRecipes([...newRecipeList, recipeToUpdate]);
+      navigate(-1);
+    }
+
     return;
   };
-  useEffect(() => {
-    const insureTheIngredientsHaveAnIdForPlacement =
-      recipeToUpdate.ingredients.map((ingredient) => {
-        if (isHeading(ingredient)) return ingredient;
-        if (ingredient.groceryListId) return ingredient;
-        return { ...ingredient, groceryListId: uuidv4() };
-      });
 
-    setRecipeToUpdate((prev) => {
-      return {
-        ...prev,
-        ingredients: [...insureTheIngredientsHaveAnIdForPlacement],
-      };
-    });
-  }, []);
+  useEffect(() => {}, []);
 
   console.log(recipeToUpdate.ingredients);
   return (
@@ -182,6 +194,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       <>
         <label>Ingredients/amount </label>
         {recipeToUpdate.ingredients.map((value, i) => {
+          console.log(value.id, value.groceryListId);
           return (
             <div
               key={`${value.id} + ${value.groceryListId}`}
