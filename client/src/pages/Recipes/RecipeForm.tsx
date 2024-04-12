@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Ingredient, Recipe } from "../types";
-import InputField from "../components/RecipeForm/InputField";
-import InputFieldRadio from "../components/RecipeForm/InputFieldRadio";
-import CountryInput from "../components/RecipeForm/CountryInput";
-import recipeService from "../services/recipes";
-import BackButton from "../components/BackButton";
+import { Ingredient, Recipe } from "../../types";
+import InputField from "../../components/Recipes/RecipeForm/InputField";
+import InputFieldRadio from "../../components/Recipes/RecipeForm/InputFieldRadio";
+import CountryInput from "../../components/Recipes/RecipeForm/CountryInput";
+import recipeService from "../../services/recipes";
+import BackButton from "../../components/BackButton";
 import { useNavigate } from "react-router-dom";
-import IngredientInput from "../components/RecipeForm/IngredientInput";
-import NotesTextArea from "../components/RecipeForm/NotesTextArea";
+import IngredientInput from "../../components/Recipes/RecipeForm/IngredientInput";
+import NotesTextArea from "../../components/Recipes/RecipeForm/NotesTextArea";
 import { v4 as uuidv4 } from "uuid";
-import { isHeading } from "../types";
-import HeadingInput from "../components/RecipeForm/HeadingInput";
-import UserUploadFileInput from "./UserUploadFileInput";
+import { isHeading } from "../../types";
+import HeadingInput from "../../components/Recipes/RecipeForm/HeadingInput";
+import UserUploadFileInput from "../../components/Recipes/RecipeForm/UserUploadFileInput";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -34,6 +34,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     drinkPairings: "",
     checked: false,
     notes: "",
+    isMenuDuplicate: false,
   });
 
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         type === "ingredient"
           ? {
               name: "",
-              alias: [""],
+              alias: [],
               season: [],
               pairings: [""],
               groceryListId: uuidv4(),
@@ -132,11 +133,26 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
             }
           }
         );
-        const updatedNewRecipeIngredientAmountToNumber = {
+
+        const updatedIngredientsToAllIncludeAlias =
+          updatedIngredientsToNumberType.map((ingredientOrHeading) => {
+            if (
+              "amount" in ingredientOrHeading &&
+              ingredientOrHeading.alias.length === 0
+            ) {
+              const ingredient = ingredientOrHeading as Ingredient;
+              return { ...ingredient, id: uuidv4(), alias: [ingredient.name] };
+            } else {
+              return ingredientOrHeading;
+            }
+          });
+
+        const updatedNewRecipeWithAliasAndNumbers = {
           ...newRecipe,
-          ingredients: updatedIngredientsToNumberType,
+          ingredients: updatedIngredientsToAllIncludeAlias,
         };
-        await recipeService.addRecipe(updatedNewRecipeIngredientAmountToNumber);
+
+        await recipeService.addRecipe(updatedNewRecipeWithAliasAndNumbers);
 
         const newRecipeList: Recipe[] | undefined =
           await recipeService.getAll();
@@ -157,6 +173,7 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
             drinkPairings: "",
             checked: false,
             notes: "",
+            isMenuDuplicate: false,
           });
         }
         navigate(-1);

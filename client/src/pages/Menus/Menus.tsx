@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Recipe, Menu } from "../types";
-import RecipeList from "./RecipeList";
-import menuService from "../services/menus";
+import { Recipe, Menu } from "../../types";
+import menuService from "../../services/menus";
 import { Link } from "react-router-dom";
-import MenuItem from "../components/myMenusDisplay/MenuItem";
+import MenuItem from "../../components/Menus/MenuItem";
+import BackButton from "../../components/BackButton";
 
 interface ComponentProps {
   recipes: Recipe[];
@@ -11,11 +11,11 @@ interface ComponentProps {
   menus: Menu[];
   setMenus: React.Dispatch<React.SetStateAction<Menu[]>>;
 }
-const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
+const Menus = ({ menus, setMenus }: ComponentProps) => {
   const [showMenuItems, setShowMenuItems] = useState<boolean[]>([]);
 
   useEffect(() => {
-    menuService.getAll().then((response) => {
+    menuService.getAllPublic().then((response) => {
       if (response) {
         setMenus(response);
         setShowMenuItems(Array(menus.length).fill(false));
@@ -32,24 +32,9 @@ const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
     });
   };
 
-  const handleDeleteMenu = async (id: string | undefined, name: string) => {
-    if (id) {
-      if (
-        window.confirm(`Are you sure you would like to delete ${name} menu?`)
-      ) {
-        await menuService.deleteMenu(id);
-        const updatedMenus: Menu[] | undefined = await menuService.getAll();
-        if (updatedMenus) {
-          setMenus(updatedMenus);
-          setShowMenuItems(Array(menus.length).fill(false));
-        }
-      }
-    }
-  };
-
   return (
     <>
-      <h1>My Menus</h1>
+      <h1>Public Menus</h1>
       {menus.length < 1 ? (
         <p>No saved menus found...</p>
       ) : (
@@ -60,9 +45,6 @@ const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
               <b>{menu.name}</b>{" "}
               <button onClick={() => handleToggleViewMenu(i)}>
                 {showMenuItems[i] ? "hide" : "view"}
-              </button>
-              <button onClick={() => handleDeleteMenu(menu.id, menu.name)}>
-                delete
               </button>
               <Link to={`/shoppingList/${menu.id}`}>
                 <button>Shopping List</button>
@@ -79,6 +61,7 @@ const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
                         menu={menu}
                         menus={menus}
                         setMenus={setMenus}
+                        isPublic={true}
                       />
                     </div>
                   );
@@ -92,20 +75,17 @@ const MyMenus = ({ recipes, setRecipes, menus, setMenus }: ComponentProps) => {
       <br></br>
       <br></br>
       <br></br>
-      <Link to="/addMenu">
+      <Link to="/addPublicMenu">
         <button>Add New Menu</button>
       </Link>
+      <Link to="/MyMenus">
+        <button>Private Menus</button>
+      </Link>
+      <BackButton linkTo={"/"} />
       <br></br>
       <br></br>
-      <hr></hr>
-      <RecipeList
-        setMenus={setMenus}
-        menus={menus}
-        recipes={recipes}
-        setRecipes={setRecipes}
-      />
     </>
   );
 };
 
-export default MyMenus;
+export default Menus;

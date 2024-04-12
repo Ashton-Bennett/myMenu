@@ -1,5 +1,5 @@
 import { ChangeEventHandler, Fragment, useEffect, useState } from "react";
-import { Recipe } from "../../types";
+import { Recipe } from "../../../types";
 import axios from "axios";
 
 interface propTypes {

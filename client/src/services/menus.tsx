@@ -3,9 +3,39 @@ import { Menu } from "../types";
 
 const baseUrl = "/api/menus";
 
+//Is likely not being currently used though..
+//This could be used for admin viewing how users are using the app:
 const getAll = async (): Promise<Menu[] | undefined> => {
   try {
     const response: AxiosResponse<Menu[]> = await axios.get<Menu[]>(baseUrl);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getAllPublic = async (): Promise<Menu[] | undefined> => {
+  try {
+    const response: AxiosResponse<Menu[]> = await axios.get<Menu[]>(
+      `${baseUrl}/public`
+    );
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getAllFromSingleUser = async (
+  userId: string
+): Promise<Menu[] | undefined> => {
+  try {
+    const response: AxiosResponse<Menu[]> = await axios.get<Menu[]>(
+      `${baseUrl}/private/${userId}`
+    );
     if (response) {
       return response.data;
     }
@@ -25,9 +55,18 @@ const getSingleMenu = async (id: string | undefined) => {
   }
 };
 
-const addMenu = async (newMenuName: string) => {
+const addMenu = async (
+  newMenuName: string,
+  userId: string,
+  isPublic: boolean
+) => {
   try {
-    const newMenuObj = { name: newMenuName, items: [] };
+    const newMenuObj = {
+      name: newMenuName,
+      items: [],
+      isPublic: isPublic,
+      createdById: userId,
+    };
     const response = await axios.post(baseUrl, newMenuObj);
     if (response) {
       return response.data;
@@ -62,6 +101,8 @@ const updateMenu = async (id: string | undefined, updatedMenu: Menu) => {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getAll,
+  getAllPublic,
+  getAllFromSingleUser,
   getSingleMenu,
   addMenu,
   deleteMenu,

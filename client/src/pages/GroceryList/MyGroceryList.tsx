@@ -1,11 +1,11 @@
-import BackButton from "../components/BackButton";
+import BackButton from "../../components/BackButton";
 import { useEffect, useState } from "react";
-import { Ingredient } from "../types";
-import { User } from "../types";
-import groceryListService from "../services/groceryList";
-import AddItemForm from "../components/myGroceryList/AddItemForm";
-import DisplayGroceryList from "../components/myGroceryList/DisplayGroceryList";
-import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
+import { Ingredient } from "../../types";
+import { User } from "../../types";
+import groceryListService from "../../services/groceryList";
+import AddItemForm from "../../components/GroceryList/AddItemForm";
+import DisplayGroceryList from "../../components/GroceryList/DisplayGroceryList";
+import findIngredientShoppingLocationAndAddID from "../../utils/ingredientShoppingLocation";
 
 interface ComponentProps {
   setUser: Function;

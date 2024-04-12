@@ -1,14 +1,24 @@
 import { useState } from "react";
-import menuService from "../services/menus";
+import menuService from "../../services/menus";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../types";
 
-const AddNewmenuForm = () => {
+interface componentProps {
+  typeOfMenu: "public" | "private";
+  user: User;
+}
+
+const AddNewmenuForm = ({ typeOfMenu, user }: componentProps) => {
   const [newMenuName, setNewMenuName] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    menuService.addMenu(newMenuName);
-    navigate("/myMenus");
+    menuService.addMenu(
+      newMenuName,
+      user.id,
+      typeOfMenu === "public" ? true : false
+    );
+    navigate(typeOfMenu === "public" ? "/menus" : "/myMenus");
   };
 
   return (

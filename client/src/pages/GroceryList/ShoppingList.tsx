@@ -1,15 +1,15 @@
-import BackButton from "../components/BackButton";
+import BackButton from "../../components/BackButton";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import menuService from "../services/menus";
-import { Ingredient, Menu, Recipe, User, isHeading } from "../types";
-import findIngredientShoppingLocationAndAddID from "../utils/ingredientShoppingLocation";
+import menuService from "../../services/menus";
+import { Ingredient, Menu, Recipe, User, isHeading } from "../../types";
+import findIngredientShoppingLocationAndAddID from "../../utils/ingredientShoppingLocation";
 import combineIngredientAmounts, {
   ingredientLookupMetric,
   ingredientLookupUnmeasurable,
-} from "../utils/combineIngredientAmounts";
-import userServices from "../services/user";
-import { sortByName } from "../utils/sortByName";
+} from "../../utils/combineIngredientAmounts";
+import userServices from "../../services/user";
+import { sortByName } from "../../utils/sortByName";
 
 interface componentProps {
   setUser: Function;

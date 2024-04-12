@@ -18,6 +18,8 @@ const recipeSchema = new mongoose.Schema({
   drinkPairings: String,
   checked: Boolean,
   notes: String,
+  isMenuDuplicate: Boolean,
+  menuItemId: String,
 });
 
 recipeSchema.set("toJSON", {

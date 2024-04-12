@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import Staples from "../components/Ingredients/Staples";
-import { User } from "../types";
+import BackButton from "../../components/BackButton";
+import Staples from "../../components/Ingredients/Staples";
+import { User } from "../../types";
 
 interface componentProps {
   user?: User;

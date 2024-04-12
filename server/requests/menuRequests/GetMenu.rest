@@ -1,7 +1,13 @@
 GET http://localhost:3001/api/menus/
 
+### checks for private user recipes
+GET http://localhost:3001/api/menus/private
+
+### checks for public recipes that all users can see
+GET http://localhost:3001/api/menus/public
+
 ### checks unknown end points
 GET http://localhost:3001/api/menus/12312321
 
 ### checks for single menu
-GET http://localhost:3001/api/menus/64a355e78dceb955b68075e2
+GET http://localhost:3001/api/menus/6594bedb32d6e5b6437f664a

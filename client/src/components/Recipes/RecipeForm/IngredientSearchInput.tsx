@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
-import ingredientService from "../../services/ingredients";
-import { Ingredient } from "../../types";
+import ingredientService from "../../../services/ingredients";
+import { Ingredient } from "../../../types";
 import { v4 as uuidv4 } from "uuid";
 
 interface componentProps {

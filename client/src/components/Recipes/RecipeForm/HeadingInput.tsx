@@ -1,5 +1,5 @@
 import { SetStateAction, useState } from "react";
-import { Recipe, Heading } from "../../types";
+import { Recipe, Heading } from "../../../types";
 
 interface ComponentProps {
   i: number;

@@ -1,8 +1,8 @@
 import { ChangeEventHandler, SetStateAction, useEffect, useState } from "react";
-import { Ingredient, Recipe, User } from "../../types";
+import { Ingredient, Recipe, User } from "../../../types";
 import IngredientSearchInput from "./IngredientSearchInput";
 import IngredientNameInput from "./IngredientNameInput";
-import { initialIngredient } from "../Ingredients/Staples";
+import { initialIngredient } from "../../Ingredients/Staples";
 
 interface ComponentProps {
   i: number;

@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import RecipeForm from "./pages/RecipeForm";
+import RecipeForm from "./pages/Recipes/RecipeForm";
 import { Recipe } from "./types";
 import userEvent from "@testing-library/user-event";
 

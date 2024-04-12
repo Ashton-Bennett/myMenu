@@ -15,8 +15,8 @@ const Home = () => {
         <Link to="/addRecipe">
           <button>Add Recipe</button>
         </Link>
-        <Link to="/myMenus">
-          <button>My Menus</button>
+        <Link to="/menus">
+          <button>Menus</button>
         </Link>
         <Link to="/myGroceryList">
           <button>My Grocery List</button>

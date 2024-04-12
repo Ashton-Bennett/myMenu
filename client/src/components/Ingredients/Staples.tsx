@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import BackButton from "../BackButton";
 import { useState } from "react";
-import IngredientNameInput from "../RecipeForm/IngredientNameInput";
-import IngredientSearchInput from "../RecipeForm/IngredientSearchInput";
+import IngredientNameInput from "../Recipes/RecipeForm/IngredientNameInput";
+import IngredientSearchInput from "../Recipes/RecipeForm/IngredientSearchInput";
 import { Ingredient, User } from "../../types";
-import IngredientInput from "../RecipeForm/IngredientInput";
+import IngredientInput from "../Recipes/RecipeForm/IngredientInput";
 
 export const initialIngredient: Ingredient = {
   name: "",

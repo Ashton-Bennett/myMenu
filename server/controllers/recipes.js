@@ -4,7 +4,9 @@ const logger = require("../utils/logger");
 const recipeFormat = require("../utils/openAi");
 
 recipeRouter.get("/", (request, response, next) => {
-  Recipe.find({})
+  Recipe.find({
+    $or: [{ isMenuDuplicate: false }, { isMenuDuplicate: { $exists: false } }],
+  })
     .then((recipes) => {
       response.json(recipes);
     })
@@ -29,11 +31,20 @@ recipeRouter.get("/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
+recipeRouter.get("/viewMenuRecipe/:id", (request, response, next) => {
+  const id = request.params.id;
+  Recipe.find({ menuItemId: id })
+    .then((recipe) => {
+      recipe ? response.json(recipe) : response.status(404).end();
+    })
+    .catch((error) => next(error));
+});
+
 recipeRouter.delete("/:id", (request, response, next) => {
   const id = request.params.id;
   Recipe.findByIdAndDelete(id)
     .then((result) => {
-      logger.info(`${result.name} recipe was deleted `);
+      logger.info(`${result?.name} recipe was deleted `);
       response.status(204).end();
     })
     .catch((error) => next(error));

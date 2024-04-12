@@ -46,6 +46,7 @@ export interface Recipe {
   checked: boolean;
   notes: string;
   menuItemId?: string;
+  isMenuDuplicate: boolean;
 }
 
 export interface Recipe {
@@ -75,6 +76,8 @@ export interface Menu {
   id?: string | undefined;
   name: string;
   items: Recipe[];
+  isPublic: boolean;
+  createdById: string;
 }
 
 export interface InputFieldProps {

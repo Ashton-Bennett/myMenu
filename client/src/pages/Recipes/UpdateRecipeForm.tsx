@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { Recipe, isHeading } from "../types";
-import InputField from "../components/RecipeForm/InputField";
-import InputFieldRadio from "../components/RecipeForm/InputFieldRadio";
-import CountryInput from "../components/RecipeForm/CountryInput";
-import recipeService from "../services/recipes";
-import BackButton from "../components/BackButton";
+import { Ingredient, Recipe, isHeading } from "../../types";
+import InputField from "../../components/Recipes/RecipeForm/InputField";
+import InputFieldRadio from "../../components/Recipes/RecipeForm/InputFieldRadio";
+import CountryInput from "../../components/Recipes/RecipeForm/CountryInput";
+import recipeService from "../../services/recipes";
+import BackButton from "../../components/BackButton";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import IngredientInput from "../components/RecipeForm/IngredientInput";
-import NotesTextArea from "../components/RecipeForm/NotesTextArea";
-import HeadingInput from "../components/RecipeForm/HeadingInput";
+import IngredientInput from "../../components/Recipes/RecipeForm/IngredientInput";
+import NotesTextArea from "../../components/Recipes/RecipeForm/NotesTextArea";
+import HeadingInput from "../../components/Recipes/RecipeForm/HeadingInput";
 import { v4 as uuidv4 } from "uuid";
 
 interface recipeFormProps {
@@ -37,12 +37,6 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           ...recipe,
           ingredients: insureTheIngredientsHaveAnIdForPlacement,
         });
-        // setRecipeToUpdate((prev) => {
-        //   return {
-        //     ...prev,
-        //     ingredients: [...insureTheIngredientsHaveAnIdForPlacement],
-        //   };
-        // });
       } catch (error) {
         console.log("Error fetching recipe", error);
       }
@@ -66,6 +60,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     drinkPairings: "",
     checked: false,
     notes: "",
+    isMenuDuplicate: false,
   });
 
   const navigate = useNavigate();
@@ -78,7 +73,7 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         type === "ingredient"
           ? {
               name: "",
-              alias: [""],
+              alias: [],
               season: [],
               pairings: [""],
               groceryListId: uuidv4(),
@@ -157,7 +152,36 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     );
 
     if (isConfirmed) {
-      recipeService.updateRecipe(id, recipeToUpdate);
+      const updatedIngredientsToNumberType = recipeToUpdate.ingredients.map(
+        (ingredientOrHeading) => {
+          if ("amount" in ingredientOrHeading) {
+            const ingredient = ingredientOrHeading as Ingredient;
+            return { ...ingredient, amount: Number(ingredient.amount) };
+          } else {
+            return ingredientOrHeading;
+          }
+        }
+      );
+
+      const updatedIngredientsToAllIncludeAlias =
+        updatedIngredientsToNumberType.map((ingredientOrHeading) => {
+          if (
+            "amount" in ingredientOrHeading &&
+            ingredientOrHeading.alias.length === 0
+          ) {
+            const ingredient = ingredientOrHeading as Ingredient;
+            return { ...ingredient, id: uuidv4(), alias: [ingredient.name] };
+          } else {
+            return ingredientOrHeading;
+          }
+        });
+
+      const updatedNewRecipeWithAliasAndNumbers = {
+        ...recipeToUpdate,
+        ingredients: updatedIngredientsToAllIncludeAlias,
+      };
+
+      recipeService.updateRecipe(id, updatedNewRecipeWithAliasAndNumbers);
       // eslint-disable-next-line eqeqeq
       const newRecipeList = recipes.filter((recipe) => recipe.id != id);
       setRecipes([...newRecipeList, recipeToUpdate]);
@@ -167,9 +191,6 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     return;
   };
 
-  useEffect(() => {}, []);
-
-  console.log(recipeToUpdate.ingredients);
   return (
     <form onSubmit={addRecipe}>
       <h2>Edit Recipe</h2>
@@ -194,7 +215,6 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
       <>
         <label>Ingredients/amount </label>
         {recipeToUpdate.ingredients.map((value, i) => {
-          console.log(value.id, value.groceryListId);
           return (
             <div
               key={`${value.id} + ${value.groceryListId}`}

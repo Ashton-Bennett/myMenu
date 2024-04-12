@@ -6,6 +6,12 @@ const menuSchema = new mongoose.Schema({
     required: true,
   },
   items: Array,
+  isPublic: Boolean,
+  createdById: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
 });
 
 menuSchema.set("toJSON", {

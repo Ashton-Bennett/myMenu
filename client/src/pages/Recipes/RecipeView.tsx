@@ -1,18 +1,59 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import recipeService from "../services/recipes";
-import { Ingredient, Recipe } from "../types";
-import BackButton from "../components/BackButton";
+import recipeService from "../../services/recipes";
+import { Ingredient, Recipe, isHeading } from "../../types";
+import BackButton from "../../components/BackButton";
+import ServingsAmountInput from "../../components/Menus/ServingsAmountInput";
 
-const RecipeView = () => {
+interface componentProps {
+  isMenuRecipe: boolean;
+}
+
+const RecipeView = ({ isMenuRecipe }: componentProps) => {
   const [recipe, setRecipe] = useState<Recipe>();
   const { id } = useParams();
 
   useEffect(() => {
-    recipeService.getSingleRecipe(id).then((response) => {
-      setRecipe(response);
-    });
+    if (isMenuRecipe) {
+      recipeService.getSingleRecipe(id).then((response) => {
+        setRecipe(response);
+      });
+    } else {
+      recipeService.getSingleRecipe(id).then((response) => {
+        setRecipe(response);
+      });
+    }
   }, []);
+
+  const handleRecipeServingAmountChange = (e: any) => {
+    if (recipe) {
+      const menuItemBaseServings = recipe.servings;
+      const AmountToAddToEachIngredientAmount =
+        e.target.value / menuItemBaseServings;
+      const updatedIngredients = recipe.ingredients.map((ingredient) => {
+        if (!isHeading(ingredient) && ingredient.amount !== undefined) {
+          return {
+            ...ingredient,
+            amount: parseFloat(
+              (
+                Number(ingredient.amount) *
+                Number(AmountToAddToEachIngredientAmount)
+              ).toFixed(2)
+            ).toString(),
+          };
+        }
+
+        return ingredient;
+      });
+      const updatedRecipe = {
+        ...recipe,
+        servings: e.target.value,
+        ingredients: updatedIngredients,
+      };
+
+      setRecipe(updatedRecipe);
+    }
+  };
 
   return (
     <section>
@@ -29,7 +70,10 @@ const RecipeView = () => {
               mins.
             </p>
           )}
-          <p>Serves: {recipe.servings} people</p>
+          <ServingsAmountInput
+            handleRecipeServingAmountChange={handleRecipeServingAmountChange}
+            menuItem={recipe}
+          />
           <p>
             Region {recipe.region}, country {recipe.country}
           </p>

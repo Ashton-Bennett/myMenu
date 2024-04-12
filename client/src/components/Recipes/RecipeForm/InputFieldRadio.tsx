@@ -1,4 +1,4 @@
-import { InputFieldProps } from "../../types";
+import { InputFieldProps } from "../../../types";
 const InputFieldRadio = ({
   type,
   label,

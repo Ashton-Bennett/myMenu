@@ -10,6 +10,23 @@ menuRouter.get("/", (request, response, next) => {
     .catch((error) => next(error));
 });
 
+menuRouter.get("/private/:id", (request, response, next) => {
+  const id = request.params.id;
+  Menu.find({ createdById: id })
+    .then((menus) => {
+      response.json(menus);
+    })
+    .catch((error) => next(error));
+});
+
+menuRouter.get("/public", (request, response, next) => {
+  Menu.find({ isPublic: true })
+    .then((menus) => {
+      response.json(menus);
+    })
+    .catch((error) => next(error));
+});
+
 menuRouter.get("/:id", (request, response, next) => {
   const id = request.params.id;
   Menu.findById(id)

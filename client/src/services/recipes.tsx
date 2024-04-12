@@ -16,6 +16,17 @@ const getAll = async (): Promise<Recipe[] | undefined> => {
   }
 };
 
+const getSingleMenuInstanceRecipe = async (id: string | undefined) => {
+  try {
+    const response = await axios.get(`viewMenuRecipe/${id}`);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getSingleRecipe = async (id: string | undefined) => {
   try {
     const response = await axios.get(`${baseUrl}/${id}`);
@@ -34,6 +45,9 @@ const addRecipe = async (newRecipe: Recipe) => {
     }
   );
   newRecipe = { ...newRecipe, directions: DirectionsArrayWithoutEmptyStrings };
+  if (newRecipe.servings <= 0) {
+    newRecipe.servings = 1;
+  }
   try {
     const response = await axios.post(baseUrl, newRecipe);
     if (response) {
@@ -103,4 +117,5 @@ export default {
   getSingleRecipe,
   addRecipe,
   updateRecipe,
+  getSingleMenuInstanceRecipe,
 };

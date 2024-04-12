@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { Ingredient } from "../../types";
+import { Ingredient } from "../../../types";
 
 interface componentProps {
   i: number;

@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import { Recipe, Menu } from "../types";
-import recipeService from "../services/recipes";
-import BackButton from "../components/BackButton";
-import menuService from "../services/menus";
+import { Recipe, Menu, User } from "../../types";
+import recipeService from "../../services/recipes";
+import BackButton from "../../components/BackButton";
+import menuService from "../../services/menus";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
-import RecipeSearchBar from "../components/RecipeList/RecipeSearchBar";
+import RecipeSearchBar from "../../components/Recipes/RecipeList/RecipeSearchBar";
+import { userContext } from "../../utils/userContext";
+import { useContext } from "react";
 
 export interface componentProps {
   recipes: Recipe[];
@@ -23,6 +25,7 @@ const RecipeList = ({
   const [filteredListOfRecipes, setFilteredListOfRecipes] = useState<Recipe[]>(
     []
   );
+  const currentUser = useContext(userContext) as User;
 
   useEffect(() => {
     setFilteredListOfRecipes(recipes);
@@ -38,6 +41,8 @@ const RecipeList = ({
         await recipeService.getAll();
       if (updatedRecipeList) {
         setRecipes(updatedRecipeList);
+        setFilteredListOfRecipes((prev) => [...prev]);
+        document.getElementById("clearFiltersButton")?.click();
       }
     }
   };
@@ -46,16 +51,37 @@ const RecipeList = ({
     menuId: string | undefined,
     recipeId: string | undefined
   ) => {
-    let recipeToAdd = recipes.find((recipe) => recipe.id === recipeId);
-    if (recipeToAdd) recipeToAdd = { ...recipeToAdd, menuItemId: uuidv4() };
-    const updatedMenu = menus.find((menu) => menu.id === menuId);
-    if (updatedMenu && recipeToAdd) {
-      updatedMenu.items = updatedMenu.items.concat(recipeToAdd);
-      await menuService.updateMenu(menuId, updatedMenu);
+    if (menuId !== "Add To Menu") {
+      const recipeToAddOriginalDontMutate = recipes.find(
+        (recipe) => recipe.id === recipeId
+      );
+      let recipeToAdd = { ...recipeToAddOriginalDontMutate };
+      if (recipeToAdd) {
+        delete recipeToAdd.id;
+        recipeToAdd = {
+          ...recipeToAdd,
+          menuItemId: uuidv4(),
+          isMenuDuplicate: true,
+        };
+        recipeToAdd = await recipeService.addRecipe(recipeToAdd as Recipe);
+      }
 
-      const updatedMenus = await menuService.getAll();
-      if (updatedMenus && setMenus) {
-        setMenus(updatedMenus);
+      const updatedMenu = menus.find((menu) => menu.id === menuId);
+
+      if (updatedMenu && recipeToAdd) {
+        updatedMenu.items = updatedMenu.items.concat(recipeToAdd as Recipe);
+        await menuService.updateMenu(menuId, updatedMenu);
+
+        let updatedMenus: Menu[] | undefined = [];
+        if (updatedMenu.isPublic) {
+          updatedMenus = await menuService.getAllPublic();
+        } else {
+          updatedMenus = await menuService.getAllFromSingleUser(currentUser.id);
+        }
+
+        if (updatedMenus && setMenus) {
+          setMenus(updatedMenus);
+        }
       }
     }
   };

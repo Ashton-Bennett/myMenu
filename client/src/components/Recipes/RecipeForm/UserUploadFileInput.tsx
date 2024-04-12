@@ -1,6 +1,6 @@
 import { useState } from "react";
-import recipeService from "../services/recipes";
-import { Ingredient, isHeading } from "../types";
+import recipeService from "../../../services/recipes";
+import { Ingredient, isHeading } from "../../../types";
 import { v4 as uuidv4 } from "uuid";
 const pdfjs = require("pdfjs-dist");
 
