@@ -92,7 +92,6 @@ const RecipeList = ({
       <br></br>
       <RecipeSearchBar
         recipes={recipes}
-        filteredListOfRecipes={filteredListOfRecipes}
         setFilteredListOfRecipes={setFilteredListOfRecipes}
       />
       <br></br>

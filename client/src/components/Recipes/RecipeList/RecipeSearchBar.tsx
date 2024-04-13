@@ -3,13 +3,11 @@ import { Ingredient, Recipe } from "../../../types";
 import CountryInputBasic from "./CountryInputBasic";
 
 interface componentProps {
-  filteredListOfRecipes: Recipe[];
   setFilteredListOfRecipes: Function;
   recipes: Recipe[];
 }
 
 const RecipeSearchBar = ({
-  filteredListOfRecipes,
   setFilteredListOfRecipes,
   recipes,
 }: componentProps) => {

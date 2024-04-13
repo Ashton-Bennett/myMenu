@@ -19,6 +19,7 @@ export interface Ingredient {
   unitOfMeasure?: string | undefined;
   groceryStoreLocation: groceryStoreLocation;
   id?: string;
+  recipeRef?: string[];
 }
 
 export interface Heading {
@@ -134,6 +135,10 @@ export interface User {
     itemsToNeverAdd: Ingredient[];
     quickAddItems: Ingredient[];
   };
+}
+
+export interface IngredientVisibilityState {
+  [key: string]: boolean;
 }
 
 export function isHeading(object: IngredientOrHeading): object is Heading {

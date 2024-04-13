@@ -5,7 +5,7 @@ import { User } from "../../types";
 import groceryListService from "../../services/groceryList";
 import AddItemForm from "../../components/GroceryList/AddItemForm";
 import DisplayGroceryList from "../../components/GroceryList/DisplayGroceryList";
-import findIngredientShoppingLocationAndAddID from "../../utils/ingredientShoppingLocation";
+import addGroceryListIdAndRecipeRefToIngredient from "../../utils/ingredientShoppingLocation";
 
 interface ComponentProps {
   setUser: Function;
@@ -126,7 +126,7 @@ const MyGroceryList = ({
         return !ingredient.checked;
       })
       .map((ingredient) => {
-        return findIngredientShoppingLocationAndAddID(ingredient);
+        return addGroceryListIdAndRecipeRefToIngredient(ingredient);
       });
 
     setUser((prev: User) => ({

@@ -154,11 +154,22 @@ const combineIngredientAmounts = (ingredients: Ingredient[]): Ingredient[] => {
       (item: Ingredient) => item.id === ingredient.id
     );
     if (matchingIngredient) {
+      // if (ingredient.unitOfMeasure === matchingIngredient.unitOfMeasure) {
+      //   matchingIngredient.amount = Number(matchingIngredient.amount) + Number(ingredient.amount);
+      //   return acc;
+      // }
+
       if (ingredient.unitOfMeasure === matchingIngredient.unitOfMeasure) {
+        //combine the ingredient amounts
         matchingIngredient.amount =
           Number(matchingIngredient.amount) + Number(ingredient.amount);
+        //join the recipe refs array
+        matchingIngredient.recipeRef = matchingIngredient.recipeRef
+          ? matchingIngredient.recipeRef.concat(ingredient.recipeRef || "")
+          : ingredient.recipeRef || [];
         return acc;
       }
+
       if (
         matchingIngredient.unitOfMeasure !== undefined &&
         ingredient.unitOfMeasure !== undefined &&
@@ -189,6 +200,10 @@ const combineIngredientAmounts = (ingredients: Ingredient[]): Ingredient[] => {
           ]);
           matchingIngredient.amount = newAmountInOz.amount;
           matchingIngredient.unitOfMeasure = newAmountInOz.unitOfMeasure;
+          //join the recipe refs array
+          matchingIngredient.recipeRef = matchingIngredient.recipeRef
+            ? matchingIngredient.recipeRef.concat(ingredient.recipeRef || "")
+            : ingredient.recipeRef || [];
         }
         if (
           ingredient.unitOfMeasure in ingredientLookupMetric &&
@@ -212,6 +227,10 @@ const combineIngredientAmounts = (ingredients: Ingredient[]): Ingredient[] => {
           ]);
           matchingIngredient.amount = newCombinedAmount.amount;
           matchingIngredient.unitOfMeasure = newCombinedAmount.unitOfMeasure;
+          //join the recipe refs array
+          matchingIngredient.recipeRef = matchingIngredient.recipeRef
+            ? matchingIngredient.recipeRef.concat(ingredient.recipeRef || "")
+            : ingredient.recipeRef || [];
         }
         if (
           ingredient.unitOfMeasure in ingredientLookupMetric &&
@@ -235,6 +254,10 @@ const combineIngredientAmounts = (ingredients: Ingredient[]): Ingredient[] => {
           ]);
           matchingIngredient.amount = newCombinedAmount.amount;
           matchingIngredient.unitOfMeasure = newCombinedAmount.unitOfMeasure;
+          //join the recipe refs array
+          matchingIngredient.recipeRef = matchingIngredient.recipeRef
+            ? matchingIngredient.recipeRef.concat(ingredient.recipeRef || "")
+            : ingredient.recipeRef || [];
         }
         if (
           ingredient.unitOfMeasure in ingredientLookupImperial &&
@@ -258,6 +281,10 @@ const combineIngredientAmounts = (ingredients: Ingredient[]): Ingredient[] => {
           ]);
           matchingIngredient.amount = newCombinedAmount.amount;
           matchingIngredient.unitOfMeasure = newCombinedAmount.unitOfMeasure;
+          //join the recipe refs array
+          matchingIngredient.recipeRef = matchingIngredient.recipeRef
+            ? matchingIngredient.recipeRef.concat(ingredient.recipeRef || "")
+            : ingredient.recipeRef || [];
         }
         if (
           ingredient.amount === undefined ||

@@ -2,8 +2,15 @@ import BackButton from "../../components/BackButton";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import menuService from "../../services/menus";
-import { Ingredient, Menu, Recipe, User, isHeading } from "../../types";
-import findIngredientShoppingLocationAndAddID from "../../utils/ingredientShoppingLocation";
+import {
+  Ingredient,
+  Menu,
+  Recipe,
+  User,
+  isHeading,
+  IngredientVisibilityState,
+} from "../../types";
+import addGroceryListIdAndRecipeRefToIngredient from "../../utils/ingredientShoppingLocation";
 import combineIngredientAmounts, {
   ingredientLookupMetric,
   ingredientLookupUnmeasurable,
@@ -25,6 +32,9 @@ const ShoppingList = ({
   const { id } = useParams();
   const [list, setList] = useState<Ingredient[]>([]);
   const navigate = useNavigate();
+  const [showRecipeRef, setShowRecipeRef] = useState<IngredientVisibilityState>(
+    {}
+  );
 
   useEffect(() => {
     if (user) {
@@ -51,7 +61,10 @@ const ShoppingList = ({
             ) {
               return undefined;
             } else {
-              return findIngredientShoppingLocationAndAddID(ingredient);
+              return addGroceryListIdAndRecipeRefToIngredient(
+                ingredient,
+                recipe.name
+              );
             }
           });
         });
@@ -151,6 +164,13 @@ const ShoppingList = ({
     navigate("/myGroceryList");
   };
 
+  const toggleIngredientsRecipeName = (ingredientGroceryListId: string) => {
+    setShowRecipeRef((prevState) => ({
+      ...prevState,
+      [ingredientGroceryListId]: !prevState[ingredientGroceryListId],
+    }));
+  };
+  console.log(showRecipeRef);
   return (
     <>
       <h1>Shopping List for {menu?.name}:</h1>
@@ -175,8 +195,29 @@ const ShoppingList = ({
                       toggleStrikeThrough(ingredient.groceryListId)
                     }
                   >
-                    check
+                    check-off
                   </button>
+                </span>
+                <span>
+                  <button
+                    style={{ marginLeft: "8px" }}
+                    onClick={() =>
+                      toggleIngredientsRecipeName(
+                        ingredient.groceryListId ?? ""
+                      )
+                    }
+                  >
+                    used in
+                  </button>
+                </span>
+                <span
+                  style={{
+                    display: showRecipeRef[ingredient.groceryListId ?? ""]
+                      ? "flex"
+                      : "none",
+                  }}
+                >
+                  {ingredient.recipeRef}
                 </span>
               </li>
             ) : null;

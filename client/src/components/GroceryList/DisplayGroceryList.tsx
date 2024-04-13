@@ -1,6 +1,7 @@
-import { Ingredient, User } from "../../types";
+import { Ingredient, IngredientVisibilityState, User } from "../../types";
 import { sortByName } from "../../utils/sortByName";
 import userService from "../../services/user";
+import { useState } from "react";
 
 interface ComponentProps {
   name: string;
@@ -17,6 +18,10 @@ const DisplayGroceryList = ({
   setUser,
   socket,
 }: ComponentProps) => {
+  const [showRecipeRef, setShowRecipeRef] = useState<IngredientVisibilityState>(
+    {}
+  );
+
   const deleteIngredient = (Ingredient: Ingredient) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to delete ${Ingredient.name}?`
@@ -71,6 +76,13 @@ const DisplayGroceryList = ({
     }
   });
 
+  const toggleIngredientsRecipeName = (ingredientGroceryListId: string) => {
+    setShowRecipeRef((prevState) => ({
+      ...prevState,
+      [ingredientGroceryListId]: !prevState[ingredientGroceryListId],
+    }));
+  };
+
   return (
     <>
       <br></br>
@@ -112,6 +124,29 @@ const DisplayGroceryList = ({
               <button onClick={(e) => handleCheckOffIngredient(e, ingredient)}>
                 Check off
               </button>
+              <span>
+                <button
+                  style={{ marginLeft: "8px" }}
+                  onClick={() =>
+                    toggleIngredientsRecipeName(ingredient.groceryListId ?? "")
+                  }
+                >
+                  used in
+                </button>
+              </span>
+              <span
+                style={{
+                  display: showRecipeRef[ingredient.groceryListId ?? ""]
+                    ? "flex"
+                    : "none",
+                }}
+              >
+                {ingredient?.recipeRef
+                  ?.filter(
+                    (value, index, self) => self.indexOf(value) === index
+                  )
+                  .join(", ") + "."}
+              </span>
             </p>{" "}
           </div>
         );
