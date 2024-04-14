@@ -154,11 +154,6 @@ const combineIngredientAmounts = (ingredients: Ingredient[]): Ingredient[] => {
       (item: Ingredient) => item.id === ingredient.id
     );
     if (matchingIngredient) {
-      // if (ingredient.unitOfMeasure === matchingIngredient.unitOfMeasure) {
-      //   matchingIngredient.amount = Number(matchingIngredient.amount) + Number(ingredient.amount);
-      //   return acc;
-      // }
-
       if (ingredient.unitOfMeasure === matchingIngredient.unitOfMeasure) {
         //combine the ingredient amounts
         matchingIngredient.amount =

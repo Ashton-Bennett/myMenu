@@ -54,9 +54,9 @@ function App() {
     });
 
     socket.connect();
-    return () => {
-      socket.disconnect();
-    };
+    // return () => {
+    //   socket.disconnect();
+    // };
   }, []);
 
   useEffect(() => {
