@@ -7,6 +7,7 @@ const io = new Server(server, {
   cors: {
     origin: "https://the-menu-by-ashton-bennett.fly.dev/",
   },
+  connectionStateRecovery: {},
 });
 
 io.on("connection", (socket) => {
