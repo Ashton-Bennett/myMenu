@@ -218,11 +218,14 @@ const MyGroceryList = ({
       />
       <br></br>
       <br></br>
-      <button style={{ marginRight: "4px" }} onClick={handleClearList}>
+      <button
+        style={{ marginRight: "4px", marginBottom: "2rem" }}
+        onClick={handleClearList}
+      >
         Clear list
       </button>
       <button
-        style={{ marginRight: "4px" }}
+        style={{ marginRight: "4px", marginBottom: "2rem" }}
         onClick={handleClearCheckedIngredients}
       >
         Remove Checked Items

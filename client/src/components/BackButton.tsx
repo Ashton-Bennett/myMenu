@@ -13,7 +13,11 @@ const BackButton = ({ linkTo }: propTypes) => {
     navigate(linkTo);
   };
   return (
-    <button type="button" onClick={handleClick}>
+    <button
+      style={{ marginBottom: "2rem" }}
+      type="button"
+      onClick={handleClick}
+    >
       Back
     </button>
   );
