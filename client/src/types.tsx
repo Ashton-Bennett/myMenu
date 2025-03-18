@@ -48,6 +48,7 @@ export interface Recipe {
   notes: string;
   menuItemId?: string;
   isMenuDuplicate: boolean;
+  imgName?: string;
 }
 
 export interface Recipe {

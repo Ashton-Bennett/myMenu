@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import RecipeSearchBar from "../../components/Recipes/RecipeList/RecipeSearchBar";
 import { userContext } from "../../utils/userContext";
 import { useContext } from "react";
+import { baseImgURL } from "../../oraclePath";
 
 export interface componentProps {
   recipes: Recipe[];
@@ -63,7 +64,10 @@ const RecipeList = ({
           menuItemId: uuidv4(),
           isMenuDuplicate: true,
         };
-        recipeToAdd = await recipeService.addRecipe(recipeToAdd as Recipe);
+        recipeToAdd = await recipeService.addRecipe(
+          recipeToAdd as Recipe,
+          null
+        );
       }
 
       const updatedMenu = menus.find((menu) => menu.id === menuId);
@@ -95,41 +99,52 @@ const RecipeList = ({
         setFilteredListOfRecipes={setFilteredListOfRecipes}
       />
       <br></br>
-
-      {filteredListOfRecipes.map((recipe, i) => {
-        return (
-          <div key={recipe.name + i}>
-            <h3>{recipe.name}</h3>
-            <Link to={`/viewRecipes/${recipe.id}`}>
-              <button>View</button>
-            </Link>
-            <Link to={`/updateRecipe/${recipe.id}`}>
-              <button>Edit</button>
-            </Link>
-            <button
-              onClick={() => handleDelete(`${recipe.name}`, `${recipe.id}`)}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+        {filteredListOfRecipes.map((recipe, i) => {
+          return (
+            <div
+              style={{ border: "solid 1px lightgray" }}
+              key={recipe.name + i}
             >
-              Delete
-            </button>
-            <select
-              onChange={(event) => {
-                if (event.target.value && recipe.id) {
-                  handleAddRecipeToMenu(event.target.value, recipe.id);
-                }
-              }}
-            >
-              <option value={undefined}>Add To Menu</option>
-              {menus.map((menu, i) => {
-                return (
-                  <option value={menu.id} key={menu + (i + "")}>
-                    {menu.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        );
-      })}
+              <img
+                alt={recipe.name}
+                src={`${
+                  baseImgURL + (recipe.imgName || "default_image.png")
+                }?t=${new Date().getTime()}`}
+                style={{ width: 150, height: 150, objectFit: "cover" }}
+              />
+              <h3>{recipe.name}</h3>
+              <Link to={`/viewRecipes/${recipe.id}`}>
+                <button>View</button>
+              </Link>
+              <Link to={`/updateRecipe/${recipe.id}`}>
+                <button>Edit</button>
+              </Link>
+              <button
+                onClick={() => handleDelete(`${recipe.name}`, `${recipe.id}`)}
+              >
+                Delete
+              </button>
+              <select
+                onChange={(event) => {
+                  if (event.target.value && recipe.id) {
+                    handleAddRecipeToMenu(event.target.value, recipe.id);
+                  }
+                }}
+              >
+                <option value={undefined}>Add To Menu</option>
+                {menus.map((menu, i) => {
+                  return (
+                    <option value={menu.id} key={menu + (i + "")}>
+                      {menu.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          );
+        })}
+      </div>
       <br></br>
       <br></br>
       <br></br>

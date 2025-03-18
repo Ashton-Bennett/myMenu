@@ -15,6 +15,7 @@ const InputField = ({
       [event.target.name]: event.target.value,
     });
   };
+
   return (
     <>
       <label htmlFor={label}>{label}</label>

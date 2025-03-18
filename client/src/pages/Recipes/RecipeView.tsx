@@ -4,6 +4,7 @@ import recipeService from "../../services/recipes";
 import { Ingredient, Recipe, isHeading } from "../../types";
 import BackButton from "../../components/BackButton";
 import ServingsAmountInput from "../../components/Menus/ServingsAmountInput";
+import { baseImgURL } from "../../oraclePath";
 
 interface componentProps {
   isMenuRecipe: boolean;
@@ -60,6 +61,12 @@ const RecipeView = ({ isMenuRecipe }: componentProps) => {
       {recipe ? (
         <>
           <h1>{recipe.name}</h1>
+          {recipe.imgName && (
+            <img
+              alt={recipe.name}
+              src={baseImgURL + recipe.imgName + "?t=" + new Date().getTime()}
+            />
+          )}
           <p>
             Time to prepare: {recipe.prepTime} mins.{" "}
             {recipe.cookTime && <>To cook: {recipe.cookTime} mins.</>}

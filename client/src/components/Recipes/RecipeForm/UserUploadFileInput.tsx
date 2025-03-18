@@ -38,7 +38,6 @@ const UserUploadFileInput = ({ setNewRecipe }: componentProps) => {
               const formattedRecipe = await recipeService.getFormattedRecipe(
                 pdfText
               );
-
               const parsedRecipe = JSON.parse(formattedRecipe);
               const insureTheIngredientsHaveAnIdForPlacement =
                 parsedRecipe.ingredients.map((ingredient: Ingredient) => {

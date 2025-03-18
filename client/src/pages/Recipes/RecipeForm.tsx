@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { isHeading } from "../../types";
 import HeadingInput from "../../components/Recipes/RecipeForm/HeadingInput";
 import UserUploadFileInput from "../../components/Recipes/RecipeForm/UserUploadFileInput";
+import InputFieldImgUpload from "../../components/Recipes/RecipeForm/InputFieldImgUpload";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -35,7 +36,10 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     checked: false,
     notes: "",
     isMenuDuplicate: false,
+    imgName: "",
   });
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const navigate = useNavigate();
 
@@ -152,7 +156,10 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
           ingredients: updatedIngredientsToAllIncludeAlias,
         };
 
-        await recipeService.addRecipe(updatedNewRecipeWithAliasAndNumbers);
+        await recipeService.addRecipe(
+          updatedNewRecipeWithAliasAndNumbers,
+          selectedFile
+        );
 
         const newRecipeList: Recipe[] | undefined =
           await recipeService.getAll();
@@ -196,6 +203,10 @@ const RecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     <form onSubmit={addRecipe}>
       <h2>Add Recipe </h2>
       <UserUploadFileInput setNewRecipe={setNewRecipe} />
+      <InputFieldImgUpload
+        selectedFile={selectedFile}
+        setSelectedFile={setSelectedFile}
+      />
       <br></br>
       <InputField
         name="name"

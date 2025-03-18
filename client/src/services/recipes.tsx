@@ -38,7 +38,7 @@ const getSingleRecipe = async (id: string | undefined) => {
   }
 };
 
-const addRecipe = async (newRecipe: Recipe) => {
+const addRecipe = async (newRecipe: Recipe, ImageFile: File | null) => {
   const DirectionsArrayWithoutEmptyStrings = newRecipe.directions.filter(
     (direction) => {
       return direction.length < 1 ? false : true;
@@ -48,8 +48,17 @@ const addRecipe = async (newRecipe: Recipe) => {
   if (newRecipe.servings <= 0) {
     newRecipe.servings = 1;
   }
+
+  const formData = new FormData();
+  formData.append("newRecipe", JSON.stringify(newRecipe)); // Send newRecipe as a JSON string
+  if (ImageFile) formData.append("file", ImageFile);
+
   try {
-    const response = await axios.post(baseUrl, newRecipe);
+    const response = await axios.post(baseUrl, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     if (response) {
       return response.data;
     }
@@ -69,7 +78,11 @@ const deleteRecipe = async (id: string) => {
   }
 };
 
-const updateRecipe = (id: string | undefined, updatedRecipe: Recipe) => {
+const updateRecipe = async (
+  id: string | undefined,
+  updatedRecipe: Recipe,
+  ImageFile: File | null
+) => {
   const DirectionsArrayWithoutEmptyStrings = updatedRecipe.directions.filter(
     (direction) => {
       return direction.length < 1 ? false : true;
@@ -79,10 +92,26 @@ const updateRecipe = (id: string | undefined, updatedRecipe: Recipe) => {
     ...updatedRecipe,
     directions: DirectionsArrayWithoutEmptyStrings,
   };
+
+  const formData = new FormData();
+  formData.append("updatedRecipe", JSON.stringify(updatedRecipe)); // Send newRecipe as a JSON string
+  if (ImageFile) formData.append("file", ImageFile);
+
+  // try {
+  //   const response = axios.put(`${baseUrl}/${id}`, updatedRecipe);
+  //   if (response) {
+  //     return response;
+  //   }
+  // }
+  //
   try {
-    const response = axios.put(`${baseUrl}/${id}`, updatedRecipe);
+    const response = await axios.put(`${baseUrl}/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     if (response) {
-      return response;
+      return response.data;
     }
   } catch (error) {
     console.error(error);

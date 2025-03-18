@@ -103,7 +103,8 @@ const MenuItem = ({
       (menusToFilter) => menusToFilter.id !== menu.id
     );
     setMenus([...updatedMenus, updatedMenu]);
-    if (menuItem.id) recipeService.updateRecipe(menuItem.id, updatedMenuItem);
+    if (menuItem.id)
+      recipeService.updateRecipe(menuItem.id, updatedMenuItem, null);
     menuService.updateMenu(menu.id, updatedMenu);
   };
 

@@ -11,6 +11,8 @@ import IngredientInput from "../../components/Recipes/RecipeForm/IngredientInput
 import NotesTextArea from "../../components/Recipes/RecipeForm/NotesTextArea";
 import HeadingInput from "../../components/Recipes/RecipeForm/HeadingInput";
 import { v4 as uuidv4 } from "uuid";
+import InputFieldImgUpload from "../../components/Recipes/RecipeForm/InputFieldImgUpload";
+import { baseImgURL } from "../../oraclePath";
 
 interface recipeFormProps {
   recipes: Recipe[];
@@ -62,6 +64,8 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
     notes: "",
     isMenuDuplicate: false,
   });
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const navigate = useNavigate();
 
@@ -181,7 +185,11 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         ingredients: updatedIngredientsToAllIncludeAlias,
       };
 
-      recipeService.updateRecipe(id, updatedNewRecipeWithAliasAndNumbers);
+      recipeService.updateRecipe(
+        id,
+        updatedNewRecipeWithAliasAndNumbers,
+        selectedFile
+      );
       // eslint-disable-next-line eqeqeq
       const newRecipeList = recipes.filter((recipe) => recipe.id != id);
       setRecipes([...newRecipeList, recipeToUpdate]);
@@ -202,6 +210,18 @@ const UpdateRecipeForm = ({ recipes, setRecipes }: recipeFormProps) => {
         setNewRecipe={setRecipeToUpdate}
         newRecipe={recipeToUpdate}
         required={true}
+      />
+      {recipeToUpdate.imgName && (
+        <img
+          alt={recipeToUpdate.name}
+          src={
+            baseImgURL + recipeToUpdate.imgName + "?t=" + new Date().getTime()
+          }
+        />
+      )}
+      <InputFieldImgUpload
+        selectedFile={selectedFile}
+        setSelectedFile={setSelectedFile}
       />
       <InputField
         name="servings"

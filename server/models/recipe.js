@@ -20,6 +20,7 @@ const recipeSchema = new mongoose.Schema({
   notes: String,
   isMenuDuplicate: Boolean,
   menuItemId: String,
+  imgName: String,
 });
 
 recipeSchema.set("toJSON", {
