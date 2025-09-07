@@ -2,3 +2,9 @@ GET http://localhost:3001/api/ingredients/64c1aea67065a88836b66778
 
 ### checks unknown end points
 GET http://localhost:3001/api/ingredients/12312321
+
+###
+GET http://localhost:3001/api/ingredients/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1yLlRlc3QiLCJpYXQiOjE3NTQ4NjQyODEsImV4cCI6MTc1NDg2NTE4MX0.vOn_BUzFALsrnSPMcVQQaEFOJPsb7FqNi5XbugnYFIM
+
+

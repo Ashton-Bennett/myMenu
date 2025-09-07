@@ -103,7 +103,14 @@ const RecipeList = ({
         {filteredListOfRecipes.map((recipe, i) => {
           return (
             <div
-              style={{ border: "solid 1px lightgray" }}
+              style={{
+                border: "solid 1px lightgray",
+                display: "flex",
+                flexWrap: "wrap",
+                maxWidth: 200,
+                justifyContent: "center",
+                padding: "1rem",
+              }}
               key={recipe.name + i}
             >
               <img
@@ -113,34 +120,36 @@ const RecipeList = ({
                 }?t=${new Date().getTime()}`}
                 style={{ width: 150, height: 150, objectFit: "cover" }}
               />
-              <h3>{recipe.name}</h3>
-              <Link to={`/viewRecipes/${recipe.id}`}>
-                <button>View</button>
-              </Link>
-              <Link to={`/updateRecipe/${recipe.id}`}>
-                <button>Edit</button>
-              </Link>
-              <button
-                onClick={() => handleDelete(`${recipe.name}`, `${recipe.id}`)}
-              >
-                Delete
-              </button>
-              <select
-                onChange={(event) => {
-                  if (event.target.value && recipe.id) {
-                    handleAddRecipeToMenu(event.target.value, recipe.id);
-                  }
-                }}
-              >
-                <option value={undefined}>Add To Menu</option>
-                {menus.map((menu, i) => {
-                  return (
-                    <option value={menu.id} key={menu + (i + "")}>
-                      {menu.name}
-                    </option>
-                  );
-                })}
-              </select>
+              <h3 style={{ display: "flex" }}>{recipe.name}</h3>
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <Link to={`/viewRecipes/${recipe.id}`}>
+                  <button>View</button>
+                </Link>
+                <Link to={`/updateRecipe/${recipe.id}`}>
+                  <button>Edit</button>
+                </Link>
+                <button
+                  onClick={() => handleDelete(`${recipe.name}`, `${recipe.id}`)}
+                >
+                  Delete
+                </button>
+                <select
+                  onChange={(event) => {
+                    if (event.target.value && recipe.id) {
+                      handleAddRecipeToMenu(event.target.value, recipe.id);
+                    }
+                  }}
+                >
+                  <option value={undefined}>Add To Menu</option>
+                  {menus.map((menu, i) => {
+                    return (
+                      <option value={menu.id} key={menu + (i + "")}>
+                        {menu.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </div>
           );
         })}

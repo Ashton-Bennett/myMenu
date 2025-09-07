@@ -1,39 +1,34 @@
+import { User } from "../../types";
 import { useState, FormEvent } from "react";
 import authService from "../../services/auth";
 import userService from "../../services/user";
-import { useNavigate, useLocation } from "react-router-dom";
-import { User } from "../../types";
+import { useNavigate } from "react-router-dom";
 
-interface loginProps {
+interface props {
   user: User | undefined;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
 
-function Login({ user, setUser }: loginProps) {
+function CreateUser({ user, setUser }: props) {
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
-
-  // For Alexa login
-  // /login?client=alexa&redirect_uri=https://pitangui.amazon.com/api/skill/link/MY_SKILL_ID
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const isAlexa = params.get("client") === "alexa";
-  const redirectUri = params.get("redirect_uri");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-    const response = await authService.login(name, password);
-    if (response.success) {
-      if (isAlexa && redirectUri) {
-        // Redirect to Alexa with the token
-        const code = response.data.alexaAccessToken;
-        window.location.href = `${redirectUri}?code=${code}`;
-      }
 
-      const loadUser = await userService.getSingleUser(response.data.user);
+    const response = await userService.addUser(name, password, email);
+
+    if (response.success && response.statusCode === 201) {
+      const loginResponse = await authService.login(name, password);
+      if (!loginResponse.success) {
+        setError("User created but failed to log in");
+        return;
+      }
+      const loadUser = await userService.getSingleUser(response.data.id);
       if (loadUser) {
         setUser(loadUser);
         navigate("/");
@@ -47,10 +42,10 @@ function Login({ user, setUser }: loginProps) {
 
   return (
     <div>
-      <h1>The Menu</h1>
+      <h1>Create Account</h1>
 
-      <p> The app that turns home cooks into restaurant chefs </p>
-      <h2>Login</h2>
+      <p> Yes Chef!? </p>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -66,8 +61,15 @@ function Login({ user, setUser }: loginProps) {
           onChange={(e) => setPassword(e.target.value)}
         />
         <br />
-        <a href="/users/create">Create Account</a>
-        <button type="submit">Login</button>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br />
+        <button type="submit">Create Account</button>
+
         {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
       <div style={{ marginTop: "4rem" }}>
@@ -86,4 +88,4 @@ function Login({ user, setUser }: loginProps) {
   );
 }
 
-export default Login;
+export default CreateUser;

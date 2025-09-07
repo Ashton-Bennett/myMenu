@@ -46,17 +46,17 @@ menuRouter.delete("/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-menuRouter.post("/", (request, response, next) => {
-  const menu = request.body;
-  const newmenu = new Menu(menu);
+menuRouter.post("/", async (request, response, next) => {
+  try {
+    const menu = request.body;
+    const newMenu = new Menu(menu);
 
-  newmenu
-    .save()
-    .then((savedmenu) => {
-      response.json(savedmenu);
-      logger.info(`-> ADDED ${menu.name} menu`);
-    })
-    .catch((error) => next(error));
+    const savedMenu = await newMenu.save();
+    response.status(201).json(savedMenu); // 201 = Created
+    logger.info(`-> ADDED ${menu.name} menu`);
+  } catch (error) {
+    next(error);
+  }
 });
 
 menuRouter.put("/:id", (request, response, next) => {

@@ -1,5 +1,6 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { Menu } from "../types";
+import axios from "../utils/axiosInstance";
 
 const baseUrl = "/api/menus";
 

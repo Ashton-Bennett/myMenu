@@ -131,6 +131,7 @@ export interface User {
   userRecipes: Recipe[];
   userGroceryList: Ingredient[];
   userMenus: Menu[];
+  email: string;
   id: string;
   userStapleIngredients: {
     itemsToNeverAdd: Ingredient[];

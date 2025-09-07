@@ -1,0 +1,39 @@
+POST http://localhost:3001/api/user
+Content-Type: application/json
+
+{
+    "name": "Ashton",
+    "password": "Bennett",
+    "email": "ashtt.ben@gmail.com"
+}
+
+###
+DELETE  http://localhost:3001/api/user/67ff154408b5c4a60c41512c
+
+###
+GET http://localhost:3001/api/user
+
+# ###
+# POST http://localhost:3001/api/user/findByName
+# Content-Type: application/json
+
+# {
+#     "name": "Mr.Test"
+# }
+
+###
+POST http://localhost:3001/api/auth
+Content-Type: application/json
+
+{
+  "name":"Mr.Test",
+  "password": "12123234234"
+}
+
+###
+GET http://localhost:3001/api/auth/refreshToken
+ Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzaHRvbiIsImlhdCI6MTc1NTU3MjQzOSwiZXhwIjoxNzU1NjU4ODM5fQ.ukoJsQlc-dayYhA0wI6B8cLqPOFVK2SIzGWKDyph8V4
+
+###
+GET http://localhost:3001/api/auth/logout
+  Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1yLlRlc3QiLCJpYXQiOjE3NDUwMTI3NzMsImV4cCI6MTc0NTA5OTE3M30.HoE4c2qyO3hhZmw6jJGUWEsp8UxB7UfKkAgf5W-X52M

@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/auth/alexa/login
+Content-Type: application/json
+
+{
+  "name":"Ashton",
+  "password": "Bennett"
+}

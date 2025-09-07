@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import axios from "../utils/axiosInstance";
 import { User } from "../types";
 const baseUrl = "/api/user";
 
@@ -24,14 +25,23 @@ const getSingleUser = async (id: string | undefined) => {
   }
 };
 
-const addUser = async (newUser: User) => {
+const addUser = async (name: string, password: string, email: string) => {
+  const newUserCredentials = { name, password, email };
+
   try {
-    const response = await axios.post(baseUrl, newUser);
-    if (response) {
-      return response.data;
-    }
-  } catch (error) {
+    const response = await axios.post(baseUrl, newUserCredentials);
+    return {
+      success: true,
+      statusCode: response.status,
+      data: response.data,
+    };
+  } catch (error: any) {
     console.error(error);
+    return {
+      success: false,
+      statusCode: error.response?.status ?? 500,
+      error: error.response?.data?.error || "Something went wrong",
+    };
   }
 };
 
@@ -57,6 +67,17 @@ const updateUser = (id: string | undefined, updatedUser: User) => {
   }
 };
 
+const resetUserPassword = (id: string | undefined) => {
+  try {
+    const response = axios.put(`${baseUrl}/resetPassword/${id}`);
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getAll,
@@ -64,4 +85,5 @@ export default {
   getSingleUser,
   addUser,
   updateUser,
+  resetUserPassword,
 };

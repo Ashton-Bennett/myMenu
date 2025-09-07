@@ -6,24 +6,14 @@ import BackButton from "../../components/BackButton";
 import ServingsAmountInput from "../../components/Menus/ServingsAmountInput";
 import { baseImgURL } from "../../oraclePath";
 
-interface componentProps {
-  isMenuRecipe: boolean;
-}
-
-const RecipeView = ({ isMenuRecipe }: componentProps) => {
+const RecipeView = () => {
   const [recipe, setRecipe] = useState<Recipe>();
   const { id } = useParams();
 
   useEffect(() => {
-    if (isMenuRecipe) {
-      recipeService.getSingleRecipe(id).then((response) => {
-        setRecipe(response);
-      });
-    } else {
-      recipeService.getSingleRecipe(id).then((response) => {
-        setRecipe(response);
-      });
-    }
+    recipeService.getSingleRecipe(id).then((response) => {
+      setRecipe(response);
+    });
   }, []);
 
   const handleRecipeServingAmountChange = (e: any) => {

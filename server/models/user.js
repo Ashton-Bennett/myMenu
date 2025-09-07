@@ -6,6 +6,21 @@ const userSchema = new mongoose.Schema({
     required: true,
     minLength: 5,
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  passwordHash: {
+    type: String,
+    required: true,
+  },
+  refreshToken: {
+    type: String,
+  },
+  alexaToken: {
+    type: String,
+  },
   userRecipes: Array,
   userGroceryList: Array,
   userMenus: Array,
@@ -20,6 +35,8 @@ userSchema.set("toJSON", {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
+    delete returnedObject.passwordHash;
+    delete returnedObject.refreshToken;
   },
 });
 
